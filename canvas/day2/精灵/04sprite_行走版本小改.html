@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="cvs" width="500" height="500" style="border:1px solid red;"></canvas>
+<script>
+    var cvs = document.getElementById('cvs');
+    var ctx = cvs.getContext('2d');
+
+    // 精灵行走的第几帧
+    var frameIndex = 0;
+
+    // 精灵行走的方向
+    var direction = 0;
+
+    // x轴行走速度
+    var xSpeed = 0;
+
+    // y轴行走速度
+    var ySpeed = 0;
+
+    // 精灵绘制的x轴位置
+    var xSprite = 50;
+
+    // 精灵绘制的y轴位置
+    var ySprite = 50;
+
+    // 创建一个图片对象
+    var img = new Image();
+
+    // 监听图像的load事件
+    img.addEventListener('load', function () {
+
+        // 提取精灵绘制函数
+        function drawSprite() {
+            ctx.drawImage(img, 256 * frameIndex, 256 * direction, 256, 256, xSprite, ySprite, 256, 256);
+        }
+
+        // 计算下一帧数据，然后绘制精灵
+        setInterval(function () {
+            switch (direction) {
+                case 0:  // 左
+                    xSpeed = -3;
+                    xSprite += xSpeed;
+                    break;
+                case 2:  // 上
+                    ySpeed = -3;
+                    ySprite += ySpeed;
+                    break;
+                case 4: // 右
+                    xSpeed = 3;
+                    xSprite += xSpeed;
+                    break;
+                case 6:  // 下
+                    ySpeed = 3;
+                    ySprite += ySpeed;
+                    break;
+            }
+
+            ctx.clearRect(0, 0, cvs.width, cvs.height);
+            drawSprite();
+            frameIndex = (++frameIndex) % 8;
+        }, 1000 / 30);
+
+        // 监听键盘按下事件，通过方向键控制精灵行走方向
+        document.addEventListener('keydown', function (e) {
+            console.log(e.keyCode);
+            switch (e.keyCode) {
+                case 37:  // 左
+                    direction = 0;
+                    break;
+                case 38:  // 上
+                    direction = 2;
+                    break;
+                case 39: // 右
+                    direction = 4;
+                    break;
+                case 40:  // 下
+                    direction = 6;
+                    break;
+            }
+        });
+    });
+
+    // 加载图像
+    img.src = './img/sprite.png';
+</script>
+</body>
+</html>

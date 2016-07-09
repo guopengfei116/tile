@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="cvs" width="500" height="500" style="border:1px solid red;"></canvas>
+<script>
+    var cvs = document.getElementById('cvs');
+    var ctx = cvs.getContext('2d');
+
+    /*
+     * @function {extend} 对象属性copy
+     * @param {obj} 要拷贝的对象
+     * @param {obj2} 被拷贝的对象
+     * */
+    function extend(obj1, obj2) {
+        for (var key in obj2) {
+            obj1[key] = obj2[key];
+        }
+    }
+
+    (function () {
+
+        // 精灵类
+        function Sprite(frameIndex, direction, x, y, width, height, speedX, speedY) {
+            this.frameIndex = frameIndex;   // 精灵从第几帧开始渲染
+            this.direction = direction;   // 精灵行走的方向
+            this.x = x;   // 精灵渲染的x轴坐标
+            this.y = y;   // 精灵渲染的y轴坐标
+            this.width = width;   // 精灵渲染时的宽度
+            this.height = height;   // 精灵渲染时的高度
+            this.speedX = speedX || 0; // 精灵X轴行走速度，默认为0
+            this.speedY = speedY || 0;  // 精灵Y轴行走速度，默认为0
+        }
+
+        // 给类添加静态属性
+        extend(Sprite, {
+            SOURCE_WIDTH: 256, // 精灵图像的宽度
+            SOURCE_HEIGHT: 256,  // 精灵图像的高度
+            SOURCE_IMAGE_PATH: './img/sprite.png',  // 精灵加载的地址
+            SOURCE_IMAGE: new Image(),  // 精灵图片对象
+            init: function (cbk) {
+                // 创建一个图片对象
+                this.SOURCE_IMAGE.addEventListener('load', function () {
+                    cbk && cbk(Sprite);
+                });
+                this.SOURCE_IMAGE.src = this.SOURCE_IMAGE_PATH;
+            }
+        });
+
+        // 扩展原型方法
+        extend(Sprite.prototype, {
+
+            // 精灵渲染函数
+            draw : function () {
+                ctx.drawImage(Sprite.SOURCE_IMAGE,
+                        Sprite.SOURCE_WIDTH * this.frameIndex, Sprite.SOURCE_HEIGHT * this.direction, Sprite.SOURCE_WIDTH, Sprite.SOURCE_HEIGHT,
+                        this.x, this.y, this.width, this.height);
+            },
+
+            // 更新下一步的渲染数据
+            update : function () {
+                switch (this.direction) {
+                    case 0:  // 左
+                        this.speedX = -3;
+                        this.x += this.speedX;
+                        // 超出左边就放到最右边
+                        if(this.x < -this.width) {
+                            this.x = cvs.width;
+                        }
+                        break;
+                    case 2:  // 上
+                        this.speedY = -3;
+                        this.y += this.speedY;
+                        // 超出上边就放到最下边
+                        if(this.y < -this.height) {
+                            this.y = cvs.height;
+                        }
+                        break;
+                    case 4: // 右
+                        this.speedX = 3;
+                        this.x += this.speedX;
+                        // 超出右边就放到最左边
+                        if(this.x > cvs.width) {
+                            this.x = -this.width;
+                        }
+                        break;
+                    case 6:  // 下
+                        this.speedY = 3;
+                        this.y += this.speedY;
+                        // 超出下边就放到最上边
+                        if(this.y > cvs.height) {
+                            this.y = -this.height;
+                        }
+                        break;
+                }
+                this.frameIndex = (++this.frameIndex) % 8;
+            },
+
+            updateDirection : function (keyCode) {
+                switch (keyCode) {
+                    case 37:  // 左
+                        this.direction = 0;
+                        break;
+                    case 38:  // 上
+                        this.direction = 2;
+                        break;
+                    case 39: // 右
+                        this.direction = 4;
+                        break;
+                    case 40:  // 下
+                        this.direction = 6;
+                        break;
+                }
+            }
+        });
+
+        // 通过Sprite对象创造精灵
+        Sprite.init(function (Sprite) {
+            var sprites = [];
+            var tempFrameIndex = 0,   // 计算一个精灵显示开始帧
+                    tempDirection = 0,  // 计算一个精灵的方向
+                    tempX = 0,  // 计算一个精灵的X轴坐标
+                    tempY = 0, // 计算一个精灵的Y轴坐标
+                    tempWidth = 0, // 计算一个精灵的宽度
+                    tempHeight = 0; // 计算一个精灵的高度
+
+            // 生成多个精灵，属性值随机
+            for (var i = 0; i < 80; i++) {
+                tempFrameIndex = Math.floor(Math.random() * 8); // 0~7
+                tempDirection = Math.floor(Math.random() * 4) * 2; // 0 2 4 6
+                tempX = Math.floor(Math.random() * 400); // 0~399
+                tempY = Math.floor(Math.random() * 400); // 0~399
+                tempWidth = Math.floor(Math.random() * 300) + 30; // 最小30
+                //tempHeight = Math.floor(Math.random() * 300) + 30;   // 为了保证宽高一直，精灵不走形，所以没有使用该变量
+                sprites.push(new Sprite(tempFrameIndex, tempDirection, tempX, tempY, tempWidth, tempWidth));
+            }
+
+            // 画布渲染
+            setInterval(function () {
+                ctx.clearRect(0, 0, cvs.width, cvs.height);  // 清除画布
+
+                // 渲染全部精灵
+                for(var i = 0; i < sprites.length; i++) {
+                    sprites[i].draw();  // 渲染精灵
+                    sprites[i].update(); // 更新精灵下一次要渲染的数据
+                }
+            }, 1000 / 60);
+
+            // 监听键盘按下事件，通过方向键控制精灵行走方向
+            document.addEventListener('keydown', function (e) {
+
+                // 如果是上档键，则重置全部精灵的随机位置
+                if(e.keyCode == 16) {
+                    // 刷新全部精灵的方向
+                    for(var i = 0; i < sprites.length; i++) {
+                        sprites[i].direction = Math.floor(Math.random() * 4) * 2;
+                    }
+                    return;
+                }
+
+                // 其他方向键刷新全部精灵的方向
+                for(var i = 0; i < sprites.length; i++) {
+                    sprites[i].updateDirection(e.keyCode);
+                }
+
+            });
+        });
+    }());
+</script>
+</body>
+</html>

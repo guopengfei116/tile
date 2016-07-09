@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>isPointInPath</title>
+</head>
+<body>
+<canvas id="cvs" width="1000" height="500"></canvas>
+<script>
+    var cvs = document.getElementById('cvs');
+    var ctx = cvs.getContext('2d');
+
+    ctx.rect(50, 50, 100, 100);
+    ctx.rect(250, 50, 100, 100);
+    ctx.stroke();
+
+    cvs.addEventListener('click' , function (event) {
+        var x = event.layerX;
+        var y = event.layerY;
+        alert(ctx.isPointInPath(x, y));
+    })
+
+</script>
+</body>
+</html>

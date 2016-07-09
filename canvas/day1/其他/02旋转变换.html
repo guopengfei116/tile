@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>旋转变换</title>
+</head>
+<body>
+<canvas id="cvs" width="1000" height="500" style="border: 1px solid black;"></canvas>
+<script>
+    var cvs = document.getElementById('cvs');
+    var ctx = cvs.getContext('2d');
+
+    function degToArc(deg){
+        return deg / 180 * Math.PI;
+    }
+
+    ctx.rotate(degToArc(30));
+
+    ctx.fillRect(100,100,100,100);
+</script>
+</body>
+</html>

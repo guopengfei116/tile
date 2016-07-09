@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>旋转变换</title>
+</head>
+<body>
+<canvas id="cvs" width="1000" height="500" style="border: 1px solid black;"></canvas>
+<script>
+    var cvs = document.getElementById('cvs');
+    var ctx = cvs.getContext('2d');
+
+    function drawCross(color){
+        ctx.beginPath();
+        ctx.moveTo(-1000,0);
+        ctx.lineTo(1000,0);
+        ctx.moveTo(0,-500);
+        ctx.lineTo(0,500);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 5;
+        ctx.stroke();
+    }
+
+    drawCross('red');
+
+    function degToArc(deg){
+        return deg / 180 * Math.PI;
+    }
+
+//    ctx.rotate(degToArc(30));
+
+    ctx.translate(100,100);
+
+    drawCross('blue');
+
+
+    ctx.fillRect(50,50,52,45);
+    ctx.rotate(degToArc(30));
+
+    drawCross('green')
+
+    ctx.fillRect(50,50,52,45);
+
+
+    ctx.fillRect(-26,-22.5,52,45)
+
+</script>
+</body>
+</html>

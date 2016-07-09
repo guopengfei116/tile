@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>旋转变换</title>
+</head>
+<body>
+<canvas id="cvs" width="1000" height="500" style="border: 1px solid black;"></canvas>
+<script>
+    var cvs = document.getElementById('cvs');
+    var ctx = cvs.getContext('2d');
+
+    // 绘制坐标系十字线
+    function drawCross(color) {
+        ctx.beginPath();
+        ctx.moveTo(-1000, 0);
+        ctx.lineTo(1000, 0);
+        ctx.moveTo(0, -500);
+        ctx.lineTo(0, 500);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 5;
+        ctx.stroke();
+    }
+
+    drawCross('red');
+
+    function degToArc(deg) {
+        return deg / 180 * Math.PI;
+    }
+
+    ctx.save();// 第一次保存状态
+
+    ctx.translate(100, 100);
+
+
+    ctx.save(); // 第二次保存状态
+    drawCross('green');
+
+    ctx.translate(100, 100);
+
+    drawCross('blue');
+
+    ctx.restore(); // 第一次恢复状态，恢复最后保存的状态
+
+    ctx.fillRect(-50, -50, 100, 100);
+
+    ctx.restore(); // 第二次恢复状态，恢复倒数第二次保存状态
+
+    ctx.fillRect(-50, -50, 100, 100);
+</script>
+</body>
+</html>

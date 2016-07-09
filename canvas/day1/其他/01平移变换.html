@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>平移变换</title>
+</head>
+<body>
+<canvas id="cvs" width="1000" height="500" style="border: 1px solid black;"></canvas>
+<script>
+    var cvs = document.getElementById('cvs');
+    var ctx = cvs.getContext('2d');
+
+    ctx.translate(-100,-100);
+
+    ctx.fillRect(100,100,100,100);
+</script>
+</body>
+</html>

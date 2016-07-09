@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="cvs" width="500" height="500" style="border:1px solid red;"></canvas>
+<script>
+    var cvs = document.getElementById('cvs');
+    var ctx = cvs.getContext('2d');
+
+    // 对象copy函数
+    function extend(obj1, obj2) {
+        for (var key in obj2) {
+            obj1[key] = obj2[key];
+        }
+    }
+
+    (function () {
+
+        // 精灵类
+        function Sprite(frameIndex, direction, x, y, width, height, speedX, speedY) {
+            this.frameIndex = frameIndex;   // 精灵从第几帧开始渲染
+            this.direction = direction;   // 精灵行走的方向
+            this.x = x;   // 精灵渲染的x轴坐标
+            this.y = y;   // 精灵渲染的y轴坐标
+            this.width = width;   // 精灵渲染时的宽度
+            this.height = height;   // 精灵渲染时的高度
+            this.speedX = speedX || 0; // 精灵X轴行走速度，默认为0
+            this.speedY = speedY || 0;  // 精灵Y轴行走速度，默认为0
+        }
+
+        // 给类添加静态属性
+        extend(Sprite, {
+            SOURCE_WIDTH: 256, // 精灵图像的宽度
+            SOURCE_HEIGHT: 256  // 精灵图像的高度
+        });
+
+        // 扩展原型方法
+        extend(Sprite.prototype, {
+
+            // 精灵渲染函数
+            draw : function () {
+                ctx.drawImage(img,
+                        Sprite.SOURCE_WIDTH * this.frameIndex, Sprite.SOURCE_HEIGHT * this.direction, Sprite.SOURCE_WIDTH, Sprite.SOURCE_HEIGHT,
+                        this.x, this.y, this.width, this.height);
+            },
+
+            // 更新下一步的渲染数据
+            update : function () {
+                switch (this.direction) {
+                    case 0:  // 左
+                        this.speedX = -3;
+                        this.x += this.speedX;
+                        break;
+                    case 2:  // 上
+                        this.speedY = -3;
+                        this.y += this.speedY;
+                        break;
+                    case 4: // 右
+                        this.speedX = 3;
+                        this.x += this.speedX;
+                        break;
+                    case 6:  // 下
+                        this.speedY = 3;
+                        this.y += this.speedY;
+                        break;
+                }
+                this.frameIndex = (++this.frameIndex) % 8;
+            }
+        });
+
+        // 创建一个图片对象
+        var img = new Image();
+        // 监听图像的load事件
+        img.addEventListener('load', function () {
+            var jiajia = new Sprite(0, 0, 50, 50, 200, 200);
+            var meimei = new Sprite(0, 0, 250, 100, 150, 150);
+
+            // 画布渲染
+            setInterval(function () {
+                ctx.clearRect(0, 0, cvs.width, cvs.height);  // 清除画布
+
+                jiajia.draw();  // 渲染精灵
+                jiajia.update(); // 更新精灵下一次要渲染的数据
+
+                meimei.draw();  // 渲染精灵
+                meimei.update(); // 更新精灵下一次要渲染的数据
+
+            }, 1000 / 60);
+
+            // 监听键盘按下事件，通过方向键控制精灵行走方向
+            document.addEventListener('keydown', function (e) {
+                switch (e.keyCode) {
+                    case 37:  // 左
+                        jiajia.direction = 0;
+                        meimei.direction = 0;
+                        break;
+                    case 38:  // 上
+                        jiajia.direction = 2;
+                        meimei.direction = 2;
+                        break;
+                    case 39: // 右
+                        jiajia.direction = 4;
+                        meimei.direction = 4;
+                        break;
+                    case 40:  // 下
+                        jiajia.direction = 6;
+                        meimei.direction = 6;
+                        break;
+                }
+            });
+        });
+        // 加载图像
+        img.src = './img/sprite.png';
+    }());
+</script>
+</body>
+</html>

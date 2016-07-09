@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500" style="border:1px solid red;"></canvas>
+    <script>
+        var cvs = document.getElementById('cvs');
+        var ctx = cvs.getContext('2d');
+
+        // 精灵行走的第几帧
+        var frameIndex = 0;
+
+        // 精灵行走的方向
+        var direction = 0;
+
+        // 创建一个图片对象
+        var img = new Image();
+
+        // 监听图像的load事件
+        img.addEventListener('load', function () {
+            setInterval(function () {
+                ctx.clearRect(0, 0, cvs.width, cvs.height);
+                ctx.drawImage(img, 256 * frameIndex, 256 * direction, 256, 256, 50, 50, 256, 256);
+                frameIndex = (++frameIndex) % 8;
+            }, 1000 / 30);
+        });
+
+        // 加载图像
+        img.src = './img/sprite.png';
+    </script>
+</body>
+</html>

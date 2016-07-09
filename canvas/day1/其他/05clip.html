@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas id="cvs" width="500px"; height="500px"; style="border:1px solid black;"></canvas>
+    <script>
+        // 得到canvas标记的DOM对象
+        var cvs = document.getElementById('cvs');
+
+        // 得到绘图上下文
+        /*
+        * 绘制2d图形，要传递2d作为参数
+        * 绘制3d图形，要传递webgl作为参数
+        * */
+        var ctx = cvs.getContext('2d');
+        ctx.lineCap = 'square';
+        // 矩形绘制函数的封装
+        // rectangle 矩形
+        function drawRect(ctx, x, y, width, height) {
+            ctx.lineWidth = 5;
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + width, y);
+            ctx.lineTo(x + width, y + height);
+            ctx.lineTo(x, y + height);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+
+      /*  drawRect(ctx, 100, 100, 250, 150);
+        drawRect(ctx, 300, 300, 250, 150);*/
+/*
+        ctx.clip();
+        ctx.font = '200px Arial';
+        ctx.textBaseline = 'top';
+        ctx.fillText('Hellow', 0, 0);*/
+
+
+        // 剪切矩形区域
+        ctx.rect(50,20,200,120);
+        ctx.stroke();
+        ctx.save();
+        ctx.clip();
+        // 在 clip() 之后绘制绿色矩形
+        ctx.fillStyle="green";
+        ctx.fillRect(0,0,150,100);
+        ctx.beginPath();
+        ctx.restore();
+
+        /*drawRect(ctx, 100, 100, 250, 150);
+        drawRect(ctx, 300, 300, 250, 150);*/
+
+       /* ctx.fillStyle = 'red';
+        ctx.fill();*/
+    </script>
+</body>
+</html>

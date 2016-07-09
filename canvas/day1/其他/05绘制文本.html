@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="cvs" width="500" height="500" style="border:1px solid yellowgreen"></canvas>
+<script>
+    var cvs = document.getElementById('cvs');
+        var ctx = cvs.getContext('2d');
+        ctx.font = '20px 微软雅黑';
+
+        ctx.strokeStyle = 'red';
+        ctx.moveTo(0,100);
+        ctx.lineTo(500,100);
+
+        var texts = [
+            'ackjg',
+            'achjg',
+            'ackjg',
+            'ackjg',
+            'ackjg',
+            'ackjg',
+            'ackjg嘿',
+            'ackjg嘿',
+        ];
+
+        var baseLine = [
+            'top',
+            'hanging',
+            'middle',
+            'alphabetic',
+            'ideographic',
+            'bottom'
+        ];
+
+        ctx.textBaseline = baseLine[0];
+        ctx.fillText('ackjg↑', 10, 100);
+        ctx.textBaseline = baseLine[1];
+        ctx.fillText('ackjgゅ', 90, 100);
+        ctx.textBaseline = baseLine[2];
+        ctx.fillText('ackjgγ', 170, 100);
+        ctx.textBaseline = baseLine[3];
+        ctx.fillText('ackjg∫', 250, 100);
+        ctx.textBaseline = baseLine[4];
+        ctx.fillText('ackjg▕', 330, 100);
+        ctx.textBaseline = baseLine[5];
+        ctx.fillText('ackjgㄨ', 410, 100);
+
+        ctx.moveTo(0,300);
+        ctx.lineTo(500,300);
+
+        ctx.textBaseline = baseLine[0];
+        ctx.fillText('ackjg嘿', 10, 300);
+        ctx.textBaseline = baseLine[1];
+        ctx.fillText('ackjg嘿', 90, 300);
+        ctx.textBaseline = baseLine[2];
+        ctx.fillText('ackjg嘿', 170, 300);
+        ctx.textBaseline = baseLine[3];
+        ctx.fillText('ackjg嘿', 250, 300);
+        ctx.textBaseline = baseLine[4];
+        ctx.fillText('ackjg嘿', 330, 300);
+        ctx.textBaseline = baseLine[5];
+        ctx.fillText('ackjg嘿', 410, 300);
+        ctx.stroke();
+
+    </script>
+</body>
+</html>

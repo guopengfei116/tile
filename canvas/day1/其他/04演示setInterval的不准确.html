@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SetInterval</title>
+</head>
+<body>
+
+<script>
+
+    var lastTime = Date.now(); // 得到当前的时间
+
+    setInterval(function(){
+        for (var i = 0; i < 100000000; i++) {
+
+        }
+        var now = Date.now();
+        var dt = now - lastTime;
+        console.log(dt);
+        lastTime = now;
+    },10)
+
+</script>
+</body>
+</html>

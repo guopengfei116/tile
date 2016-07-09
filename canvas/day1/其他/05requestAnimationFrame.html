@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>requestAnimationFrame</title>
+</head>
+<body>
+<script>
+    var lastTime = Date.now();
+    function loop() {
+        var now = Date.now();
+        var dt = now - lastTime;
+        lastTime = now;
+
+        // TODO: 绘制
+
+
+        requestAnimationFrame(loop)
+    }
+
+    // 请求动画帧
+    // 让浏览器来决定下一帧什么时候绘制
+    requestAnimationFrame(loop)
+</script>
+</body>
+</html>
