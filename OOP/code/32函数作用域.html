@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>函数作用域</title>
+</head>
+<body>
+    <script>
+        /*
+        * 函数作用域的概念：
+        * 在js当中，只有函数可以分隔作用域(只有函数可以产生新的作用域),这就是函数作用域。
+        *
+        * 块级作用域的概念：
+        * 只要是块，就可以分隔作用域(就可以产生新的作用域),这就是快级作用域。
+        * {}、if(true){}、for(var i = 0; i < 5; i++){}、 function fn() {}
+        * */
+
+        if(true) {
+            var a = 1;
+        }
+        console.log(a);   // 能使用，说明在js当中块没有隔离作用域(函数除外)
+
+        {
+            var b = 2;
+        }
+        console.log(b);  // 能使用，说明在js当中块没有隔离作用域(函数除外)
+
+        (function () {
+            var c = 3;
+        }());
+
+        //console.log(c);  // 不能使用，说明在js当中函数可以隔离作用域
+
+
+        (function () {
+            var c = 3;
+            (function () {
+                var d = 99;
+                console.log(d);  // 能使用，函数产生了新的作用域
+            }());
+            console.log(d);   // 不能使用，说明在js当中函数可以隔离作用域
+        }());
+    </script>
+</body>
+</html>

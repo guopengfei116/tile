@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+         * 练习,可以存储undefined
+         * */
+        /*function getCache() {
+            var cache = {};  // 用来存放数据的
+            var maxLength = 3;   // cache存储数据的最大数量值
+            var cacheLength = 0;  // 记录cache存储的数据数量
+            return function (key, value) {
+
+                // 判断传入的实参是否满足2个参数
+                if (arguments.length >= 2) {
+
+                    // 先判断当前存储的数据有没有达到最大数量限制
+                    if (cacheLength < maxLength) {
+
+                        // 如果cache对象没有key这个属性，那么说明是新添加的属性，就要进行++操作
+                        if (!cache.hasOwnProperty(key)) {
+                            cacheLength++;
+                        }
+                        cache[key] = value;
+                    }
+                }else if(arguments.length == 1){
+                    return cache[key];
+                }
+            };
+        }
+
+        var cache = getCache();
+        cache('a', 1);
+        cache('a', 2);
+        cache('a', undefined);
+        cache('b', 1);
+        cache('c', 1);
+        cache('d', 4);
+        cache('a', 555);
+        console.log(cache('a'));
+        console.log(cache('b'));
+        console.log(cache('c'));
+        console.log(cache('d'));*/
+
+
+
+        /*
+         * 练习,可以存储undefined，解决上面的bug，值存满之后，无法修改已经存在的值
+         * */
+        function getCache() {
+            var cache = {};  // 用来存放数据的
+            var maxLength = 3;   // cache存储数据的最大数量值
+            var cacheLength = 0;  // 记录cache存储的数据数量
+            return function (key, value) {
+
+                // 判断传入的实参是否满足2个参数
+                if (arguments.length >= 2) {
+
+                    if (cache.hasOwnProperty(key)) {
+                        cache[key] = value;   // 如果已经存在，则修改这个属性值
+                    } else if (cacheLength < maxLength) {   // 如果不存在，并且没有到达最大限制，则新增值
+                        cacheLength++;
+                        cache[key] = value;
+                    }
+
+                }else if(arguments.length == 1){
+                    return cache[key];
+                }
+            };
+        }
+
+        var cache = getCache();
+        cache('a', 1);
+        cache('a', 2);
+        cache('a', undefined);
+        cache('b', 1);
+        cache('c', 1);
+        cache('d', 4);
+        cache('a', 555);
+        cache('a', 666);
+        cache('e', 888);
+        console.log(cache('a'));
+        console.log(cache('b'));
+        console.log(cache('c'));
+        console.log(cache('d'));
+        console.log(cache('e'));
+    </script>
+</body>
+</html>

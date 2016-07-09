@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>考题</title>
+</head>
+<body>
+    <script>
+        // 考题一，考变量提升和没有块级作用域：
+         /*console.log(a);  // undefined
+         if (false) {
+            var a = 10;
+         }
+         console.log(a); // undefined*/
+
+         // 模拟
+        /*var a;
+        console.log(a);   // undefined
+        if (false) {
+            a = 10;
+        }
+        console.log(a);  // undefined*/
+
+
+        // 考题二，考变量提升和没有块级作用域：
+        /*console.log(a);  // undefined
+        if ('a' in window) {
+            var a = 10;
+        }
+        console.log(a);  // 10*/
+
+        // 模拟
+       /* var a;
+        console.log(a);   // undefined
+        if ('a' in window) {
+            a = 10;
+        }
+        console.log(a);  // 10*/
+
+        // 考题三，考函数作用域：
+         /*//console.log(a);  // 报错
+         if ('a' in window) {
+            (function(){
+                var a = 10;
+            }());
+         }
+         console.log(a);  // 报错*/
+
+         // 模拟
+        /*console.log(a);   // 报错
+        if ('a' in window) {
+            (function(){
+                var a = 10;
+            }());
+        }
+        console.log(a);*/
+
+
+        // 考题四，考函数作用域：
+         /*var val = 321;
+         function test() {
+            // 局部变量val
+            var val = 123;
+         }
+         test();
+         console.log(val);*/
+
+         // 模拟
+        /*var val;
+        function test() {
+            // 局部变量val
+            var val = 123;
+        }
+        val = 321;
+        test();
+        console.log(val);  // 321*/
+
+
+        // 考题五，考函数作用域：
+        /*(function fn() {
+            function fn1 () {
+                var a = 1;
+            }
+            (function fn2 () {
+                console.log(a); // 报错
+            })();
+        })();*/
+
+        // 模拟
+        /*(function fn() {
+            function fn1 () {
+                var a = 1;
+            }
+            (function fn2 () {
+                console.log(a);  // 报错
+            })();
+        })();*/
+
+        // 考题六，考词法作用域：
+        /*var val = 1;
+        function add1() {
+            console.log(val + 1);  // 2
+        }
+        (function () {
+            // 局部变量val
+            var val = 10;
+            // 调用add1
+            add1();
+        }());*/
+
+        // 模拟
+        /*var val;
+        function add1() {
+            console.log(val + 1);  // 2
+        }
+        val = 1;
+        (function () {
+            // 局部变量val
+            var val = 10;
+            // 调用add1
+            add1();
+        }());*/
+
+        // 考题七，综合性考题。
+        /*var a = 20;
+        (function fn() {
+            if (false) { var a = 10 }
+            (function fn2 () {
+                console.log(a); // undeinfed
+            })();
+        })();*/
+
+        // 模拟
+        /*var a;
+        a = 20;
+        (function fn() {
+            if (false) { var a = 10 }
+            (function fn2 () {
+                console.log(a); // 20 undeinfed
+            })();
+
+            // 模拟
+            var a;
+            if (false) { a = 10 }
+            (function fn2 () {
+                console.log(a); // undeinfed
+            })();
+        })();*/
+
+        // 考题八，预解析。
+       /* function fn(a) {
+            console.log(a); // undefined 200
+            var a = 2;
+            console.log(a); // 2 2
+        }
+        fn();
+        fn(200);*/
+
+        /*// 模拟
+        function fn(a) {
+            console.log(a);
+            var a = 2;
+            console.log(a);
+
+            // 第一次调用模拟
+            var a;
+            console.log(a); // undefined
+            a = 2;
+            console.log(a);  // 2
+
+            // 第二次调用模拟
+            var a = 200;
+            console.log(a); // 200
+            a = 2;
+            console.log(a);  // 2
+        }
+        fn();
+        fn(200);*/
+
+        // 考题九，考变量查找规则。
+        /*var a = 1;
+        function fn(a) {
+            console.log(a); // undefined
+            a = 2;
+            console.log(a); // 2
+        }
+        fn();
+        console.log(a); // 1*/
+
+        // 模拟
+        /*var a;
+        function fn(a) {
+            console.log(a);
+            a = 2;
+            console.log(a);
+
+            // 模拟
+            var a;
+            console.log(a);   // undefined
+            a = 2;
+            console.log(a);  // 2
+        }
+        a = 1;
+        fn();
+        console.log(a);  // 1*/
+
+
+        // 考题十，综合题
+        /*console.log(a);   // 函数log2
+        var a = 1;
+        console.log(a);    // 1
+        function a() { console.log(1) }
+        console.log(a);    // 1
+        var a = 3;
+        console.log(a);  // 3
+        function a() { console.log(2) }
+        console.log(a);   //3
+        var a = 4;*/
+
+        // 模拟
+       /* function a() { console.log(2) }
+        console.log(a);  // 函数log2
+        a = 1;
+        console.log(a);   // 1
+        console.log(a);   // 1
+        a = 3;
+        console.log(a);   // 3
+        console.log(a);    // 3*/
+
+        // 考题十一，综合题
+         /*var a = 1;
+         function fn() {
+            console.log(a); // 1
+            a = 2;
+            console.log(a); // 2
+         }
+         fn();
+         console.log(a); // 2*/
+
+        // 模拟
+       /* var a;
+        function fn() {
+            console.log(a);  // 1
+            a = 2;
+            console.log(a);  // 2
+        }
+        a = 1;
+        fn();
+        console.log(a);   // 2*/
+
+        // 考题十二，综合题
+        /*var a = 1;
+        function fn(a) {
+            console.log(a);   // 函数
+            var a = 2;
+            function a() {}
+            console.log(a);   // 2
+        }
+        fn(a);*/
+
+        // 模拟
+       /* var a;
+        function fn(a) {
+            console.log(a);   // 函数
+            var a = 2;
+            function a() {}
+            console.log(a);   // 2
+
+            // 模拟
+            function a() {}
+            console.log(a);   // 函数
+            a = 2;
+            console.log(a);   // 2
+        }
+        a = 1;
+        fn(a);*/
+
+        // 考题十三，函数预解析
+        // f();   最新浏览器报错
+        // f() 老版本走最下面定义的
+        /*if (true) {
+            function f() {
+                console.log(1);
+            }
+        }else {
+            function f() {
+                console.log(2);
+            }
+        }*/
+    </script>
+</body>
+</html>

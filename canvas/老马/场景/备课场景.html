@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo</title>
+</head>
+<body>
+<canvas id="cvs" width="800" height="600"></canvas>
+<script>
+    var cvs = document.getElementById('cvs');
+    var ctx = cvs.getContext('2d');
+
+    // 资源的加载
+    var res = ['birds', 'land', 'pipe1', 'pipe2', 'sky'];
+    var imgObjects = []; // 图片标签的数组
+
+    // 判断是否全部加载完毕
+    var count = 0;
+    function listener() {
+        // 每张图加载完成后，调用
+        count++;
+        if (count >= 5) {
+            main();
+        }
+    }
+
+    res.forEach(function (url) {
+        var img = new Image();
+        img.src = './imgs/' + url + '.png';
+        img.addEventListener('load', listener);
+        imgObjects.push(img);
+    });
+
+    function ImageObject(img, x, y, w, h) {
+        this.img = img;
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+    }
+    ImageObject.prototype.draw = function () {
+        ctx.drawImage(this.img,
+                this.x, this.y, this.w, this.h)
+    };
+
+    function TextObject(text, x, y, font) {
+        this.text = text;
+        this.x = x;
+        this.y = y;
+        this.font = font;
+    }
+
+    TextObject.prototype.draw = function () {
+        // 先保存之前的状态，再恢复，免得影响其他地方的字体绘制
+        ctx.save();
+        ctx.font = this.font;
+        ctx.fillText(this.text, this.x, this.y)
+        ctx.restore();
+    };
+
+    function Scene1(x, y) {
+        this.x = x;
+        this.y = y;
+
+        // 该场景内部的显示对象。
+        // 这里存储了这个场景的各种现实对象，所以是Model
+        this.displayObjects = [];
+
+        var bird = new ImageObject(imgObjects[0], 200, 200, 156, 45);
+        this.displayObjects.push(bird);
+        this.bird = bird;
+
+        var text = new TextObject('这是一堆鸟', 225, 150, '24px 微软雅黑');
+        this.displayObjects.push(text);
+        this.text = text;
+        // 场景从创建到当前帧所经过的时间
+        this.time = 0;
+        // 0：正常 1:向上退场 2：向下退场
+        this.cast = 0;
+    }
+
+    Scene1.prototype.update = function (dt) {
+        // 记录了场景从开始到这一次update的全部时间
+        this.time += dt;
+
+        // 场景离场动画的处理
+        // 在this.cast == 1的时候，播放向上离场的动画
+        if (this.cast == 1) {
+            console.log('场景1退场');
+            this.y = this.y - dt * 0.1;
+            // 如果这个场景彻底离开了屏幕，把casting设置为0
+            // 标识场景切换的状态为“无切换”的状态
+            if (this.y < -600) {
+                this.cast = 0; // 自身的切换状态设置为0
+                casting = 0; // 整个程序的切换状态也设置为0
+                currIndex += 1; // 舞台的当前场景
+                var _this = this;
+                setTimeout(function () {
+                    _this.y = 0;
+                    _this.x = 500;
+                }, 50)
+            }
+        }
+        // 在this.cast == 2的时候，播放向下离场的动画
+        else if (this.cast == 2) {
+            this.cast = 0; // 自身的切换状态设置为0
+            casting = 0; // 整个程序的切换状态也设置为0
+        }
+
+        if (this.x > 0) {
+            this.x = this.x - dt * 0.5
+        } else {
+            this.x = 0;
+        }
+
+        // 让鸟动起来
+        var bird = this.bird;
+        // 在第一秒内，鸟会动起来
+        if (this.time < 1000) {
+            bird.y = bird.y - 0.1 * dt;
+        }
+
+        // 让文字动起来
+        // 在500毫秒到1000毫秒时间内，文字会动起来
+        if (this.time > 500 && this.time < 1000) {
+            this.text.y -= 0.1 * dt;
+        }
+
+    };
+
+    // 调用所有显示对象的draw函数:调用所有显示对象的draw函数
+    Scene1.prototype.draw = function () {
+        ctx.save();
+        // 平移我们的坐标系。
+        ctx.translate(this.x, this.y);
+        this.displayObjects.forEach(function (displayObject) {
+            displayObject.draw();
+        });
+        ctx.restore();
+    };
+
+    function Scene2(x, y) {
+        // 场景的位置
+        this.x = x;
+        this.y = y;
+        // 准备“演员”：显示对象
+        this.displayObjects = [];
+
+        var text = new TextObject('这里是场景2', 200, 100, '24px 微软雅黑')
+        this.displayObjects.push(text);
+
+        // 离场动画的标识
+        this.cast = 0;
+    }
+
+    Scene2.prototype.update = function (dt) {
+        // 向上离场：因为没有第三个场景，所以不做动作
+        if (this.cast == 1) {
+            this.cast = 0; // 让当前场景的离场动画标识，变成“未离场”
+            casting = 0; // 全局的离场标识，变成“未离场”
+        }
+        // 向下离场：
+        else if (this.cast == 2) {
+//            console.log('场景2退场');
+            this.y = this.y + dt * 0.1;
+            console.log(this.y, dt);
+            // 如果这个场景彻底离开了屏幕，把casting设置为0
+            // 标识场景切换的状态为“无切换”的状态
+            if (this.y > 600) {
+                this.cast = 0; // 自身的切换状态设置为0
+                casting = 0; // 整个程序的切换状态也设置为0
+                currIndex -= 1; // 舞台的当前场景
+            }
+        }
+
+
+        if (this.cast == 0) {
+            if (this.y > 0) {
+                this.y -= dt * 0.1;
+            } else {
+                this.y = 0;
+            }
+        }
+    };
+
+    Scene2.prototype.draw = function () {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        // 将所有显示对象绘制到屏幕上
+        this.displayObjects.forEach(function (displayObject) {
+            displayObject.draw();
+        });
+        ctx.restore();
+    };
+
+
+    // casting：切换场景的方式
+    // 0： 不切换
+    // 1： 切换下一张
+    // 2:  切换到上一张
+    var casting = 0;
+    var currIndex = 0;
+
+    function main() {
+        var lastTime = Date.now();
+
+        // 场景1最初的位置在屏幕的最下方
+        var scene = new Scene1(500, 0);
+
+        // 创建场景2
+        var scene2 = new Scene2(0, 600);
+
+        // 场景的数组
+        var scenes = [scene, scene2];
+
+
+        var mouseY = 0;
+        cvs.addEventListener('mousedown', function (event) {
+            var x = event.layerX;
+            var y = event.layerY;
+            mouseY = y;
+        });
+
+        cvs.addEventListener('mouseup', function (event) {
+            var x = event.layerX;
+            var y = event.layerY;
+            if (mouseY - y > 50) {
+                // 向上滚动
+                console.log('向上');
+                casting = 1;
+            } else if (mouseY - y < -50) {
+                // 向下滚动
+                console.log('向下');
+                casting = 2;
+            }
+        });
+
+
+        function mainLoop() {
+            // 获得间隔时间，
+            // 并且设置当前时间为“上一帧时间，以供下一帧进行计算”
+            var now = Date.now();
+            var dt = now - lastTime;
+            lastTime = now;
+
+            // 清理画布
+            ctx.clearRect(0, 0, 800, 600);
+
+            if (casting == 1) {
+                // 获取当期的场景
+                var currScene = scenes[currIndex];
+                currScene.cast = 1;
+                var nextScene = scenes[currIndex + 1];
+                nextScene.update(dt);
+                nextScene.draw();
+                currScene.update(dt);
+                currScene.draw();
+            } else if (casting == 2) {
+                // 获取当期的场景
+                var currScene = scenes[currIndex];
+                currScene.cast = 2;
+                var nextScene = scenes[currIndex - 1];
+                nextScene.update(dt);
+                nextScene.draw();
+                currScene.update(dt);
+                currScene.draw();
+            } else {
+                var currScene = scenes[currIndex];
+                currScene.update(dt);
+                currScene.draw();
+            }
+
+
+            requestAnimationFrame(mainLoop);
+        }
+
+        mainLoop();
+    }
+
+</script>
+</body>
+</html>
