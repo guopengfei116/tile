@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+        * object js内部没有这个东西，
+        * 这个小写的object只是typeof运算符的一个返回结果，
+        * 这个结果是一个字符串类型。
+        *
+        * Object 是js内置的一个构造函数
+        *
+        * typeof运算符可以用来判断数据类型：
+        * number、string、boolean、undefined、object、function(没有null)
+        *
+        * 注意：
+        * typeof null 返回结果是 : "object"，
+        * 因为这个null是引自java的，
+        * 它表示的是一个空对象，或者说空指针。
+        *
+        * */
+
+        // 数值类型
+        console.log(typeof 123);  // number
+        console.log(typeof NaN);   // number
+        console.log(typeof Infinity);   // number
+        console.log(typeof -Infinity);   // number
+
+        // 字符串类型
+        console.log(typeof 'abc');  // string
+        console.log(typeof '""');   // string
+        console.log(typeof "\"");  // string
+
+        // 布尔类型
+        console.log(typeof true);   // boolean
+        console.log(typeof false);  // boolean
+
+        // 未定义类型
+        console.log(typeof undefined); // undefined
+
+        // 空类型
+        console.log(typeof null);  // object
+
+        // 对象类型
+        console.log(typeof []);   // obejct
+        console.log(typeof {});   // obejct
+        console.log(typeof /abc/);   // obejct
+
+        // 对象类型
+        console.log(typeof function(){}); // function
+
+        /*
+        * 注意点:
+        * 1、typeof (NaN和Infinity、-Infinity) 的返回值是'number'
+        * 2、typeof (null) 的返回值是'obejct'
+        * 3、typeof (function(){}) 的返回值是'function'
+        *
+        * typeof运算符用来判断数据类型的缺点：
+        * 1、判断数值时包含了 NaN 和 Infinity 以及 -Infinity
+        * 1.1、要判断的数据 !== 要判断的数据 来确定是不是NaN
+        * 1.2  要判断的数据 === Infinity 来确定是不是Infinity
+        * 1.3  要判断的数据 === -Infinity 来确定是不是-Infinity
+        * 2、无法判断null类型 (
+        * 2.1 要判断的数据 === null来确定是不是null
+        * 3、除了函数外，无法判断其他对象的子类型。
+        * 3.1 其他对象的子类型方式1：要判断的对象.constructor.name （Math除外，该方式有风险）
+        * 3.2 其他对象的子类型方式2：使用Object.prototype.toString方法 (只能用来判断内置对象的子类型)
+        * 3.3 instanceof （该方式有风险）
+        * */
+    </script>
+</body>
+</html>

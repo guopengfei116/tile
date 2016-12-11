@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+         * 等差数列：
+         * 1、3、5、7、9、11、13
+         * */
+        function fo(n) {
+            if (n === 0) {
+                return 1;
+            }else {
+                return fo(n - 1) + 2;
+            }
+        }
+
+        for (var i = 0, len = 10; i < len; i++) {
+            console.log(fo(i));
+        }
+
+        /*
+         * 等分等差数列：
+         * 1、1、2、4、7、11、16、22、29、37
+         * */
+        function foo(n) {
+            if (n === 0) {
+                return 1;
+            }else {
+                return foo(n - 1) + (n - 1);
+            }
+        }
+
+        for (var i = 0, len = 10; i < len; i++) {
+            console.log(foo(i));
+        }
+    </script>
+</body>
+</html>

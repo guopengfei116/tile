@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-3.1.0.js"></script>
+</head>
+<body>
+    <div>
+        <span>111</span>
+        <span>2222</span>
+    </div>
+    <div>
+        <span>33333</span>
+        <span>44444</span>
+    </div>
+    <div>
+        <a>aaa</a>
+        <span>5555</span>
+    </div>
+    <script>
+        /*
+         * insertBefore:
+         * 参数：参数可以是DOM、jQ实例、selector。
+         * 作用：把自己添加到指定元素的前面。
+         * 返回值：返回所有被添加的元素。
+         * */
+        /*console.log($('span').insertBefore('div'));
+        console.log($('a').insertBefore($('div')));*/
+
+        /*
+         * insertAfter:
+         * 参数：参数可以是DOM、jQ实例、内容。
+         * 作用：把自己添加到指定元素的后面。
+         * 返回值：返回所有被添加的元素。
+         * */
+        console.log($('a').insertAfter($('div')));
+        console.log($('span').insertAfter(document.querySelectorAll('div')));
+    </script>
+</body>
+</html>

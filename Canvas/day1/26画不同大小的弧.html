@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        // 角度转换为弧度
+        function angleToRadian( angle ) {
+            return Math.PI / 180 * angle;
+        }
+
+        // 顺时针画一排从小到大的弧
+        for( var i = 0, len = 10; i < len; i++ ) {
+            ctx.beginPath();
+            ctx.arc( 30 + 50 * i, 30, 20, angleToRadian(0), angleToRadian(36 * (i + 1)) );
+            ctx.stroke();
+        }
+
+        // 逆时针画一排从小到大的弧
+        for( var i = 0, len = 10; i < len; i++ ) {
+            ctx.beginPath();
+            ctx.arc( 30 + 50 * i, 80, 20, angleToRadian(0), angleToRadian(36 * (i + 1)), true );
+            ctx.stroke();
+        }
+
+    </script>
+</body>
+</html>

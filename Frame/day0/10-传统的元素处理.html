@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>01-传统的元素处理.html</title>
+</head>
+<body>
+	<div>div</div>
+	<div>div</div>
+	<div>div</div>
+	<p>p</p>
+	<p>p</p>
+</body>
+<script>
+/*
+	// 给页面的 div 与 p 添加边框
+	var divs = document.getElementsByTagName( 'div' );   // HTMLCollection 的集合( 看做数组 )
+	var ps = document.getElementsByTagName( 'p' );
+
+	// 利用 一个 for 循环完成样式设置
+	// [].push( divs );   // [ {[} div, div } ]
+	// 由于 HTMLCollection 不是真的数组, 也不允许使用 divs.push( ... )
+	// 但是 HTMLCollection 是不允许修改的. 
+	// 也不能这么写 [].push.apply( divs, ps ); // 将 ps 中的数据加到 divs 中
+	var arr = [];
+	arr.push.apply( arr, divs );
+	arr.push.apply( arr, ps );
+
+
+	arr.forEach( function ( v, i ) {
+		v.style.border = '1px solid red';
+	} );
+*/
+
+	// 需要一个函数, 带有两个参数, 第一个参数是元素的标签名, 第二个参数是一个数组
+	// 表示将本次获得的元素加到哪一个数组中
+	// getTag
+/*
+	function getTag( tagName, results ) {
+		var tags = document.getElementsByTagName( tagName );
+		results.push.apply( results, tags );
+	}
+
+
+	var arr = [];
+	getTag( 'div', arr );
+	getTag( 'p', arr );
+
+	arr.forEach( function ( v, i ) {
+		v.style.border = '1px dotted red';
+	} );
+
+	// 复用性
+*/
+
+
+	// 希望再次简化
+	function getTag( tagName, results ) {
+		results = results || [];
+
+		var tags = document.getElementsByTagName( tagName );
+		results.push.apply( results, tags );
+
+		return results;
+	}
+
+
+
+
+
+	var arr = getTag( 'div' );
+	arr = getTag( 'p', arr );
+
+	arr.forEach( function ( v, i ) {
+		v.style.border = '1px dotted red';
+		v.style.backgroundColor = 'pink';
+	} );
+
+
+
+</script>
+</html>

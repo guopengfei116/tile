@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>01-对方法的能力进行检查.html</title>
+    <meta charset="utf-8"/>
+  </head>
+  <body>
+    
+  </body>
+  <script>
+    // 对方法的能力进行检查, 首先看是否有该方法, 第二看自己构造一个情节, 让方法调用
+    // 看是否符合要求
+
+    document.body.__proto__.__proto__.getElementsByClassName = function ( node ) {
+      // 什么都不做
+    };
+
+
+    var support = {};
+
+    // 以 getElementsByClassName 为例
+    support.getElementsByClassName = (function () {
+
+      var div = document.createElement( 'div' );
+      // 验证该方法是否可用
+      if ( typeof document.getElementsByClassName === 'function' ) {
+        // 证明他是一个方法
+  
+        div.innerHTML = '<div class="c"></div>';   // 准备一个 标签结构
+
+        var res = div.getElementsByClassName( 'c' ); // 调用方法以后, 看是否可以完成要的功能
+
+        if ( res && res.length === 1 && res[ 0 ].className === 'c' ) {
+          return true;
+        }
+      }
+      return false;
+    }) ();
+
+
+    var _ = 0;
+
+  </script>
+</html>

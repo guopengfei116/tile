@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        canvas {
+            border:1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.getElementById('cvs');
+        var ctx = cvs.getContext('2d');
+
+        // 在100，100点绘制一个宽50，高50的旋转矩形。
+        var baseRadian = 0;
+        setInterval( function() {
+            ctx.save();
+
+            // 清除上一次的矩形
+            ctx.clearRect( 0, 0, cvs.width, cvs.height );
+
+            // 平移到矩形的中心
+            ctx.translate( 125, 125 );
+
+            // 旋转坐标系，
+            // 因为每次restore之后坐标系的旋转度数都会恢复到0，
+            // 所以每一次旋转弧度需要手动进行累加
+            ctx.rotate( baseRadian += Math.PI / 180 * 4 );
+
+            // 绘制图形
+            ctx.fillRect( -25, -25, 50, 50 );
+
+            // 绘制完毕后，为了防止影响接下来其他图形的绘制，所以恢复到最初的状态
+            ctx.restore();
+        }, 50 );
+    </script>
+</body>
+</html>

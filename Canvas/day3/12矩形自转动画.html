@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        canvas {
+            border:1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.getElementById('cvs');
+        var ctx = cvs.getContext('2d');
+
+        // 在100，100点绘制一个宽50，高50的旋转矩形。
+        // 先统一平移到矩形的中心
+        ctx.translate( 125, 125 );
+
+        // 基于这个中心不断绘制旋转矩形
+        setInterval( function() {
+
+            // 清除上一次的矩形
+            ctx.clearRect( -50, -50, cvs.width, cvs.height );
+
+            // 旋转坐标系，利用了旋转会累加的特征
+            ctx.rotate( Math.PI / 180 * 4 );
+
+            // 绘制图形
+            ctx.fillRect( -25, -25, 50, 50 );
+
+        }, 50 );
+    </script>
+</body>
+</html>

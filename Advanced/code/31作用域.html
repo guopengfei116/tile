@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+        *  什么是作用域？
+        *  指的就是变量的有效范围。
+        * */
+
+        /*var a;
+        console.log(b);  // 报错*/
+
+        /*
+        * 检测一个变量在不在一个范围内，就看使用这个变量时报不报错。
+        * */
+
+        /*
+        * 按照作用域来区分变量的话，分为两大类:
+        * 1、全局变量
+        * 2、局部变量
+        * /
+
+        /* 全局变量
+        * 在脚步的任意地方，都可以使用的变量，就是全局变量。
+        *
+        * 如何创建全局变量？
+        * 在js中，只要把变量定义在函数的外部，那么这个变量就是全局变量。
+        */
+
+        /*console.log(a);   // 打印undefined，说明可以使用a
+
+        var a = 1;
+
+        for (var i = 0; i < 1; i++) {
+            console.log(a);    // 打印1，说明可以使用a
+        }
+
+        if (true) {
+            console.log(a);  // 打印1，说明可以使用a
+        }
+
+        (function fn() {
+            console.log(a);  // 打印1，说明可以使用a
+        })();*/
+
+
+        /*
+         *  局部变量
+         * 只能部分范围内使用的变量，就是局部变量。
+         * 在js中，局部变量只能在定义该局部变量的函数内使用。
+         *
+         * 如何创建局部变量？
+         * 在js中，只要把变量定义在函数的内部，那么这个变量就是局部变量。
+         * */
+
+        (function fn() {
+             console.log(b);  // 打印undefined，说明可以使用b
+
+             var b = 6;
+
+             for (var i = 0; i < 1; i++) {
+                 console.log(b);    // 打印6，说明可以使用b
+             }
+
+             if (true) {
+                 console.log(b);  // 打印6，说明可以使用b
+             }
+
+             (function () {
+                console.log(b);  // 打印6，说明可以使用b
+             })();
+         }());
+
+         //console.log(b);   // 报错
+    </script>
+</body>
+</html>

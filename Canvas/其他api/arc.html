@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas</title>
+</head>
+<body>
+<canvas id="cvs" width="500" height="800" style="border: 1px solid red;"></canvas>
+<script>
+    // 获取canvasDOM对象
+    var cvs = document.getElementById('cvs');
+    // 获取2d绘图环境
+    var ctx = cvs.getContext('2d');
+
+    // 画弧
+    for(var i = 1; i <= 10; i++) {
+        for(var j = 1; j <= 12; j++) {
+            ctx.beginPath();
+
+            // 前三排顺时针画，起点位置和终点位置呈顺时针变化。
+            if (j <= 3) {
+                ctx.strokeStyle = 'orange';
+                ctx.fillStyle = 'orange';
+                ctx.arc(40 * i, 40 * j, 15, 0, (2 * Math.PI) * (i / 10));
+            }
+            // 向后三排逆时针画，起点位置和终点位置呈顺时针变化。
+            else if (j <= 6){
+                ctx.strokeStyle = 'blue';
+                ctx.fillStyle = 'blue';
+                ctx.arc(40 * i, 40 * j + 40, 15, 0, (2 * Math.PI) * (i / 10), true);
+            }
+            // 再向后三排顺时针画，起点位置和终点位置呈逆时针变化。
+            else if (j <= 9) {
+                ctx.strokeStyle = 'green';
+                ctx.fillStyle = 'green';
+                ctx.arc(40 * i, 40 * j + 80, 15, (2 * Math.PI), (2 * Math.PI) * ((10 - i) / 10));
+            }
+            // 后三排逆时针画，起点位置和终点位置呈逆时针变化。
+            else {
+                ctx.strokeStyle = 'red';
+                ctx.fillStyle = 'red';
+                ctx.arc(40 * i, 40 * j + 120, 15, (2 * Math.PI), (2 * Math.PI) * ((10 - i) / 10), true);
+            }
+
+            // 第一种方式
+            if (j == 1) {
+                ctx.stroke();
+            }else if (j == 2) {
+                ctx.closePath();
+                ctx.stroke();
+            }else if (j == 3) {
+                ctx.fill();
+            }
+
+            // 第二种方式
+            else if (j == 4) {
+                ctx.stroke();
+            }else if (j == 5) {
+                ctx.closePath();
+                ctx.stroke();
+            }else if (j == 6) {
+                ctx.fill();
+            }
+
+            // 第三种方式
+            else if (j == 7) {
+                ctx.stroke();
+            }else if (j == 8) {
+                ctx.closePath();
+                ctx.stroke();
+            }else if (j == 9) {
+                ctx.fill();
+            }
+
+            // 第四种方式
+            else if (j == 10) {
+                ctx.stroke();
+            }else if (j == 11) {
+                ctx.closePath();
+                ctx.stroke();
+            }else if (j == 12) {
+                ctx.fill();
+            }
+        }
+    }
+
+</script>
+</body>
+</html>

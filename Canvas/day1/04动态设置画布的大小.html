@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border:1px solid red"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        // 打印画布默认的大小
+        console.log(cvs.width);
+        console.log(cvs.height);
+
+        /*
+        * canvas画布默认大小为300*150。
+        *
+        * 动态设置画布的大小：
+        * canvasDOM对象有一个width和height属性，
+        * 通过修改这两个属性值，
+        * 就可以动态设置画布的大小。
+        * */
+
+        // 因为canvas绘制的图形是位图(像素图)，默认就是基于像素单位的(px)，所以不用加单位
+        cvs.width = 500;
+        cvs.height = 500;
+
+        // 获取画布最新的大小
+        console.log(cvs.width);
+        console.log(cvs.height);
+    </script>
+</body>
+</html>

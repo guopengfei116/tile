@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        // 传入一堆资源地址，返回一堆加载好的图片资源
+        // 因为是一堆，为了区分这些图片，
+        // 所以传入的数据格式为：{ name1: 'src1', name2: 'src2' }
+        // 返回的数据格式为：{ name1: img1, name2: img2 }
+        function loadImg( src, fn ) {
+            var img, key;
+
+            // 遍历所有src，依次加载对应的图片资源
+            for ( key in src ) {
+                img = new Image();
+                img.src = src;
+                img.onload = function() {
+                    // 只有全局图片都加载完毕，才能执行回调，
+                    // 执行时需要传入所有加载完毕的img。
+                    fn( img );
+                };
+            }
+        }
+
+        /*------------------------------------------------------------------*/
+
+        /*
+         * function { loadImage } 加载图像资源
+         * param { src: Object } 按照key，val形式存储要加载的图像地址
+         * param { fn: Function } 所有图像加载完毕后执行的回调，加载好的图像资源也会被传入进去
+         * */
+        function loadImg2( src, fn ) {
+            var img, key;
+
+            var imgTotal = 0,
+                loadedTotal = 0,
+                loadedImg = {};
+
+            // 遍历所有src，依次加载对应的图片资源
+            for ( key in src ) {
+                img = new Image();
+                img.src = src[ key ];
+                img.onload = function() {
+
+                    // 当所有的img都加载完毕后执行回调，
+                    // 并把所有加载完毕的img传给对方使用
+                    if( ++loadedTotal >= imgTotal ) {
+                        fn( loadedImg );
+                    }
+                };
+
+                // 计算img总数
+                imgTotal++;
+                // 存储创建的每一个img
+                loadedImg[ key ] = img;
+            }
+        }
+
+        // 测试，如果img有宽高，那么证明img已经加载完毕
+        loadImg2({
+            scene: './img/scene.jpg',
+            ladyLiberty: './img/ladyLiberty.jpg'
+        },function( loadedImg ) {
+            console.log(loadedImg.scene.width, loadedImg.ladyLiberty.height);
+        });
+    </script>
+</body>
+</html>

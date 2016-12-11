@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../core.js"></script>
+</head>
+<body>
+    <script>
+        $.extend({
+
+            // 兼容获取XMLHTTP对象
+            getXhr: function( ) {
+                if ( window.XMLHttpRequest ) {
+                    return new window.XMLHttpRequest;
+                }else {
+                    return new ActiveXObject('Microsoft.XMLHTTP');
+                }
+            },
+
+            // 默认的ajax配置
+            ajaxSettings: {
+                url: location.href,
+                type: 'GET',
+                async: true,
+                dataType: 'json',
+                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                success: function () {},
+                error: function () {},
+                complete: function () {}
+            },
+
+            // 把JSON解析成js对象
+            parseJSON: function ( data ) {
+                if ( !data ) {
+                    return {};
+                }
+
+                // 优先使用内置的方法解析JSON数据,
+                // 如果不成功，就使用Function解析，
+                // 如果仍然不成功，就返回空对象
+                try {
+                    return JSON.parse( data );
+                }catch(e) {
+                    try {
+                        return Function( 'return ' + data )();
+                    }catch(e){}
+                }
+
+                return {};
+            },
+
+            // 把对象转换成URL参数的形式
+            stringifyURLParam: function ( data ) {
+                if ( !data ) {
+                    return '';
+                }
+
+                var key, resultArr = [];
+
+                /*
+                 * 遍历data，把每一项数据变成key=value的字符串存起来，
+                 * 即: resultArr = [ 'key=value', 'key2=value2', 'key3=value3' ]
+                 * 最后使用join把这些字符串拼接成URL参数的形式。
+                 * 即：'key=value&key2=value2&key3=value3'
+                 * */
+                for ( key in data ) {
+                    // 为了防止提交的数据出现乱码，统一使用encodeURIComponent编码一下
+                    resultArr.push( encodeURIComponent(key) + '=' + encodeURIComponent(data[key]) );
+                }
+                return resultArr.join('&');
+            },
+
+            // 整理用户与默认的ajax配置
+            getAjaxConfig: function( options ) {
+
+                // 合并默认与用户的配置，得到一份新配置
+                var config = {};
+                $.extend( config, $.ajaxSettings, options );
+
+                // 把ajax请求方法统一改成大写形式
+                config.type = config.type.toUpperCase();
+
+                // 把数据转换为URL参数形式
+                config.data = jQuery.stringifyURLParam( config.data );
+
+                // 如果是GET请求，把数据加到URL中，
+                // 然后把data修改为null
+                if ( config.type == 'GET' ) {
+                    config.url += '?' + config.data;
+                    config.data = null;
+                }
+
+                // 返回整理后的配置
+                return config;
+            },
+
+            // ajax
+            ajax: function( options ) {
+                var xhr, config;
+
+                // 不传参
+                if ( !options ) {
+                    throw '太恶劣，看不下去';
+                }
+
+                // 合并参数
+                config = jQuery.getAjaxConfig( options );
+
+                // 获取jsonp类型的数据，需要使用jsonp的方式进行获取
+                if ( config.dataType === 'jsonp' ) {
+                    return $.getJSONP( config.url, null, config.success );
+                }
+
+                // 初始化xhr
+                xhr = jQuery.getXhr();
+                xhr.open( config.type, config.url, config.async );
+
+                // POST请求设置头信息，头信息必须要在open之后设置
+                if ( config.type == 'POST' ) {
+                    xhr.setRequestHeader( 'Content-Type', config.contentType );
+                }
+
+                // 在send之前监听事件
+                xhr.onreadystatechange = function() {
+                    if ( xhr.readyState == 4 ) {
+                        config.complete();
+                        if ( (xhr.status >= 200 && xhr.status < 300) || xhr.status == 304 ) {
+                            config.success( xhr.responseText, xhr.statusText, xhr );
+                        }else {
+                            config.error( xhr.responseText, xhr.statusText, xhr );
+                        }
+                    }
+                };
+
+                // 发送请求
+                xhr.send( config.data );
+            },
+
+            // ajax
+            _ajax: function( options ) {
+                var config = {}, xhr,
+                    data = options.data,
+                    url, timer;
+
+                // url必须传
+                if ( !options || !options.url ) {
+                    throw '太恶劣，看不下去';
+                }
+
+                // 合并配置参数
+                $.extend( config, $.ajaxSettings, options );
+
+                // 如果获取的是jsonp类型的数据，那么不需要走ajax流程了
+                // 直接调用封装好的jsonp函数即可
+                if ( config.dataType === 'jsonp' ) {
+                    $.getJSONP( config.url, config.data, config.success );
+                    return;
+                }
+
+                // 把method统一设置为大写形式
+                config.method = config.method.toUpperCase();
+
+                // 如果是GET，那么在URL后面加载请求的数据
+                url = config.method === 'GET'? config.url + '?' + $.stringifyURLParam(data) : config.url;
+
+                // 创建XMLHttp对象，并open
+                xhr = $.getXhr();
+                xhr.open( config.method, url, config.async );
+
+                // 如果是POST，则添加一个头信息
+                if ( config.method === 'POST' ) {
+                    xhr.setRequestHeader( 'Content-Type', config.contentType );
+                }
+
+                // 在send前监听该事件，因为如果是同步请求，
+                // 页面将被阻塞，造成无法成功监听此事件。
+                xhr.onreadystatechange = function () {
+                    var data;
+
+                    if ( xhr.readyState === 4 ) {
+                        // 没有延时
+                        clearTimeout(timer);
+
+                        // 生命周期结果，调用complete方法
+                        config.complete && config.complete();
+
+                        // 状态码在200~299之间是成功，304表示文件未改动走缓存，也算成功
+                        if ( (xhr.status >= 200 && xhr.status < 300) || xhr.status === 304 ) {
+
+                            // 根据dataType属性，对数据进行解析
+                            switch ( config.dataType ) {
+                                // 如果用户设置请求的数据为JSON数据，
+                                // 那么我们这里帮用户转换成js对象
+                                case 'json':
+                                    data = $.parseJSON(xhr.responseText);
+                                    break;
+                                // 如果用户设置请求的数据为js脚本，
+                                // 那么我们就把它执行掉
+                                case 'script':
+                                    try {
+                                        eval( xhr.responseText );
+                                    }catch(e){
+                                        console.log('js解析出现问题');
+                                    }finally {
+                                        data = xhr.responseText;
+                                    }
+                                    break;
+                                // 否则全部当成文本原物返还
+                                default:
+                                    data = xhr.responseText;
+                                    break;
+                            }
+
+                            // 把解析好的数据传入success
+                            config.success && config.success( data );
+                        }else {
+                            config.error && config.error( xhr.statusText );
+                        }
+                    }
+                };
+
+                /*
+                 * 在请求发送之前，开启一个定时器，
+                 * 当定时器回调执行时，取消onreadystatechange事件监听，
+                 * 直接执行error方法。
+                 * */
+                timer = config.timeout && setTimeout(function () {
+                    xhr.onreadystatechange = null;
+                    config.error('兄弟，飞机已经走了，走着回去吧！-_-!');
+                }, config.timeout);
+
+                // 发送请求
+                xhr.send($.stringifyURLParam(data));
+            },
+
+            // 通过JSONP的方式，加载JSON数据
+            getJSONP: function ( url, data, fn ) {
+                var script, headEle;
+
+                // 随机生成一个jsonp的回调函数名，后台会根据这个函数名来动态生成js脚本文件
+                var jsonpCallbackName = 'jsonpCak'; //'jsonpCallback_' + (+new Date);
+
+                // 然后根据生成的函数名定义为全局函数
+                // 必须为全局函数，否则将来跨域加载的脚本无法调用
+                window[jsonpCallbackName] = function ( data ) {
+
+                    // 当数据成功传入时，
+                    // 清除jsonpCallbackName这个全局函数，
+                    // 还有相应的script标签
+                    window[jsonpCallbackName] = null;
+                    headEle.removeChild(script);
+
+                    // 把数据传给用户指定的success函数使用
+                    fn && fn( data );
+                };
+
+                // 获取head元素，给里面添加一个script标签，
+                // 该script标签去下载一个跨域的js脚本，
+                // 这个脚本将来会调用jsonpCallbackName，
+                // 并把数据传入进去
+                script = document.createElement('script');
+                script.src = url + '?callback=' + jsonpCallbackName + '&' + $.stringifyURLParam(data);
+                headEle = $('head')[0];
+                headEle.appendChild(script);
+            },
+
+            // 加载JSON数据
+            getJSON: function ( url, data, fn ) {
+                this.ajax({
+                    url: url,
+                    data: data,
+                    dataType: 'json',
+                    fn: fn
+                });
+            },
+
+            // 为了执行一段js
+            getScript: function ( url, fn ) {
+                this.ajax({
+                    url: url,
+                    dataType: 'script',
+                    fn: fn
+                });
+            }
+
+        });
+
+        // jsonp测试
+        $.ajax({
+            type: 'POST', // IE在GET时没有问题，POST时有问题
+            url: './test/test.json',
+            //dataType: 'jsonp',
+            data: { test: '测试数据' },
+            success: function ( data ) {
+                console.log('等待被跨域加载进来的函数调用');
+                console.log(data);
+            }
+        });
+    </script>
+</body>
+</html>

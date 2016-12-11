@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+        * 基于状态的示例
+        * */
+
+        function Person( name, age ) {
+            this.name = name;
+            this.age = age;
+        }
+
+        // 这个方法就是基于状态（属性值）的
+        Person.prototype.run = function() {
+            if( this.age < 5 ) {
+                console.log('爬着跑');
+            }else if( this.age >=5 && this.age < 16 ) {
+                console.log('跳着跑');
+            }else if( this.age >=16 && this.age < 48 ) {
+                console.log('慢跑');
+            }else {
+                console.log('拄着拐杖跑');
+            }
+        };
+
+        var xiaofang = new Person('小芳', 12);
+        var fangma = new Person('小芳妈', 37);
+        var fangnai = new Person('小芳奶', 60);
+
+        xiaofang.run();
+        fangma.run();
+        fangnai.run();
+
+        /*
+        * canvas绘图环境中的很多方法也是基于状态的，
+        * 即修改了canvas绘图环境中的某些属性值，
+        * 相关连的一些方法最终的执行结果可能就会收到改变。
+        * */
+    </script>
+</body>
+</html>

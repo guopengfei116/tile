@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+        * Object.prototype的类型是Object，
+        * Function.prototype的类型是Function，
+        * String.prototype的类型是String,
+        * Number.prototype的类型是Number,
+        * Boolean.prototype的类型是Boolean，
+        * Array.prototype的类型是Array。
+        *
+        * Date.prototype的类型是Object,
+        * Error.prototype的类型是Object，
+        * RegExp.prototype的类型是Object，
+        * 在IE中9之前，比较特殊，所有内置的构造函数的原型的类型就是构造函数的名字。
+        * */
+
+        // 一些书上可能会这样描述构造函数的prototype属性赋值：
+        Object.prototype = new Object();
+        Function.prototype = new Function();
+
+        function Person() {}
+        Person.prototype = new Person();
+    </script>
+</body>
+</html>

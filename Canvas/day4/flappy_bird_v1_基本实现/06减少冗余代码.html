@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>flappy_bird</title>
+    <style>
+        canvas {
+            border:1px solid red;
+        }
+        img {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <script src="./js/util.js"></script>
+    <script src="./js/sky.js"></script>
+    <script src="./js/bird.js"></script>
+    <script src="./js/land.js"></script>
+    <script src="./js/timer.js"></script>
+    <script src="./js/pipe.js"></script>
+    <script>
+        var cvs = document.getElementById('cvs');
+        var ctx = cvs.getContext('2d');
+        cvs.width = 800;
+        cvs.height = 600;
+
+        util.loadImage({
+            bird: './img/bird.png',
+            land: './img/land.png',
+            pipeDown: './img/pipeDown.png',
+            pipeUp: './img/pipeUp.png',
+            sky: './img/sky.png'
+        }, function( loadedImg ) {
+
+            // 游戏绘制最后一帧画面的时间
+            var gameLastTime = Date.now(), gameCurrentTime, delaySecond, i;
+
+            // 创建游戏角色
+            this.roles = [];
+            Sky.len = 0;
+            Land.len = 0;
+            Pipe.len = 0;
+
+            // 背景
+            for ( i = 0; i < 2; i++ ){
+                this.roles.push( new Sky({ ctx: ctx, img: loadedImg.sky }) );
+            }
+
+            // 管道
+            for ( i = 0; i < 6; i++ ) {
+                this.roles.push( new Pipe({ ctx: ctx, imgDown: loadedImg.pipeDown, imgUp: loadedImg.pipeUp,
+                    renderHeight: ctx.canvas.height - loadedImg.land.height }) );
+            }
+
+            // 大地
+            for ( i = 0; i < 4; i++ ) {
+                this.roles.push( new Land({ ctx: ctx, img: loadedImg.land,
+                    renderHeight: ctx.canvas.height }) );
+            }
+
+            // 计时文字
+            this.roles.push( new Timer( { ctx: ctx } ) );
+
+            // 小鸟
+            var bird = new Bird( { ctx: ctx, img: loadedImg.bird, widthFrame: 3 } );
+            this.roles.push( bird );
+
+            // 让背景动起来
+            var timerId = setInterval(function() {
+
+                // 时事计算游戏两帧之间的刷新率
+                gameCurrentTime = Date.now();
+                delaySecond = (gameCurrentTime - gameLastTime) / 1000;
+                gameLastTime = gameCurrentTime;
+
+                // 清除画布，清除路径，重新渲染新游戏画面
+                ctx.clearRect( 0, 0, cvs.width, cvs.height );
+                ctx.beginPath();
+                this.roles.forEach( function ( role ) {
+                    role.draw();
+                    role.update( delaySecond );
+                });
+
+            }, 1000 / 60);
+        });
+    </script>
+</body>
+</html>

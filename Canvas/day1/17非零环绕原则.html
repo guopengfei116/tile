@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        /*
+        * 非零环绕原型：
+        *
+        * 作用：
+        * 用来判断路径围起来的图形，是在路径内，还是路径外。
+        *
+        * 原理：
+        * 1、在路径包含的区域内随便找一点，向外发送一条线，让这条线贯穿所有围绕该点的路径即可，
+        * 2、开始一个计数器，初始值为0，
+        * 3、开始计数，遇到顺时针围绕点的路径，数+1，遇到逆时针围绕点的路径，数-1，
+        * 4、最终看看结果，如果不是0，那么认为这个块区域在路径包含之内。
+        * */
+    </script>
+</body>
+</html>

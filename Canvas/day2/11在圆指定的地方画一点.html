@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        // 角度转换为弧度
+        function angleToRadian( angle ) {
+            return Math.PI / 180 * angle;
+        }
+
+        /*
+         * 计算圆上指定位置的坐标：
+         * x: 圆心x + r * Math.cos( angleToRadian(45) )
+         * y: 圆心y +  r * Math.sin( angleToRadian(45) )
+         * */
+
+        var x = 200, y = 200, r = 50;
+
+        ctx.beginPath();
+        ctx.arc( x, y, r, 0, Math.PI*2 );
+        ctx.stroke();
+
+        // 在圆45度角的地方，涂上一点
+        var pointAngle = 45, lineSpace = 20;
+        var pointX = x + (r + lineSpace) * Math.cos( angleToRadian( pointAngle ) );
+        var pointY = y + (r + lineSpace) * Math.sin( angleToRadian( pointAngle ) );
+        ctx.beginPath();
+        ctx.arc( pointX, pointY, 2, 0, Math.PI * 2 );
+        ctx.fill();
+    </script>
+</body>
+</html>

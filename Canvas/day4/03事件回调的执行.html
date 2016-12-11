@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        // 传入一个图片资源地址，返回一个加载好的图片资源
+        function loadImg2( src, fn ) {
+            var img = new Image();
+            img.src = src;
+
+            // onload事件处理函数是异步执行的，
+            // 它会等待所有同步的代码执行完毕后才执行。
+            img.onload = function() {
+                fn( img );
+            };
+
+            for( var i = 0; i < 10000; i++ ) {
+                console.log( i );
+            }
+        }
+
+        loadImg2('./img/ladyLiberty.jpg', function( loadedImg ) {
+            console.log( '图片已加载完毕,宽度为:' + loadedImg.width);
+        });
+
+        for( var i = 0; i < 10000; i++ ) {
+            console.log( i );
+        }
+    </script>
+</body>
+</html>

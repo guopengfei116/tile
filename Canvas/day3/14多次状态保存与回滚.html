@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #cvs {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.getElementById('cvs');
+        var ctx = cvs.getContext('2d');
+
+        ctx.save();  // 第一次备份
+
+        ctx.lineWidth = 10;
+        ctx.strokeStyle = 'red';
+        ctx.save();  // 第二次备份
+
+        ctx.lineWidth = 20;
+        ctx.strokeStyle = 'yellow';
+        ctx.save(); // 第三次备份
+
+        ctx.restore();
+        ctx.strokeRect( 50, 50, 50, 50 ); // 按照第三次备份的状态绘制
+
+        ctx.restore();
+        ctx.strokeRect( 150, 50, 50, 50 ); // 按照第二次备份的状态绘制
+
+        ctx.restore();
+        ctx.strokeRect( 250, 50, 50, 50 ); // 按照第一次备份的状态绘制
+
+        ctx.restore();
+        ctx.strokeRect( 350, 50, 50, 50 ); // 没的回滚，按照当前状态绘制
+
+        /*
+        * 状态可以保存多份，取的时候是倒着取的。
+        * */
+    </script>
+</body>
+</html>

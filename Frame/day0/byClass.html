@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <ul>
+            <li class=""></li>
+            <li class="a li b"></li>
+            <li class="li"></li>
+            <li class="li ab"></li>
+            <li class="bv li"></li>
+        </ul>
+    </div>
+    <script>
+        /*function contains(str1, str2) {
+            var regStr = '^' + str2 + '|' + str2 + '\\s|\\s' + str2 + '\\s|\\s' + str2 + '$';
+            return new RegExp(regStr).test(str1);
+        }
+
+        function byClass(className, arr) {
+            arr = arr || [];
+            var tags = document.getElementsByTagName('*');
+            for (var i = 0, len = tags.length; i < len; i++) {
+                if (contains(tags[i].className, className)) {
+                    arr.push(tags[i]);
+                }
+            }
+            return arr;
+        }*/
+
+        // 优化版本
+        /*function byClass(className, arr) {
+            arr = arr || [];
+            var tags = document.getElementsByTagName('*');
+            for (var i = 0, len = tags.length; i < len; i++) {
+                if ((' ' + tags[i].className + ' ').indexOf(' ' + className + ' ') > -1) {
+                    arr.push(tags[i]);
+                }
+            }
+            return arr;
+        }*/
+
+        // 兼容
+        function byClass(className, arr) {
+            arr = arr || [];
+            if (document.getElementsByClassName) {
+                arr.push.apply(arr, document.getElementsByClassName(className));
+            }else {
+                var tags = document.getElementsByTagName('*');
+                for (var i = 0, len = tags.length; i < len; i++) {
+                    if (' ' + tags[i].className + ' '.indexOf(' ' + className + ' ') > -1) {
+                        arr.push(tags[i]);
+                    }
+                }
+            }
+            return arr;
+        }
+
+        console.log(byClass('li'));
+    </script>
+</body>
+</html>

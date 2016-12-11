@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../core.js"></script>
+    <script src="./css&attr.js"></script>
+</head>
+<body>
+    <input value="默认值1" />
+    <input value="默认值2" />
+    <script>
+        /*
+         * 不传参：
+         * 返回第一个元素的value属性值
+         *
+         * 传参：
+         * 传null，清除value属性值（实测，传入undefined也会清除）
+         * 传字符串，设置所有元素的value属性值
+         * 返回this
+         * */
+
+        // 获取第一个元素的value值
+        console.log($('input').val());
+
+        // 清空所有元素value值，返回this
+        //console.log($('input').val(undefined));
+
+        // 清空所有元素value值，返回this
+        //console.log($('input').val(null));
+
+        // 重新设置新的value值，返回this
+        //console.log($('input').val('设置新的html文本'));
+        //console.log($('input').val('<span>新文本</span>'));
+    </script>
+</body>
+</html>

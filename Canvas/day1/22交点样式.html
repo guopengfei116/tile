@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        /*
+        * 交点样式：
+        * ctx.lineJoin = 'miter' || 'round' || 'bevel'
+        * 默认值为miter。
+        * */
+
+        /*
+        * 设置箭头长度，该属性只在lineJoin为miter的时候有效：
+        * ctx.miterLimit
+        * */
+        ctx.miterLimit = 2;
+        ctx.lineWidth = 10;
+
+        ctx.moveTo( 10, 10 );
+        ctx.lineTo( 60, 210 );
+        ctx.lineTo( 110, 10 );
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.lineJoin = 'round';
+        ctx.moveTo( 10, 60 );
+        ctx.lineTo( 60, 260 );
+        ctx.lineTo( 110, 60 );
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.lineJoin = 'bevel';
+        ctx.moveTo( 10, 110 );
+        ctx.lineTo( 60, 310 );
+        ctx.lineTo( 110, 110 );
+        ctx.stroke();
+
+    </script>
+</body>
+</html>

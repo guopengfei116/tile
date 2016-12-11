@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-3.1.0.js"></script>
+</head>
+<body>
+    <div>
+        <span test="测试">1111</span>
+        <span>2222</span>
+        <span>33333</span>
+    </div>
+    <script>
+        /*
+        * 对于DOM对象来说：
+        *
+        * 所有书写在html中的属性，都是DOM元素的属性节点，
+        * 通过setAttribute设置的属性，也都是DOM元素的属性节点。
+        *
+        * 有一个attributes属性，该属性存储了该DOM所有的属性节点，
+        * 这些属性节点都是DOM对象，拥有DOM的特征，比如都有nodeType。
+        * */
+
+        /*
+        * 对于DOM对象来说：
+        *
+        * 所有通过.或者[]添加的属性，与普通的对象一样，
+        * 都称之为对象的属性，注意这些属性不是属性节点，
+        * 不存在与attributes中，而是直接被添加到了DOM对象自身。
+        *
+        * 同时这些属性，没有共同特征，只是一个值。
+        * */
+
+        /*
+        * attr方法：
+        * 操作的是DOM的属性节点。
+        * 传入一个参数为字符串，获取第一个元素指定的属性节点值
+        * 传入一个参数为对象，则给所有元素批量设置对象中所有的属性节点
+        * 传入两个参数，则给所有元素添加指定的属性节点
+        * */
+
+        // 一个参数为字符串，是获取操作，对返回值有具体要求，没办法再返回this了
+        console.log($('span').attr('test'));
+        console.log($('span').attr('meiy'));
+
+        // 一个参数为对象，是设置操作，
+        // 对返回值没有要求，凡是没有要求的，jQ都会返回this实现链式编程
+        console.log($('span').attr({
+            a: 'aaa',
+            b: 'bbbb',
+            c: 'cccc'
+        }));
+
+        // 传入两个参数，是设置操作,
+        // 对返回值没有要求，凡是没有要求的，jQ都会返回this实现链式编程
+        console.log($('span').attr('ppp', 'igig'));
+
+
+        $('span').attr({
+            q: 'qqq'
+        }).attr('w', 'wwwww').css({
+            display: 'block',
+            marginTop: '5px',
+            height: '20px',
+            backgroundColor: 'pink'
+        });
+    </script>
+</body>
+</html>

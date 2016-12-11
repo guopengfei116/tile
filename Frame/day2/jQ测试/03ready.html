@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-3.1.0.js"></script>
+</head>
+<body>
+    <script>
+        $('title').ready(function () {
+            console.log($('div'));
+        });
+        $().ready(function () {
+            console.log('任何实例都可以调用ready方法');
+        });
+    </script>
+    <div>666</div>
+</body>
+</html>

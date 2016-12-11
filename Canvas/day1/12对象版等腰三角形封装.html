@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        // 等腰三角形的构造函数
+        function SanJiaoXing( x, y, width, height, strokeStyle ) {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.strokeStyle = strokeStyle;
+        }
+
+        // 根据实例的属性绘制
+        // 这个方法就是基于状态的，因为实例的属性变化了，这个方法绘制的结果就会产生变化
+        SanJiaoXing.prototype.draw = function() {
+            /*
+             * 实现思路：
+             * 1、为了防止重绘之前的路径，先清除一下
+             * 2、移动钢笔到图形起点
+             * 3、画想要图形的路径
+             * 4、设置描边色
+             * 5、描边
+             * */
+            ctx.beginPath();
+            ctx.moveTo( this.x, this.y );
+            ctx.lineTo( this.x + this.width / 2, this.y + this.height );
+            ctx.lineTo( this.x - this.width / 2, this.y + this.height );
+            ctx.lineTo( this.x, this.y );
+            ctx.strokeStyle = this.strokeStyle;
+            ctx.stroke();
+        };
+
+        var sanjiao1 = new SanJiaoXing( 100, 100, 100, 50, 'green' );
+        var sanjiao2 = new SanJiaoXing( 200, 100, 80, 80, 'blue' );
+
+        sanjiao1.draw();
+
+        sanjiao2.strokeStyle = 'deeppink';
+        sanjiao2.draw();
+    </script>
+</body>
+</html>

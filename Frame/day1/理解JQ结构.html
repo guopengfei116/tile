@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*---------------------------------1、标准的构造函数写法---------------------------------*/
+
+        // 构造函数
+        function Person(name) {
+            this.name = name;
+        }
+
+        Person.prototype = {
+            constructor: Person,
+            eq: function () {},
+            each: function () {},
+            map: function () {}
+        };
+
+        var xiaofang = new Person('小芳');
+        xiaofang.each();
+
+        /*--------------------------2、为了创建实例更加方便，增加了工厂函数------------------------*/
+
+        // Person的工厂函数
+        function factory(name) {
+            return new Person(name);
+        }
+
+        // 构造函数
+        function Person(name) {
+            this.name = name;
+        }
+
+        Person.prototype = {
+            constructor: Person,
+            eq: function () {},
+            each: function () {},
+            map: function () {}
+        };
+
+        // 直接调用工厂函数即可创建Person对象
+        var xiaofang = factory('小芳');
+        xiaofang.each();
+
+        /*-----------------3、为了减少变量污染，使用自调封装起来，对外暴漏factory即可---------------*/
+
+        // 自调函数封装起来
+        (function (w) {
+
+            // Person的工厂函数
+            function factory(name) {
+                return new Person(name);
+            }
+
+            // 构造函数
+            function Person(name) {
+                this.name = name;
+            }
+
+            Person.prototype = {
+                constructor: Person,
+                eq: function () {},
+                each: function () {},
+                map: function () {}
+            };
+
+            // 把工厂函数暴漏到全局
+            w.factory = factory;
+        })(window);
+
+        // 直接使用对外暴漏的工厂函数即可创建Person对象
+        var xiaofang = factory('小芳');
+        xiaofang.each();
+
+        /*----------4、让外界可以通过factory对原型进行扩展，所以使用factory原型覆写Person原型-------*/
+
+        // 增加可扩展性
+        // 自调函数封装起来
+        (function (w) {
+
+            // Person的工厂函数
+            function factory(name) {
+                return new Person(name);
+            }
+
+            // 构造函数
+            function Person(name) {
+                this.name = name;
+            }
+
+            // 因为对外暴漏的是factory函数，
+            // 为了让外界能够通过factory函数，
+            // 给Person的原型进行扩展，
+            // 所以让Person和factory使用同一个原型。
+            Person.prototype = factory.prototype = {
+                constructor: factory,
+                eq: function () {},
+                each: function () {},
+                map: function () {}
+            };
+
+            // 把工厂函数暴漏到全局
+            w.factory = factory;
+        })(window);
+
+        // 通过给factory原型扩展功能，供Person的实例使用
+        factory.prototype.outFn = function () { console.log('第三方扩展'); };
+        var xiaofang = factory('小芳');
+        xiaofang.each();
+        xiaofang.outFn();
+
+        /*----------------------5、给原型起一个更简短的名字fn，内外使用都方便-----------------------*/
+
+        // 增加可扩展性
+        // 自调函数封装起来
+        (function (w) {
+
+            // Person的工厂函数
+            function factory(name) {
+                return new Person(name);
+            }
+
+            // 给原型起一个更简短的名词fn。
+            factory.fn = factory.prototype = {
+                constructor: factory,
+                eq: function () {},
+                each: function () {},
+                map: function () {}
+            };
+
+            // 构造函数
+            function Person(name) {
+                this.name = name;
+            }
+
+            // 因为对外暴漏的是factory函数，
+            // 为了让外界能够通过factory函数，
+            // 给Person的原型进行扩展，
+            // 所以让Person和factory使用同一个原型。
+            Person.prototype = factory.fn;
+
+            // 把工厂函数暴漏到全局
+            w.factory = factory;
+        })(window);
+
+        // 使用fn扩展功能更便捷
+        factory.fn.outFn = function () { console.log('第三方扩展'); };
+        var xiaofang = factory('小芳');
+        xiaofang.each();
+        xiaofang.outFn();
+
+        /*--------------------------6、工厂函数起名JQuery，构造函数起名init--------------------------*/
+        /*--------------------7、把init放到原型中，这样外面也可以找到init构造函数--------------------*/
+        /*------------------8、给对外暴漏的JQuery起个别名$，这样外面使用将更加方便-------------------*/
+
+        // 增加可扩展性
+        // 自调函数封装起来
+        (function (w) {
+
+            // Person的工厂函数
+            function JQuery(name) {
+                return new JQuery.fn.init(name);
+            }
+
+            // 给原型起一个更简短的名词fn。
+            JQuery.fn = JQuery.prototype = {
+                constructor: JQuery,
+                eq: function () {},
+                each: function () {},
+                map: function () {}
+            };
+
+            // 构造函数起名init,放到原型中,
+            // 这样外面也可以通过JQuery原型或者JQuery实例找到init，
+            // 不过也没多大用处，就像原型中的constructor属性一样没太大用。
+            var init = JQuery.fn.init = function init(name) {
+                this.name = name;
+            };
+
+            // 因为对外暴漏的是factory函数，
+            // 为了让外界能够通过factory函数，
+            // 给Person的原型进行扩展，
+            // 所以让Person和factory使用同一个原型。
+            init.prototype = JQuery.fn;
+
+            // 把工厂函数暴漏到全局，并起个别名$
+            w.JQuery = w.$ = JQuery;
+        })(window);
+
+        // 使用fn扩展功能更便捷
+        $.fn.outFn = function () { console.log('第三方扩展'); };
+        var xiaofang = $('小芳');
+        xiaofang.each();
+        xiaofang.outFn();
+    </script>
+</body>
+</html>

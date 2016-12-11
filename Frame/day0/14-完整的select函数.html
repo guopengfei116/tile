@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>01-准备所有的代码.html</title>
+  <style>
+    * {padding: 5px;margin: 5px;}
+  </style>
+</head>
+<body>
+  <div class="c">1</div>
+  <div id="dv">2</div>
+  <p>p1</p>
+  <p>p2</p>
+</body>
+<script>
+	// 基本函数, support 对象, 验证 qsa 与 byclass
+	var support = {};
+	var rnative = /\{\s*\[native/;
+
+	support.qsa = rnative.test( document.querySelectorAll + '' );
+	support.getElementsByClassName = 
+		rnative.test( document.getElementsByClassName + '' );
+
+	// 基本方法
+	function getByClassName ( className, node ) {
+      node = node || document;
+      var allElem, res = [], i;
+
+      if ( support.getElementsByClassName ) {
+        return node.getElementsByClassName( className );
+      } else {
+        allElem = node.getElementsByTagName( '*' );
+        for ( i = 0; i < allElem.length; i++ ) {
+          if ( allElem[ i ].className === className ) {
+            res.push( allElem[ i ] );
+          }
+        }
+        return res;
+      }
+    }
+
+
+    //                          1           2         3     4
+    var rbaseselector = /^(?:\#([\w\-]+)|\.([\w\-]+)|(\*)|(\w+))$/;
+
+    function select ( selector, results ) {
+    	results = results || [];
+      var m, temp;
+    	
+      if ( typeof selector != 'string' ) return results;
+
+
+      // 判断
+      if ( support.qsa ) {
+
+        results.push.apply( results, document.querySelectorAll( selector ) )
+
+        return results;
+
+      }
+
+
+
+      m = rbaseselector.exec( selector );
+
+      if ( m ) {
+        // 捕获到数据了
+        if ( m[ 1 ] && 
+                    ( temp = document.getElementById( m[ 1 ] ) ) ) {
+          results.push( temp );
+        } else if ( m[ 2 ] ) {
+          results.push.apply( results, getByClassName( m[ 2 ] ) );
+        } else if ( m[ 3 ] ) {
+          results.push.apply( results, document.getElementsByTagName( m[ 3 ] ) ); // selector
+        } else if ( m[ 4 ] ) {
+          results.push.apply( results, document.getElementsByTagName( m[ 4 ] ) ); // selector
+        }
+        // 注意: 3 和 4 是可以合并
+      }
+      
+    	
+      return results;
+    }
+
+
+
+    var list1 = select( '*' );
+    list1.forEach(function ( v ) {
+      v.style.border = '1px solid red';
+    });
+
+
+    var list2 = select( 'p' );
+    list2.forEach(function ( v ) {
+      v.style.backgroundColor = 'pink';
+    });
+
+
+    var list3 = select( '#dv' );
+    list3.forEach(function ( v ) {
+      v.style.backgroundColor = 'yellow';
+    });    
+
+    var list4 = select( '.c' );
+    list4.forEach(function ( v ) {
+      v.style.backgroundColor = 'orange';
+    });     
+</script>
+</html>

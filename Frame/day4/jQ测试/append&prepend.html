@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-3.1.0.js"></script>
+</head>
+<body>
+    <div>
+        <span>111</span>
+        <span>2222</span>
+    </div>
+    <div>
+        <span>33333</span>
+        <span>44444</span>
+    </div>
+    <div></div>
+    <script>
+        /*
+         * append:
+         * 参数可以是DOM、jQ实例、内容。
+         * 给自己添加子元素。
+         * 返回值是this。
+         * */
+
+        // 字符串累加innerHTML
+        console.log($('div').append('span'));
+        console.log($('div').append('<span>span1</span><span>span2</span>'));
+
+        // 给自己添加子元素
+        console.log($('div').append($('a')));
+        console.log($('body').append( document.querySelectorAll('span') ));
+
+        /*
+         * prepend:
+         * 参数：参数可以是DOM、jQ实例、内容。
+         * 作用：给所有元素的最前面添加子节点。
+         * 返回值：返回this。
+         * */
+        console.log($('div').prepend('文本<span>span元素</span>文本'));
+        console.log($('div').prepend( $('span') ));
+    </script>
+</body>
+</html>

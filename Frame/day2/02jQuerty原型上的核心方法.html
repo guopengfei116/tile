@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./jquery-2.2.0.js"></script>
+</head>
+<body>
+    <div>
+        <span>0</span>
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+    </div>
+    <script>
+        /*
+         * jQuery原型中的核心成员：
+         * 1、jquery属性，存储jQuery当前的版本
+         * 2、constructor属性，存储jQuery工厂函数
+         * 3、selector属性，jQuery实例的一个标识，也代表默认的selecotr
+         * 4、length属性，jQuery实例默认的length
+         * 5、toArray方法，把实例转换为数组返回
+         * 6、get方法，获取指定下标的元素，支持负数倒着取，如果传null或undefined则把实例转换为数组返回
+         * 7、each方法，遍历实例所有的元素，把遍历到的数据分别传给回调
+         * 8、map方法，遍历实例所有的元素，把遍历到的数据分别传给回调，然后把回调的返回值组成一个数组返回
+         * 9、slice方法，截取实例中部分元素，重新构成新的实例返回
+         * 10、eq方法，获取指定下标的元素，支持负数倒着取，最后把获取到的元素封装成新的实例返回
+         * 11、first方法，获取第一个元素，把获取到的元素封装成新的实例返回
+         * 12、last方法，获取最后一个元素，把获取到的元素封装成新的实例返回
+         * 13、push方法，给实例添加新元素
+         * 14、sort方法，给实例进行排序
+         * 15、splice方法，从指定下标删除指定数量的元素，或者从指定下标替换指定数量的元素。
+         * */
+
+        console.log($('div').get(4));
+
+        // 属性
+        console.log($().jquery);
+        console.log($().constructor);
+        console.log($().selector);
+        console.log($().length);
+
+        // 方法
+        console.log($('script').toArray());
+
+        console.log($('span').get(0)); // 得到原生DOM对象
+        console.log($('span').get(-1)); // 得到原生DOM对象
+        console.log($('span').get()); // 得到原生DOM对象组成的数组
+
+        console.log($('span').slice(1, 2)); // 得到一个新的jQuery实例
+
+        console.log($('span').eq(0)); // 得到一个新的jQuery实例，包含第一个DOM对象
+        console.log($('span').eq(-1)); // 得到一个新的jQuery实例，包含最后一个DOM对象
+        console.log($('span').eq()); // 得到一个新的jQuery空实例
+
+        console.log($('span').first()); // 得到一个新的jQuery实例，包含第一个DOM对象
+        console.log($('span').last()); // 得到一个新的jQuery实例，包含最后一个DOM对象
+
+        var $span = $('span');
+        $span.push( $('script').get(0) )
+        console.log( $span );  // 把scripeDOM添加到了$span这个实例中
+
+        var $span2 = $('span');
+        $span2.sort(function ( span1, span2 ) {
+            return span1.innerHTML < span2.innerHTML;
+        });
+        console.log($span2); // 排序后的实例
+
+        var $span3 = $('span');
+        $span3.splice(1,3,'a','b');
+        console.log($span3); // 删除替换后的实例
+    </script>
+</body>
+</html>

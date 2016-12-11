@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+        * factorial 阶乘：
+        * 0! = 1
+        * 1! = 1 ==> 0! * 1
+        * 2! = 2 ==> 1! * 2
+        * 3! = 6 ==> 2! * 3
+        * 4！ = 24 ==> 3! * 4
+        * m! ==> (m - 1)! * m
+        * */
+        function factorial(n) {
+            if (n === 0) {
+                return 1;
+            }
+            return factorial(n - 1)* n;
+        }
+        factorial(4);
+
+        /*-----------------------------------------------------------------*/
+
+        /*
+         * power 求幂：
+         * m^0 = 1
+         * m^1 = m ==> m^0 * m
+         * m^2 = m*m ==> m^1 * m
+         * m^3 = m*m*m ==> m^2 * m
+         * m^4 = m*m*m*m ==> m^3 * m
+         * m^n ==> m^(n-1) * m
+         * */
+
+        function power(m, n) {
+            if (n === 0) {
+                return 1;
+            }
+            return power(m, n - 1) * m;
+        }
+        console.log(power(5, 4));
+        console.log(power(10, 6));
+
+        /*-----------------------------------------------------------------*/
+
+        /*
+         * fibonacci 斐波那契数列:
+         * 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89
+         * fib0 = 0
+         * fib1 = 1
+         * fib2 = 1 ==> fib(1) + fib(0)
+         * fib3 = 2 ==> fib(2) + fib(1)
+         * fib4 = 3 ==> fib(3) + fib(2)
+         * fib5 = 5 ==> fib(4) + fib(3)
+         * fibn ==> fib(n - 1) + fib(n - 2)
+         * */
+        function fib1(n) {
+            if (n === 0) {
+                return 0;
+            }
+            if (n === 1) {
+                return 1;
+            }
+            return fib(n - 1) * fib(n -2);
+        }
+
+        // 缓存改进
+        var fib2 = function () {
+            var cache = [];
+            return function fib(n) {
+                var result = 0;
+                if (cache.hasOwnProperty(n)) {
+                    return cache[n];
+                }
+                if (n === 0) {
+                    cache[n] = 0;
+                    return 0;
+                }
+                if (n === 1) {
+                    cache[n] = 1;
+                    return 1;
+                }
+                result = fib(n - 1) + fib(n -2);
+                return result;
+            }
+        }();
+        console.log(fib2(10));
+
+        // 缓存改进
+        var fib3 = function () {
+            var cache = [];
+            return function fib(n) {
+                var result = 0;
+                if (cache.hasOwnProperty(n)) {
+                    return cache[n];
+                }
+                if (n === 0) {
+                    result = 0;
+                }else if (n === 1) {
+                    result = 1;
+                }else {
+                    result = fib(n - 1) + fib(n -2);
+                }
+                return result;
+            }
+        }();
+        console.log(fib3(11));
+
+        /*-----------------------------------------------------------------*/
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>01-分析基本选择器.html</title>
+</head>
+<body>
+<div id="div"></div>
+</body>
+<script>
+	// 基本选择器有什么? 
+	// id, class, tag, *
+
+/*
+	function byId ( idName, results ) {
+		// 获得元素, 返回
+		results = results || [];
+		results.push( document.getElementById( idName ) );
+		return results;
+	} 
+	// 如果页面中不存在该元素, 返回什么? 
+
+	var res = byId( 'dv' );
+*/
+
+	// 需要保证自己写的方法与系统方法的返回数据一致, 
+	// 因此如果没有找到数据, 则不加入任何数据
+	function byId ( idName, results ) {
+		// 获得元素, 返回
+		results = results || [];
+
+		var find = document.getElementById( idName );
+		if ( find ) {
+			results.push( find );	
+		}
+		// 只有找到了数据, 才会加入.
+		return results;
+	}
+	var res = byId( 'dv' );
+
+</script>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+         * PersonProto对象的目的很明确，就是为了继承obj。
+         * 在继承中并未添加额外属性和方法。
+         * 这部分是可以被复用的，这里唯一变化的部分就是要继承的对象。
+         * */
+
+        /*function PersonProto() {
+
+         }
+         PersonProto.prototype = obj;
+         var personProto = new PersonProto();*/
+
+        // 封装之后的代码，把变化的部分作为参数传入进来
+        // es5中把getObj这个函数纳入了标准，改名为create，作为Object的属性存在。
+        // 语法:  Object.create(obj), 返回一个继承自obj的新对象。
+        // 注 ie8以及前版本不可用。
+        function getObj(obj) {
+
+            // 如果Object有create方法，那么就使用原生的方法
+            if (Object.create) {
+                return Object.create(obj);
+            }
+            // 如果没有，则自己实现
+            else {
+                function F() {}
+                F.prototype = obj;
+                return new F();
+            }
+        }
+
+        // 如果Object没有create方法，就手动给他添加上
+        if (!Object.create) {
+            Object.create = function () {
+                function F() {}
+                F.prototype = obj;
+                return new F();
+            }
+        }
+
+        var obj = {
+            run : function () {
+                console.log('奔跑');
+            },
+            eat : function () {
+                console.log('吃饭');
+            },
+            look : function () {
+                console.log('可以看');
+            }
+        };
+
+        /*
+         * zhangsan对象目的，也是为了继承obj，
+         * 不过需要通过一个对象间接完成，
+         * 并且有一些通用的属性和方法被添加。
+         * */
+        function Person(name) {
+            this.name = name;
+        }
+
+        Person.prototype = Object.create(obj);
+
+        //  给原型添加Person类型的对象独有的方法
+        Person.prototype.say = function () {
+            console.log('说话');
+        };
+        Person.prototype.eat = function () {
+            console.log('使用工具吃饭');
+        };
+
+        var zhangsan = new Person('zhangsan');
+        zhangsan.eat();
+        zhangsan.run();
+        zhangsan.look();
+
+        // 在ES5当中，内部提供了一个Object.create方法，
+        // 这个方法的语法：Object.create(obj), 返回一个继承自obj的新对象。
+        // 这个方法在ie8以及老版本不支持。
+
+        // 可以使用兼容处理方法：
+        // 第一种：封装一个函数，函数内部优先使用内置方法，其次使用自己实现的方法。
+        // 第二种：判断js原生是否实现了该方法，如未实现则手动帮它实现。
+
+        // 我们可以在实现继承当中利用这个方法，给他传入要继承的对象，
+        // 然后这个方法返回的对象，把它变成构造函数的原型，
+        // 然后通过构造函数创建的对象就可以间接继承我们真正要继承的对象，
+        // 而且给构造函数添加额外的属性和方法也不会影响到要继承的对象。
+    </script>
+</body>
+</html>

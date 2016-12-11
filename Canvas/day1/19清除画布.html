@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        /*
+        * 清除画布：
+        * ctx.clearRect( 起点x轴坐标，起点y轴坐标，清除区域的宽，清除区域的高 )
+        * */
+
+        // 绘制等腰三角形的方法
+        function sanJiaoXing( x, y, width, height, fillStyle ) {
+            /*
+             * 实现思路：
+             * 1、为了防止重绘之前的路径，先清除一下
+             * 2、移动钢笔到图形起点
+             * 3、画想要图形的路径
+             * 4、设置描边色
+             * 5、描边
+             * */
+            ctx.beginPath();
+            ctx.moveTo( x, y );
+            ctx.lineTo( x + width / 2, y + height );
+            ctx.lineTo( x - width / 2, y + height );
+            ctx.lineTo( x, y );
+            ctx.fillStyle = fillStyle;
+            ctx.fill();
+        }
+
+        sanJiaoXing( 200, 10, 300, 150, 'pink' );
+
+        // 清除部分画布
+        ctx.clearRect( 200, 10, 50, 50 );
+
+        // 清除整个画布
+        ctx.clearRect( 0, 0, cvs.width, cvs.height );
+    </script>
+</body>
+</html>

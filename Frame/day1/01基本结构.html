@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        // 为了全局变量污染，把代码写到自调函数中
+        (function ( w ) {
+
+            // 为了用户使用方便，提供一个工厂函数
+            function jQuery( selector ) {
+                return new init( selector );
+            }
+
+            // 原型简写&原型默认拥有的属性与方法
+            jQuery.fn = jQuery.prototype = {
+                constructor: jQuery,
+                jQ1: 111,
+                jQ2: 222
+            };
+
+            // 构造函数
+            var init = jQuery.prototype.init = function () {
+
+            };
+
+            // 为了第三方扩展(即jQ插件)
+            init.prototype = jQuery.prototype;
+
+            // 对外暴漏
+            w.jQuery = w.$ = jQuery;
+
+        }( window ));
+
+        var shili = $();
+        $.fn.value = 100;
+        console.log(shili);
+        console.log(shili.constructor);
+        console.log(shili.init);
+        console.log(shili.value);
+        console.log(shili.jQ1);
+        console.log(shili.jQ2);
+
+        /*
+        * jQuery的代码全局写在一个自调函数中，
+        * 咱们平常使用的$实际上jQ对外暴漏的一个工厂函数，
+        * 而构造函数在jQ的内部叫init，并且这个构造函数还被添加到了jQ的原型中。
+        *
+        * jQ为了让第三方能够对其功能进行扩展，
+        * 所以把工厂函数的原型与构造函数的原型保持了一致。
+        *
+        * 1、对外暴漏的是工厂函数
+        * 2、内部的构造函数叫init，被添加到了原型中
+        * 3、为了插件机制，让构造函数的原型为工厂函数的原型，这样只就外暴漏工厂函数，即可对原型进行扩展。
+        * */
+    </script>
+</body>
+</html>

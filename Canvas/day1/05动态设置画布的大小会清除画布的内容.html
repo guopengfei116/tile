@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border:1px solid red"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        // 把等腰三角形绘制到50，50点
+        ctx.moveTo( 50, 50 );
+
+        // 设定三角形底边长为30，高为20
+        ctx.lineTo( 65, 70 );
+        ctx.lineTo( 35, 70 );
+        ctx.lineTo( 50, 50 );
+
+        // 描边
+        ctx.stroke();
+
+        // 绘制图形之后，动态修改画布的大小，绘自动清除画布已经绘图的内容
+        cvs.width = 500;
+    </script>
+</body>
+</html>

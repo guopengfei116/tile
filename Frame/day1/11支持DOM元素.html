@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="div">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <script>
+        // 为了全局变量污染，把代码写到自调函数中
+        (function ( w ) {
+
+            // 为了用户使用方便，提供一个工厂函数
+            function jQuery( selector ) {
+                return new init( selector );
+            }
+
+            // 原型简写&原型默认拥有的属性与方法
+            jQuery.fn = jQuery.prototype = {
+                constructor: jQuery,
+                jQ1: 111,
+                jQ2: 222
+            };
+
+            jQuery.extend = jQuery.fn.extend = function ( obj ) {
+                for ( var key in obj ) {
+                    this[key] = obj[key];
+                }
+            };
+
+            // 给jQuery添加静态方法
+            jQuery.extend({
+
+                /*
+                 * 判断selector是不是html片段：
+                 * html片段的特点是：<开头，>结尾，中间夹杂着内容。
+                 * 1、判断selector的第一个字符是不是<
+                 * 2、判断selector的结尾是不是>
+                 * 3、判断selector的length不能小于3
+                 * */
+                isHTML: function ( html ) {
+                    return html[0] === '<' && html.charAt(html.length - 1) === '>' && html.length >= 3;
+                },
+
+                /*
+                * 判断selector是不是DOM：
+                * DOM的特点是，都拥有nodeType属性
+                * */
+                isDOM: function ( dom ) {
+                    return !!dom && !!dom.nodeType;
+                }
+            });
+
+            // 构造函数
+            var init = jQuery.prototype.init = function ( selector ) {
+
+                // 如果selector是字符串，那么不是html片段就是选择器
+                if ( typeof selector === 'string' ) {
+                    // 如果selector是html片段
+                    if ( jQuery.isHTML( selector ) ) {
+                        /*
+                         * 1、先根据html片段创建dom对象
+                         *   1.1、先创建一个临时的div
+                         *   1.2、设置临时div的innerTHML为html片段，这样div中就自动把html片段转换为了DOM元素
+                         *   1.3、然后把div的子节点分别添加都实例身上
+                         * 2、然后把创建好的dom对象依次添加到实例中
+                         * */
+                        var tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = selector;
+                        [].push.apply( this, tempDiv.childNodes );
+                    }
+                    // 否则就认为selector是选择器
+                    else {
+                        // 根据selector获取元素
+                        var nodes = document.querySelectorAll( selector );
+                        // 把获取到的元素依次添加到实例中
+                        [].push.apply( this, nodes );
+                    }
+                }
+
+                // 如果selector是DOM元素，那么把它直接添加实例中
+                if ( jQuery.isDOM( selector ) ) {
+                    [].push.call( this, selector );
+                }
+            };
+
+            // 为了第三方扩展(即jQ插件)
+            init.prototype = jQuery.fn;
+
+            // 对外暴漏
+            w.jQuery = w.$ = jQuery;
+
+        }( window ));
+
+        // 测试给$传入DOM
+        var div = document.getElementById('div');
+        console.log($(div));
+    </script>
+</body>
+</html>

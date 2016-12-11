@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../core.js"></script>
+    <script src="../ajax/ajax.js"></script>
+    <script src="../animate/animate.js"></script>
+    <script src="../attr&css/attr&css.js"></script>
+    <script src="../dom/dom.js"></script>
+    <script src="../event/event.js"></script>
+    <style>
+        div {
+            width: 400px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div id="pie"></div>
+    <div id="line"></div>
+    <script>
+        (function () {
+
+            function isShow( ctx ) {
+                /*
+                * 实现思路：
+                * 1、先获取整个画布的像素数据
+                * 2、然后统计alpha通道为0的数量
+                * 3、当这个数量达到一定比值时
+                * 4、那么整个奖品将直接展示
+                * */
+                var data, i = 0, len,
+                    opacityTotal = 0;
+
+                // 获取像素数据
+                data = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height).data;
+
+                // 遍历所有像素，统计alpha值为0的数量
+                for ( len = data.length; i < len; i+= 4  ){
+                    if( data[ i + 3 ] == 0) {
+                        // 透明的数量达到全部数量的一半就返回true
+                        if ( (++opacityTotal) > ( len / 4 / 2 ) ){
+                            return true;
+                        }
+                    }
+                }
+
+                // 否则返回false
+                return false;
+            }
+
+            // 添加插件
+            $.fn.extend({
+
+                // 刮刮乐
+                scrape: function( imgSrc, r ) {
+                    var cvs, ctx, img,
+                        r = r || 20,
+                        $target, $targetWidth, $targetHeight;
+
+                    // 第一个元素
+                    $target = this.first();
+                    $targetWidth = parseInt( $target.css( 'width' ) );
+                    $targetHeight = parseInt( $target.css( 'height' ) );
+
+                    // 画布初始化
+                    cvs = $('<canvas></canvas>').get(0);
+                    cvs.width = $targetWidth;
+                    cvs.height = $targetHeight;
+                    ctx = cvs.getContext( '2d' );
+
+                    // 初始化画布的背景色
+                    ctx.fillStyle = 'grey';
+                    ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+                    // 把cvs添加到第一个div中
+                    $target.append( cvs );
+
+                    // 图片加载完毕之后，对方就可以刮奖了
+                    img = new Image();
+                    img.src = imgSrc;
+                    img.addEventListener( 'load', function() {
+
+                        // 设置元素背景为奖品
+                        $target.css( {
+                            'backgroundImage': 'url(' + imgSrc + ')',
+                            'backgroundSize': '100% 100%',
+                        } );
+
+                        // 鼠标点击，监听move事件，然后不断绘制圆
+                        cvs.addEventListener( 'mousedown', function() {
+                            cvs.addEventListener( 'mousemove', move);
+                        });
+
+                        // 鼠标放开，解除move事件
+                        cvs.addEventListener( 'mouseup', function() {
+                            cvs.removeEventListener( 'mousemove', move);
+                        } );
+                    } );
+
+
+                    // 根据鼠标移动的坐标绘制圆
+                    function move( e ) {
+
+                        // 计算鼠标到画布的距离
+                        var x = e.pageX - cvs.offsetLeft,
+                            y = e.pageY - cvs.offsetTop;
+
+                        // 设置重叠部分的绘制方式，只显示旧图形未冲突的部分
+                        ctx.globalCompositeOperation = 'destination-out';
+
+                        // 绘制圆
+                        ctx.beginPath();
+                        ctx.arc(x, y, r, 0, 2 * Math.PI);
+                        ctx.fillStyle = 'skyblue';
+                        ctx.fill();
+
+                        // 如果可以显示了，清除画布内容
+                        if ( isShow( ctx ) ) {
+                            ctx.clearRect( 0, 0, ctx.canvas.width, ctx.canvas.height );
+                        }
+                    }
+                }
+            });
+        }());
+    </script>
+    <script>
+        // 随机获取奖品，让用户刮
+        var prizes = [ './iphone8.jpg', './ziyou.jpg' ];
+        var random = Math.floor( Math.random() * 2 );
+        $('div').scrape( prizes[ random ] );
+    </script>
+</body>
+</html>

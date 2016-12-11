@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>01-准备所有的代码.html</title>
+</head>
+<body>
+</body>
+<script>
+	// 基本函数, support 对象, 验证 qsa 与 byclass
+	var support = {};
+	var rnative = /\{\s*\[native/;
+
+	support.qsa = rnative.test( document.querySelectorAll + '' );
+	support.getElementsByClassName = 
+		rnative.test( document.getElementsByClassName + '' );
+
+	// 基本方法
+	function getByClassName ( className, node ) {
+      node = node || document;
+      var allElem, res = [], i;
+
+      if ( support.getElementsByClassName ) {
+        return node.getElementsByClassName( className );
+      } else {
+        allElem = node.getElementsByTagName( '*' );
+        for ( i = 0; i < allElem.length; i++ ) {
+          if ( allElem[ i ].className === className ) {
+            res.push( allElem[ i ] );
+          }
+        }
+        return res;
+      }
+    }
+
+
+    function select ( selector, results ) {
+    	// 可以实现的选择器有: id, class, tag, *
+    	// 1. 判断参数是不是字符串, 也可以判断 selector 是否为 *
+    	if ( typeof selector != 'string' ) return null;
+    	if ( selector === '*' ) {
+
+    	}
+    	// 2. 获得参数的第一个字符. 检查是 # 还是 .
+    	var firstChar = selector.charAt( 0 ); 
+    	if ( firstChar == '#' ) {
+
+    	} else if ( firstChar == '.' ) {
+
+    	} else {
+    		
+    	}
+    	// 3. 断定是 tag
+    }
+
+
+</script>
+</html>

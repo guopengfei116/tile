@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        // 考题1
+        /*function Fn() {
+            console.log(this);
+        }
+        Fn();
+        new Fn();
+        Fn.apply(Fn); */
+
+        /*---------------------------------------------------------*/
+
+        // 考题2
+        /*var o = {
+            f : function () {
+                console.log(this);
+            },
+            2 : function () {
+                console.log(this);
+            }
+        };
+        o.f();
+        o[2]();
+        new o[2]();
+        o.f.call([1,2]);
+        o[2].call([1,2,3,4]);*/
+
+        /*---------------------------------------------------------*/
+
+        /*var name ='out';
+        var obj ={
+            name:'in',
+            prop:{
+                name:'inside',
+                getName:function(){
+                    return this.name;
+                }
+            }
+        };
+        console.log(obj.prop.getName());
+        var test = obj.prop.getName;
+        console.log(test());
+        console.log(obj.prop.getName.apply(this));*/
+
+        /*-------------------------------------------------------*/
+
+        // 考题3
+        /*var length = 10;
+        function fn() {
+            console.log(this.length);
+        }
+        var obj = {
+            length: 5,
+            method: function (f) {
+                f();
+                // arguments[0] 可以获取到传入method方法的第一个实参
+                arguments[0]();
+                arguments[0].call(this);
+            }
+        };
+        obj.method(fn);*/
+
+        /*---------------------------------------------------------*/
+
+        // 考题4
+        var scope = 'global';
+        function log() {
+            console.log(this.scope + ':' + arguments[0]);
+        }
+        var dog = {
+            scope : 'dog',
+            yelp : function () {
+                var scope = 'dog.yelp';
+                log('wow');
+            }
+        };
+        dog.yelp();
+        dog.yelp.apply(dog);
+        log.call(dog, 'created');
+
+        /*---------------------------------------------------------*/
+    </script>
+</body>
+</html>

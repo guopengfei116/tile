@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>flappy_bird</title>
+    <style>
+        canvas {
+            border:1px solid red;
+        }
+        img {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <script src="./js/util.js"></script>
+    <script src="./js/sky.js"></script>
+    <script src="./js/bird.js"></script>
+    <script src="./js/land.js"></script>
+    <script>
+        var cvs = document.getElementById('cvs');
+        var ctx = cvs.getContext('2d');
+        cvs.width = 800;
+        cvs.height = 600;
+
+        util.loadImage({
+            bird: './img/bird.png',
+            land: './img/land.png',
+            pipeDown: './img/pipeDown.png',
+            pipeUp: './img/pipeUp.png',
+            sky: './img/sky.png'
+        }, function( loadedImg ) {
+
+            // 游戏绘制最后一帧画面的时间
+            var gameLastTime = Date.now();
+
+            // 为了实现背景无限轮播，所以需要两块背景
+            var sky = new Sky( { ctx: ctx, img: loadedImg.sky } );
+            var sky2 = new Sky( { ctx: ctx, img: loadedImg.sky } );
+
+            var land = new Land( { ctx: ctx, img: loadedImg.land } );
+            var land1 = new Land( { ctx: ctx, img: loadedImg.land } );
+            var land2 = new Land( { ctx: ctx, img: loadedImg.land } );
+            var land3 = new Land( { ctx: ctx, img: loadedImg.land } );
+
+            var bird = new Bird( { ctx: ctx, img: loadedImg.bird, widthFrame: 3 } );
+
+            // 让背景动起来
+            var timer = setInterval(function() {
+
+                // 时事计算游戏两帧之间的刷新率
+                var gameCurrentTime = Date.now();
+                var delaySecond = (gameCurrentTime - gameLastTime) / 1000;
+                gameLastTime = gameCurrentTime;
+
+                // 清除画布，重新渲染新游戏画面
+                ctx.clearRect( 0, 0, cvs.width, cvs.height );
+
+                sky.draw();
+                sky.update( delaySecond );
+                sky2.draw();
+                sky2.update( delaySecond );
+
+                land.draw();
+                land.update( delaySecond );
+                land1.draw();
+                land1.update( delaySecond );
+                land2.draw();
+                land2.update( delaySecond );
+                land3.draw();
+                land3.update( delaySecond );
+
+                bird.draw();
+                bird.update( delaySecond );
+            }, 1000 / 60);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>02-其他基本选择器.html</title>
+</head>
+<body>
+	<div class="c"></div>
+</body>
+<script>
+	// tag
+	function byTag( tagName, results ) {
+		results = results || [];
+
+		results.push.apply( 
+				results, 
+				document.getElementsByTagName( tagName )
+			);
+		return results;
+	}
+
+	// byClass
+	function byClass( className, results ) {
+		results = results || [];
+
+		results.push.apply( 
+				results, 
+				document.getElementsByClassName( className )
+			);
+		return results;
+	}
+
+	function byAll( results ) {
+		return byTag( '*', results );
+	}
+
+
+	var list = byClass( 'c' );
+</script>
+</html>

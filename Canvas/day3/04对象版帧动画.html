@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas style="border:1px solid red" width="500" height="500"></canvas>
+<script>
+    var cvs = document.querySelector('canvas');
+    var ctx = cvs.getContext('2d');
+
+    // 混入（也叫copy）
+    function extend( o1, o2 ) {
+        for( var key in o2 ) {
+
+            // 如果是o2自己的属性，我再给你混入
+            if( o2.hasOwnProperty( key ) ) {
+                o1[ key ] = o2[ key ];
+            }
+        }
+    }
+
+    /*
+    * constructor { Person } 人物构造函数
+    * param { ctx: Context } 绘图上下文
+    * param { img: Image } 小人的精灵图片
+    * param { widthFrame: number } 图片一排有多个帧(一个帧代表一个小人)
+    * param { heightFrame: number } 图片一列有多个帧(一个帧代表一个小人)
+    *
+    * */
+    function Person( ctx, img, widthFrame, heightFrame ) {
+
+        this.ctx = ctx;
+        this.img = img;
+        this.widthFrame = widthFrame;
+        this.heightFrame = heightFrame;
+
+        // 小人默认的初始位置
+        this.x = 10;
+        this.y = 10;
+
+        // 小人的宽&高
+        this.width = this.img.width / this.widthFrame;
+        this.height = this.img.height / this.heightFrame;
+
+        // 小人行走的速度
+        this.speed = 2;
+
+        // 控制小人某动作的第几帧
+        this.i = 0
+        // 控制小人行走某个方向
+        this.direction = 0;
+    }
+
+    // 给Person原型混入一些方法
+    extend( Person.prototype, {
+
+        // 绘制小人
+        draw: function() {
+            this.ctx.drawImage( this.img,
+                this.width * this.i, this.height * this.direction, this.width, this.height,
+                this.x, this.y, this.width, this.height);
+        }
+    } );
+
+    var img = new Image();
+    img.src = './imgs/士兵(1).png';
+    img.onload = function() {
+        var person = new Person( ctx, img, 4, 4 );
+
+        setInterval( function() {
+            // 清除上一次绘制的小人
+            ctx.clearRect( 0, 0, cvs.width, cvs.height );
+            person.draw();
+            person.i = ++person.i % 4;
+        }, 100);
+    };
+</script>
+</body>
+</html>

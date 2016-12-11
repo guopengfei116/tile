@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        // 绘制等腰三角形的方法
+        function sanJiaoXing( x, y, width, height, strokeStyle, lineWidth, fillStyle ) {
+            ctx.beginPath();
+            ctx.moveTo( x, y );
+            ctx.lineTo( x + width / 2, y + height );
+            ctx.lineTo( x - width / 2, y + height );
+            ctx.closePath();
+            ctx.strokeStyle = strokeStyle;
+            ctx.lineWidth = lineWidth;
+            ctx.fillStyle = fillStyle;
+
+            /*
+            * 描边会占用图形线宽的一半，
+            * 所以后填充，会覆盖调线宽占用的一半，
+            * 最终线宽被缩小了一倍。
+            * */
+            /*ctx.stroke();
+            ctx.fill();*/
+
+            /*
+            * 如果要保证线宽，
+            * 需要先填充，后描边
+            * */
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        sanJiaoXing( 100, 100, 100, 50, 'green', 8, 'red' );
+        sanJiaoXing( 200, 100, 80, 80, 'blue', 12, 'yellow' );
+
+        /*
+        * 填充：
+        * ctx.fill():
+        * */
+
+        /*
+        * 设置填充色：
+        * ctx.fillStyle = css所有表示方式都支持
+        * */
+    </script>
+</body>
+</html>

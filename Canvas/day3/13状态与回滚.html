@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #cvs {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.getElementById('cvs');
+        var ctx = cvs.getContext('2d');
+
+        /*
+        * 状态：
+        * 状态就是变量或者属性不同时期的值。
+        * */
+
+        /*
+        * canvas的状态保存：
+        * 就是把绘图环境中当前属性的值进行备份（copy一份保存起来）。
+        * ctx.save()
+        * */
+
+        /*
+         * canvas的状态回滚：
+         * 就是把之前备份的状态取出来，替换为当前状态。
+         * ctx.resotr();
+         * */
+
+        /*---------------------------------------------------------*/
+
+        ctx.save();  // 备份当前状态（把当前默认的状态保存一份）
+
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = 'red';
+        ctx.strokeRect( 10, 10, 30, 30 );
+
+        ctx.restore(); // 回滚上一次备份的状态
+        ctx.strokeRect( 50, 10, 30, 30 );
+    </script>
+</body>
+</html>

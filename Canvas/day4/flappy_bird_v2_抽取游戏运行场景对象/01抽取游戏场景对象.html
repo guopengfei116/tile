@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/common/util.js"></script>
+    <script src="./js/common/loadImg.js"></script>
+    <script src="./js/roles/sky.js"></script>
+    <script src="./js/roles/land.js"></script>
+    <script src="./js/roles/bird.js"></script>
+    <script src="./js/roles/timer.js"></script>
+    <script src="./js/roles/pipe.js"></script>
+    <script src="./js/scene/gameScene.js"></script>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="800" height="600"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        // 加载游戏所需的所有图片，
+        // 加载完毕后就可以创建不同的对象，
+        // 然后绘制到画布中，共同构成游戏画面
+        loadImg({
+            bird: './imgs/birds.png',
+            land: './imgs/land.png',
+            pipeDown: './imgs/pipeDown.png',
+            pipeUp: './imgs/pipeUp.png',
+            sky: './imgs/sky.png'
+        }, function( loadedImg ) {
+
+            // 游戏绘制最后一帧画面的时间
+            var gameLastTime = Date.now(), gameCurrentTime, delaySecond, isRun;
+
+            // 创建游戏场景对象
+            var gameScene = new GameScene( { ctx: ctx, imgs: loadedImg } );
+            // 小鸟死亡，则游戏不再继续
+            gameScene.subscribe( function() {
+                isRun = false;
+            } );
+
+            // 运行游戏
+            (function loop() {
+                isRun = true;
+
+                // 时事计算游戏两帧之间的刷新率
+                gameCurrentTime = Date.now();
+                delaySecond = (gameCurrentTime - gameLastTime) / 1000;
+                gameLastTime = gameCurrentTime;
+
+                // 清除画布，清除路径，重新渲染新游戏画面
+                ctx.clearRect( 0, 0, cvs.width, cvs.height );
+                ctx.beginPath();
+                gameScene.run( delaySecond );
+
+                // 小鸟没有死亡，继续
+                if( isRun ) {
+                    requestAnimationFrame( loop );
+                }
+            }());
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片绘制</title>
+</head>
+<style>
+    body {
+        padding-top: 40px;
+    }
+    #wrap {
+        //position: relative;
+        padding-top: 20px;
+    }
+</style>
+<body>
+
+<!--默认情况下，定义一个canvas标签，会产生一个300*150像素的画布-->
+<!-- canvas设置css宽高后，画布也会被相应拉伸 -->
+<div id="wrap">
+    <canvas id="cvs" width="500" height="500" style="border:1px solid black"></canvas>
+</div>
+
+<script>
+    var cvs = document.getElementById('cvs');
+
+    /*
+     * 要是有canvas进行绘图，需要获取一个绘图对象：
+     * getContext 方法
+     * '2d' or 'webgl'
+     * */
+    var ctx = cvs.getContext('2d');
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 10;
+
+    function strokeLine(e) {
+        ctx.lineTo(e.pageX - cvs.offsetLeft, e.pageY - cvs.offsetTop);
+        ctx.stroke();
+        console.log(e);
+    }
+
+    ctx.strokeStyle = 'orange';
+
+    cvs.addEventListener('mousedown', function (e) {
+        ctx.moveTo(e.pageX - cvs.offsetLeft, e.pageY - cvs.offsetTop);
+        cvs.addEventListener('mousemove', strokeLine);
+    });
+
+    document.addEventListener('mouseup', function (e) {
+        cvs.removeEventListener('mousemove', strokeLine);
+    });
+</script>
+</body>
+</html>

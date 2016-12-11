@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-3.1.0.js"></script>
+</head>
+<body>
+    <script>
+        /*
+        * each实例和静态方法：
+        * 1、传入的回调函数先接收的是key，其次是val
+        * 2、回调执行时this指向val
+        * 3、如果要终止遍历，在回调中返回false即可
+        * */
+        $('body').each(function( i, val ) {
+            console.log( i, val, this );
+        });
+
+        $.each( { val: '888' }, function( key, val ) {
+            console.log( key, val, this );
+        });
+    </script>
+</body>
+</html>

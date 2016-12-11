@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-3.1.0.js"></script>
+</head>
+<body>
+    <div>
+        <span>111</span>
+        <span>2222</span>
+    </div>
+    <div>
+        <span>33333</span>
+        <span>44444</span>
+    </div>
+    <script>
+        /*
+        * html:
+        * 1、不传参，返回第一个元素的内容
+        * 2、传参
+        * 2.1、传的是null，清除所有元素的内容
+        * 2.2、传的是字符串，给所有元素修改为指定的内容
+        * */
+        /*console.log($('div').html());
+        console.log($('div').html(null));
+        console.log($('div').html('哈哈<a href="#">点击</a>嘻嘻'));*/
+
+        /*
+         * text:
+         * 1、不传参，返回所有元素共同组成的文本
+         * 2、传参
+         * 2.1、传的是null，清除所有元素的内容
+         * 2.2、传的是字符串，给所有元素修改为指定的文字
+         * */
+        console.log($('div').text());
+        console.log($('div').text(null));
+        console.log($('div').text('哈哈<a href="#">点击</a>嘻嘻'));
+    </script>
+</body>
+</html>

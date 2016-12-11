@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-3.1.0.js"></script>
+</head>
+<body>
+    <div>
+        <span class="border nav tab">1111</span>
+        <span class="tip">2222</span>
+        <span class="bottom">33333</span>
+    </div>
+    <script>
+        /*
+        * hasClass：
+        * 只有有一个元素存在某class，就返回true。
+        * */
+        console.log($('span').hasClass('tip'));
+        console.log($('span').hasClass('top'));
+        console.log($('span').hasClass('border tab'));
+
+        /*
+        * addClass:
+        * 给元素批量添加class，添加的时候内部会防止重复添加。
+        * */
+        console.log($('span').addClass('aaa bbb ccc nav tip'));
+
+        /*
+        * removeClass:
+        * 不传参，删除所有class，
+        * 传参，批量删除指定class。
+        * */
+        //console.log($('span').removeClass('aaa bbb ccc'));
+        //console.log($('span').removeClass());
+
+
+        /*
+        * toggleClass:
+        * 有则删，没则加。
+        * */
+        console.log($('span').toggleClass('aaa bbb eee ddd border'));
+    </script>
+</body>
+</html>

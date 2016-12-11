@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+         * bind也是Function.prototype上定义的函数
+         * 语法：函数名.bind(指定函数的this指向);
+         * 返回值：返回一个新函数(相当于是之前的函数的一个封装)，新函数执行的this，指向你传入的this
+         * */
+        /*function fn() {
+            console.log(this);
+            console.log(arguments);
+        }
+        var f = fn.bind([1,2,3], [10, 20], 30, 40, 50);
+
+        // Edge、IE打印的是匿名函数，其他浏览器打印的是函数fn
+        console.log(f);
+
+        // f相当于fn的克隆，但并不是同一个函数
+        console.log(f === fn);
+
+        // this指向数组，但是参数向后排列了
+        f('a', 'b');
+
+        // this指向数组，但是参数向后排列了
+        f.call({val:1}, 'a', 'b');
+
+        // this指向实例，但是参数向后排列了
+        var shili = new f('a', 'b');
+
+        // this指向数组，但是参数向后排列了
+        f.call(shili, 'a', 'b');*/
+
+        /*-------------------------------------------------------------------*/
+
+        // 利用闭包，模拟实现Function.prototype.bind方法
+        Function.prototype.MyBind = function (obj) {
+
+            // 这个this，指向调用MyBind的函数
+            var self = this,
+            // 过滤掉第一个设置this指向的参数
+                arg = [].slice.call(arguments, 1);
+
+            return function () {
+
+                /*
+                 * 在作为构造函数使用时，
+                 * this无法和原生的bind保持一致，
+                 * 所以做如下解决，
+                 * 那么this就可以指向实例了。
+                 *
+                 * 但是这样做的话，
+                 * 如果对方通过实例调用该方法，
+                 * this就指向实例了，
+                 * 还是有bug。
+                 * */
+                /*if (this instanceof arguments.callee) {
+                    obj = this;
+                }*/
+
+                // 返回的函数中，调用那个(当初调用MyBind的函数)，
+                // 并改变它的this指向为(当初调用MyBind函数时指定的对象),
+                // 并把之前传给bind的参数传递过去。
+                self.apply(obj, arg.concat.apply(arg, arguments));
+            };
+        };
+
+        function myFn() {
+            console.log(this);
+            console.log(arguments);
+        }
+        var myF = myFn.MyBind({val:'test'}, 1, 2, 3);
+
+        // this指向对象，但是参数向后排列了
+        myF('hello');
+
+        // this指向对象，但是参数向后排列了
+        myF.call([1,2], 'hello');
+
+        // this指向对象，但是参数向后排列了
+        var shili = new myF('hello');
+
+        // this指向对象，但是参数向后排列了
+        myF.call(shili, 'hello');
+    </script>
+</body>
+</html>

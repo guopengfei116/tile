@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        // 把等腰三角形绘制到50，50点
+        ctx.moveTo( 50, 50 );
+
+        // 设定三角形底边长为30，高为20
+        ctx.lineTo( 65, 70 );
+        ctx.lineTo( 35, 70 );
+        ctx.lineTo( 50, 50 );
+
+        // 绘制天空蓝等腰三角形
+        ctx.strokeStyle = 'skyblue';
+        ctx.stroke();
+
+        /*-----------------------------------------------------------*/
+
+        // 为了防止重绘，所以清除上一个三角形的路径
+        ctx.beginPath();
+
+        // 把等腰三角形绘制到50，50点
+        ctx.moveTo( 100, 50 );
+
+        // 设定三角形底边长为30，高为20
+        ctx.lineTo( 115, 70 );
+        ctx.lineTo( 85, 70 );
+        ctx.lineTo( 100, 50 );
+
+        // 绘制天空蓝等腰三角形
+        ctx.strokeStyle = 'deeppink';
+        ctx.stroke();
+
+
+        /*
+        * 清除路径(开辟新路径)
+        * ctx.beginPath()
+        * 只要调用这个方法，页面中的所有路径就会被清除掉。
+        * */
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-3.1.0.js"></script>
+</head>
+<body>
+    <script>
+        /*
+        * each实例方法：
+        * 1、传入的回调函数先接收的是key，其次是val
+        * 2、回调执行时this指向val
+        * 3、返回值一个新实例
+        * 4、返回值不接受null和undefined
+        * */
+        $('body').map(function( i, val ) {
+            console.log( i, val, this );
+        });
+
+        /*
+         * each静态方法：
+         * 1、传入的回调函数先接收的是val，其次是key
+         * 2、回调执行时this指向window
+         * 3、返回值一个数组
+         * 4、返回值不接受null和undefined
+         * */
+        $.map( { val: '888' }, function( val, key ) {
+            console.log( val, key, this );
+        }).log
+
+        // 得到的是一个新实例
+        console.log($([1, 2, 3, 4, 5, 6]).map(function (i, val) {
+            return i % 2 === 0;
+        }));
+    </script>
+</body>
+</html>

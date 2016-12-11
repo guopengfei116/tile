@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+        * 入口函数的处理：
+        * 1、如果传入空，直接返回空实例
+        * 2、如果传入函数，把这个函数作为事件句柄添加到DOMContentLoaded事件中
+        * IE8不知道该事件，需要通过onreadystatechange事件来兼容处理
+        * 3、如果传入字符串，需要判断这个字符串是不是html片段，如果是，
+        * 就通过innnerHTML把它转为DOM元素，结果分别添加到实例中；
+        * 如果不是，就当做选择器获取页面中的DOM元素，结果分别添加到实例中。
+        * 4、如果传入的是DOM对象，那么直接添加到实例中。
+        * 5、如果传入伪数组，那么把伪数组中的每一项值分别添加到实例中。
+        * 6、其他类型的数据，直接添加到实例中。
+        * */
+
+        // 为了全局变量污染，把代码写到自调函数中
+        (function ( w ) {
+
+            // 为了用户使用方便，提供一个工厂函数
+            function jQuery( selector ) {
+                return new init( selector );
+            }
+
+            // 原型简写&原型默认拥有的属性与方法
+            jQuery.fn = jQuery.prototype = {
+                constructor: jQuery,
+                isReady: false
+            };
+
+            // 给jQuery自身以及原型添加一个extend方法
+            jQuery.extend = jQuery.fn.extend = function ( obj ) {
+                for ( var key in obj ) {
+                    this[key] = obj[key];
+                }
+            };
+
+            // 添加静态方法
+            jQuery.extend({
+
+                // 判断是不是函数
+                isFunction: function( func ) {
+                    return typeof func === 'function';
+                },
+
+                isString: function( str ) {
+                    return typeof str === 'string';
+                },
+
+                // 判断是不是DOM
+                isDOM: function( dom )  {
+                    return !!dom && !!dom.nodeType;
+                },
+
+                // 判断是不是html字符串
+                isHTML: function( html ) {
+                    return html.charAt(0) === '<' &&
+                            html.charAt(html.length - 1) === '>' &&
+                            html.length >= 3;
+                },
+
+                // 判断是不是window
+                isWindow: function( win ) {
+                    return !!win && win.window === win;
+                },
+
+                // 判断是不是伪数组或数组
+                isLikeArray: function( likeArray ) {
+
+                    // function & window 返回 false
+                    if ( jQuery.isFunction( likeArray ) || jQuery.isWindow( likeArray ) ) {
+                        return false;
+                    }
+
+                    // 如果likeArray是对象，并有length属性，length属性值为0或者拥有length-1的属性
+                    return !!likeArray && typeof likeArray === 'object' && 'length' in likeArray &&
+                            ( likeArray.length === 0 || [likeArray.length - 1] in likeArray );
+                },
+
+                // 解析html
+                parseHTML: function( html ) {
+                    var tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = html;
+                    return tempDiv.children;
+                },
+
+                // 封装一个兼容的DOMContentLoaded方法
+                ready: function( fn ) {
+
+                    // 如果页面已经触发了DOMContentLoaded事件，那么直接执行fn，
+                    // 再监听DOMContentLoaded事件已经无用了。
+                    if ( jQuery.fn.isReady ) {
+                        return fn();
+                    }
+
+                    // IE9以及现代浏览器使用addEventListener以及DOMContentLoaded事件
+                    if ( document.addEventListener ) {
+                        document.addEventListener('DOMContentLoaded', function () {
+                            jQuery.fn.isReady = true;
+                            fn();
+                        });
+                    }
+
+                    // IE8使用attachEvent以及onreadystatechange事件
+                    else {
+                        document.attachEvent('onreadystatechange', function () {
+                            if ( document.readyState === 'complete' ) {
+                                jQuery.fn.isReady = true;
+                                fn();
+                            }
+                        });
+                    }
+                }
+            });
+
+            // 构造函数
+            var init = jQuery.prototype.init = function ( selector ) {
+
+                // 空处理 ==> 直接返回this
+                if ( !selector ) {
+                    return this;
+                }
+
+                // 函数 ==> 添加到DOMContentLoaed事件中
+                if ( jQuery.isFunction( selector ) ) {
+                    jQuery.ready( selector );
+                }
+
+                // 字符串 ==> 要么解析为DOM，要么作为选择器获取页面中的DOM
+                else if ( jQuery.isString( selector ) ) {
+                    // html片段
+                    if ( jQuery.isHTML( selector ) ) {
+                        [].push.apply(this, jQuery.parseHTML( selector ));
+                    }
+                    // 选择器
+                    else {
+                        [].push.apply( this, document.querySelectorAll( selector ) );
+                    }
+                }
+
+                // dom ==> 直接添加到this中
+                else if ( jQuery.isDOM( selector ) ) {
+                    [].push.call( this, selector );
+                }
+
+                // 数组或伪数组 ==> 把每一项都添加到this中
+                else if ( jQuery.isLikeArray( selector ) ) {
+                    [].push.apply( this, selector );
+                }
+
+                // 其他 ==> 直接添加到this中
+                else {
+                    [].push.call( this, selector );
+                }
+            };
+
+            // 为了第三方扩展(即jQ插件)
+            init.prototype = jQuery.fn;
+
+            // 对外暴漏
+            w.jQuery = w.$ = jQuery;
+
+            // 解决DOMContentLoaded不触发的问题
+            $(function () {});
+
+        }( window ));
+
+        // 测试空
+        /*console.log($());;
+        console.log($(null));*/
+
+        // 测试函数
+        /*$(function () {
+            console.log('函数1');
+        });
+        $(function () {
+            console.log('函数2');
+        });*/
+
+        // 测试hmtl片段
+        /*console.log($('<a>11</a>是<span>阿迪</span>放<a>22</a>'));*/
+
+        // 测试字符串选择器
+        /*console.log($('abc'));
+        console.log($('script'));*/
+
+        // 测试dom
+        /*console.log( $( document.body ) );*/
+
+        // 测试伪数组
+        /*console.log( $([1,2]) );  // 每一项分别添加到this身上
+        console.log( $({ length: 0 }) ); // 每一项分别添加到this身上
+        console.log( $({ 9: '算数', length: 10 }) ); // 每一项分别添加到this身上
+        console.log( $({ 5: '不算数', length: 8 }) ); // 直接添加到this身上
+        console.log( $({ length: 4 }) ); // 直接添加到this身上
+        console.log( $(window) ); // 直接添加到this身上*/
+
+        // 测试其他
+        /*console.log( $(111) );*/
+
+        /*
+        * 存在的瑕疵：
+        * 1、当DOMContentLoaded触发完毕之后，在给他添加事件句柄，不会触发了
+        *    1、先定义一个变量，用来记录DOMContentLoaded是否触发过
+        *    2、如果触发过，那么传入ready的函数直接执行。
+        *
+        * 2、IE8以及之前的版本这样使用有问题 [].push.apply( this, {0:1, length:1} );
+        * */
+
+        setTimeout(function () {
+            $(function () {
+                console.log('传入$的函数');
+            });
+            $(function () {
+                console.log('过一会传入$的函数');
+            });
+        }, 3000);
+    </script>
+</body>
+</html>
+

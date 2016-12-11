@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        /*
+        * 设置描边色：
+        * ctx.strokeStyle = css支持的所有颜色表示方式，这里都支持
+        *
+        * 当修改了这个描边色之后，一些和描边相关的方法，再次调用时都会受到影响。
+        * */
+
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        // 把等腰三角形绘制到50，50点
+        ctx.moveTo( 50, 50 );
+
+        // 设定三角形底边长为30，高为20
+        ctx.lineTo( 65, 70 );
+        ctx.lineTo( 35, 70 );
+        ctx.lineTo( 50, 50 );
+
+        // 描边
+        ctx.stroke();
+
+
+        // 修改描边样式
+        ctx.strokeStyle = 'skyblue';
+
+        // 按照新的描边样式描边
+        ctx.stroke();
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        /*
+        * 线帽样式：
+        * ctx.lineCap = 'butt' || 'round' || 'square'
+        * 默认值为butt。
+        * round用来设置圆头(圆的半径是线宽的一半)，square是两段个加长线宽的一半。
+        * */
+
+        ctx.lineWidth = 10;
+        ctx.strokeStyle = 'blue';
+
+        ctx.moveTo( 10, 10 );
+        ctx.lineTo( 210, 10 );
+        ctx.stroke();
+
+
+        ctx.beginPath();
+        ctx.lineCap = 'round';
+        ctx.moveTo( 10, 30 );
+        ctx.lineTo( 210, 30 );
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.lineCap = 'square';
+        ctx.moveTo( 10, 50 );
+        ctx.lineTo( 210, 50 );
+        ctx.stroke();
+    </script>
+</body>
+</html>

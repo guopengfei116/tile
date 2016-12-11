@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-3.1.0.js"></script>
+</head>
+<body>
+    <div>
+        <span>111</span>
+        <span>2222</span>
+    </div>
+    <div>
+        <span>33333</span>
+        <span>44444</span>
+    </div>
+    <script>
+        /*
+        * 清空所有元素的内容，返回this
+        * */
+        console.log($('div').empty());
+
+        /*
+         * 删除所有元素，返回this
+         * */
+        console.log($('div').remove());
+
+       // 删除元素自己，元素.parentNode.removeChild( 元素 )
+        /*var div = document.querySelector('div');
+        div.parentNode.removeChild( div );*/
+    </script>
+</body>
+</html>

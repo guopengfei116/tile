@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>instanceof考题</title>
+</head>
+<body>
+    <script>
+        // copy函数
+        function extend(obj1, obj2) {
+            for(var key in obj2) {
+                obj1[key] = obj2[key];
+            }
+        }
+
+        // 考题1系列
+        console.log('------------------1-----------------');
+        function Person() {}
+        // 给原生原型添加一个属性
+        Person.prototype.eat = '吃';
+        var zs = new Person();
+        console.log(zs instanceof Person);  // true
+        console.log(zs instanceof Function); // false
+        console.log(zs instanceof Object); // true
+
+        // zs ==> Person.prototype(原生) ==> Object.prototype ==> null
+
+        // 考题2系列
+        // 覆写原生原型对象
+        console.log('------------------2-----------------');
+        Person.prototype = {
+            run: '跑'
+        };
+        var xgl = new Person();
+        console.log(zs instanceof Person);  // false
+        console.log(xgl instanceof Person); // true
+
+        // xgl ==> Person.prototype(新的) ==> Object.prototype ==> null
+
+        // 考题3系列
+        console.log('------------------3-----------------');
+        function Student() {}
+        var zj = new Student();
+        extend(Student.prototype, Person.prototype);
+
+        // zj ==> Student.prototype(原生) ==> Object.prototype ==> null
+
+        console.log(zj instanceof Student); // true
+        console.log(zj instanceof Person); // false
+        console.log(zs instanceof Student); // false
+        console.log(zs instanceof Person); // false
+        console.log(xgl instanceof Student);  // false
+        console.log(xgl instanceof Person);  // true
+
+        var sl = new Student();
+        console.log(sl instanceof Student); // true
+        console.log(sl instanceof Person); // false
+
+        // sl ==> Student.prototype(原生) ==> Object.prototype ==> null
+
+        // 考题4系列
+        console.log('------------------4-----------------');
+        var ll = Object.create(Student.prototype);
+
+        // ll ==> Student.prototype(原生) ==> Object.prototype ==> null
+
+        console.log(ll instanceof Student); // true
+        console.log(ll instanceof Person); // false
+
+
+        // 考题5系列
+        console.log('------------------5-----------------');
+        Student.prototype = new Person();
+        var tj = new Student();
+
+        // tj ==> Student.prototype(new Person()实例) ==> Person.prototype(新的) ==> Object.prototype ==> null
+
+        console.log(ll instanceof Student);  // false
+        console.log(ll instanceof Person); // false
+        console.log(tj instanceof Student); // true
+        console.log(tj instanceof Person); // true
+
+        // 考题6系列
+        console.log('------------------6-----------------');
+
+        // new Date ==> Date.prototype ==> Object.prototype ==> null
+
+        console.log(new Date instanceof Function);  // false
+        console.log(new Date instanceof Object); // true
+
+        // new Function ==> Function.prototype ==> Object.prototype ==> null
+
+        console.log(new Function instanceof Function); // true
+        console.log(new Function instanceof Object); // true
+
+        // Number ==> Function.prototype ==> Object.prototype ==> null
+
+        console.log(Number instanceof Function); // true
+        console.log(Number instanceof Object);  // true
+
+        // Function ==> Function.prototype ==> Object.prototype ==> null
+
+        console.log(Function instanceof Function); // true
+        console.log(Function instanceof Object); // true
+
+        // Object ==> Function.prototype ==> Object.prototype ==> null
+
+        console.log(Object instanceof Function);  // true
+        console.log(Object instanceof Object); // true
+    </script>
+</body>
+</html>

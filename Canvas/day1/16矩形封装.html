@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        // 矩形构造函数
+        function Rect( x, y, width, height, lineWidth, strokeStyle, fillStyle ) {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.lineWidth = lineWidth;
+            this.strokeStyle = strokeStyle;
+            this.fillStyle = fillStyle;
+        }
+
+        // 根据实例的属性值绘制对应的矩形图形
+        Rect.prototype.draw = function() {
+            ctx.beginPath();
+            ctx.moveTo( this.x, this.y );
+            ctx.lineTo( this.x + this.width, this.y );
+            ctx.lineTo( this.x + this.width, this.y + this.height );
+            ctx.lineTo( this.x, this.y + this.height );
+            ctx.closePath();
+
+            ctx.lineWidth = this.lineWidth;
+            ctx.strokeStyle = this.strokeStyle;
+            ctx.fillStyle = this.fillStyle;
+
+            ctx.fill();
+            ctx.stroke();
+        };
+
+        var rect1 = new Rect( 10, 10, 50, 50, 4, 'blue', 'green' );
+        var rect2 = new Rect( 100, 10, 50, 50, 4, 'red', 'yellow' );
+
+        rect1.draw();
+        rect2.draw();
+    </script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>T-Rex</title>
+</head>
+<body>
+    <script>
+        (function (w) {
+
+            /*
+            * @constructor
+            * @param { outerContainerId : string } 外面包含元素的ID
+            * @param { config : Object } 配置项
+            * */
+            function Runner(outerContainerId, config) {
+
+                // 单利模式
+                if (Runner._instance) {
+                    return Runner._instance;
+                }
+                Runner._instance = this;
+
+                this.outerContainerEL = document.querySelector(outerContainerId);
+                this.containerEL = null;
+
+                this.config = config || Runner.config;
+
+                this.dimensions = Runner.defaultDimensions;
+
+                this.canvas = null;
+                this.canvasCtx = null;
+
+                this.tRex = null;
+
+                this.distanceMeter = null;
+                this.distanceRan = 0;
+
+                this.highestScore = 0; // 最高分数
+
+                this.time = 0;
+                this.runningTime = 0; // 运行时间
+                this.msPerFrame = 1000 / FPS;  // 每帧时间
+                this.currentSpeed = this.config.SPEED; // 当前速度
+
+                this.obstacles = [];
+
+                this.started = false;
+                this.activated = false;
+                this.orashed = false;
+                this.paused = false;
+
+                this.resizeTimerId = null;
+
+                this.playCount = 0;
+
+                // 音效
+                this.audioBuffer = null;
+                this.soundFx = {};
+
+                // 全局网络音频播放器
+                this.audioContext = new AudioContext();
+
+                // Images
+                this.images = {};
+                this.imagesLoaded = 0;
+                this.loadImages();
+            }
+
+            // 暴漏到全局
+            w.Runner = Runner;
+
+
+            // 默认游戏宽
+            var DEFAULT_WIDTH = 600;
+
+            // 每秒帧率
+            var FPS = 60;
+
+            // 是否高分辨率
+            var IS_HIDPI = window.devicePixelRatio > 1;
+
+            // 是否手机
+            var IS_MOBILE = window.navigator.userAgent.indexOf('Mobi') > 1;
+
+            // 是否支持触屏
+            var IS_TOUCE_ENABLED = 'ontouchstart' in window;
+
+            // 默认的游戏配置
+            Runner.config = {
+                ACCELERATION: 0.001, // 加速度
+                BG_CLOUD_SPEED: 0.2, // 背景云彩速度
+                BOTTOM_PAD: 10, // 底部填补
+                CLEAR_TIME: 3000, // 清除时间
+                CLOUD_FREQUENCY: 0.5, // 云彩频率
+                GAMEOVER_CLEAR_TIME: 750, // 游戏结束清除时间
+                GAP_COEFFICIENT: 0.6, // 间隙系数
+                GRAVITY: 0.6, // 重力
+                INITIAL_JUMP_VELOCITY: 12, // 最初跳跃速度
+                MAX_CLOUDS: 6, // 最多的云彩数量
+                MAX_OBSTACLE_LENGTH: 3, // 最多的障碍数量
+                MAX_SPEED: 12, // 最大速度
+                MIN_JUMP_HEIGHT: 35, // 最小跳跃高度
+                MOBILE_SPEED_COEFFICIENT: 1.2, // 手机速度系数
+                RESOURCE_TEMPLATE_ID: 'audio-resources', // 资源模版ID
+                SPEED: 6, // 速度
+                SPEED_DROP_COEFFICIENT: 3 // 速度下落系数
+            };
+
+            // 默认大小
+            Runner.defaultDimensions = {
+                WIDTH: DEFAULT_WIDTH,
+                HEIGHT: 150
+            };
+
+            // CSS类名名称
+            Runner.classes = {
+                CANVAS: 'runner-canvas',
+                CONTAINER: 'runner-container',
+                CRASHED: 'crashed',
+                ICON: 'icon-offline',
+                TOUCH_CONTROLLER: 'controller'
+            };
+
+            // 图片资源urls
+            Runner.imageSources = {
+                LDPI: [
+                    {
+                        name: 'CACTUS_LARGE',
+                        id: '1x-obstacle-large'
+                    },
+                    {
+                        name: 'CACTUS_SMALL',
+                        id: '1x-obstacle-small'
+                    },
+                    {
+                        name: 'CLOUD',
+                        id: '1x-cloud'
+                    },
+                    {
+                        name: 'HORIZON',
+                        id: '1x-horizon'
+                    },
+                    {
+                        name: 'RESTART',
+                        id: '1x-restart'
+                    },
+                    {
+                        name: 'TEXT_SPRITE',
+                        id: '1x-text'
+                    },
+                    {
+                        name: 'TREX',
+                        id: '1x-trex'
+                    }
+                ],
+                HDPI: [
+                    {
+                        name: 'CACTUS_LARGE',
+                        id: '2x-obstacle-large'
+                    },
+                    {
+                        name: 'CACTUS_SMALL',
+                        id: '2x-obstacle-small'
+                    },
+                    {
+                        name: 'CLOUD',
+                        id: '2x-cloud'
+                    },
+                    {
+                        name: 'HORIZON',
+                        id: '2x-horizon'
+                    },
+                    {
+                        name: 'RESTART',
+                        id: '2x-restart'
+                    },
+                    {
+                        name: 'TEXT_SPRITE',
+                        id: '2x-text'
+                    },
+                    {
+                        name: 'TREX',
+                        id: '2x-trex'
+                    }
+                ]
+            };
+
+
+
+        }(window));
+    </script>
+</body>
+</html>

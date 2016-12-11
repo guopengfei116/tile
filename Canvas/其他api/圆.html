@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="cvs" width="500" height="500" style="border:1px solid red;"></canvas>
+<script>
+    var cvs = document.getElementById('cvs');
+    var ctx = cvs.getContext('2d');
+
+    /*
+     * @function {extend} 对象属性copy
+     * @param {obj} 要拷贝的对象
+     * @param {obj2} 被拷贝的对象
+     * */
+    function extend(obj1, obj2) {
+        for (var key in obj2) {
+            obj1[key] = obj2[key];
+        }
+    }
+
+    // 精灵类
+    (function (w) {
+        function circle(x, y, r, R, G, B, A, speedX, speedY) {
+            this.x = x;   // 圆心X
+            this.y = y;   // 圆心Y
+            this.r = r;   // 半径
+            this.speedX = speedX || 0; // X轴行走速度，默认为0
+            this.speedY = speedY || 0;  // Y轴行走速度，默认为0
+            this.R = R;  // 圆红色值
+            this.G = G;  // 圆绿色值
+            this.B = B;  // 圆蓝色值
+            this.A = A;  // 圆透明值
+        }
+
+        // 扩展原型方法
+        extend(circle.prototype, {
+
+            // 精灵渲染函数
+            draw : function () {
+                var rgba = this.R + ',' + this.G + ',' + this.B + ',' + this.A;
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(' + rgba + ')';
+                ctx.arc(this.x, this.y, this.r, 0, 2*Math.PI);
+                ctx.stroke();
+            },
+
+            // 更新下一步的渲染数据
+            update : function () {
+                switch (this.direction) {
+                    case 0:  // 左
+                        if (this.speedX > 0) {
+                            this.x -= this.speedX;
+                        }else {
+                            this.x += this.speedX;
+                        }
+                        // 超出左边就放到最右边
+                        if(this.x < -this.r) {
+                            this.x = cvs.width;
+                        }
+                        break;
+                    case 2:  // 上
+                        if (this.speedY > 0) {
+                            this.y -= this.speedY;
+                        }else {
+                            this.y += this.speedY;
+                        }
+                        // 超出上边就放到最下边
+                        if(this.y < -this.r) {
+                            this.y = cvs.height;
+                        }
+                        break;
+                    case 4: // 右
+                        if (this.speedX > 0) {
+                            this.x += this.speedX;
+                        }else {
+                            this.x -= this.speedX;
+                        }
+                        // 超出右边就放到最左边
+                        if(this.x > cvs.width) {
+                            this.x = -this.r;
+                        }
+                        break;
+                    case 6:  // 下
+                        if (this.speedY > 0) {
+                            this.y += this.speedY;
+                        }else {
+                            this.y -= this.speedY;
+                        }
+                        // 超出下边就放到最上边
+                        if(this.y > cvs.height) {
+                            this.y = -this.r;
+                        }
+                        break;
+                }
+            },
+
+            updateDirection : function (keyCode) {
+                switch (keyCode) {
+                    case 37:  // 左
+                        this.direction = 0;
+                        break;
+                    case 38:  // 上
+                        this.direction = 2;
+                        break;
+                    case 39: // 右
+                        this.direction = 4;
+                        break;
+                    case 40:  // 下
+                        this.direction = 6;
+                        break;
+                }
+            }
+        });
+
+        w.circle = circle;
+
+    }(window));
+
+
+    // 操纵精灵，并对外暴露一个补充精灵的接口
+    var addcircle = (function () {
+
+        // 存放精灵类
+        var circles = [];
+
+
+        // 画布渲染
+        setInterval(function () {
+            ctx.clearRect(0, 0, cvs.width, cvs.height);  // 清除画布
+
+            // 渲染全部精灵
+            for(var i = 0; i < circles.length; i++) {
+                circles[i].draw();  // 渲染精灵
+                circles[i].update(); // 更新精灵下一次要渲染的数据
+            }
+        }, 1000 / 60);
+
+        // 监听键盘按下事件，通过方向键控制精灵行走方向
+        document.addEventListener('keydown', function (e) {
+
+            // 如果是上档键，则重置全部精灵的随机位置
+            if(e.keyCode == 16) {
+                // 刷新全部精灵的方向
+                for(var i = 0; i < circles.length; i++) {
+                    circles[i].direction = Math.floor(Math.random() * 4) * 2;
+                }
+                return;
+            }
+
+            // 其他方向键刷新全部精灵的方向
+            for(var i = 0; i < circles.length; i++) {
+                circles[i].updateDirection(e.keyCode);
+            }
+
+        });
+
+        return function (newcircle) {
+            console.log(newcircle);
+            circles.push(newcircle);
+        };
+    }());
+
+
+    // 创建精灵
+    (function () {
+        // 通过circle类创造精灵，属性值随机
+        var   tempX = 0,  // 圆心X轴坐标
+                tempY = 0, // 圆心Y轴坐标
+                tempRad = 0, // 圆半径
+                tempR = 0,
+                tempG = 0,
+                tempB = 0,
+                tempA = 0,
+                tempSpeedX = 0,
+                tempSpeedY = 0;
+
+        for (var i = 0; i < 150; i++) {
+            tempX = Math.floor(Math.random() * 440) + 30; // 30~439
+            tempY = Math.floor(Math.random() * 440) + 30; // 30~439
+            tempRad = Math.floor(Math.random() * 20) + 2; // 2到21
+            tempR = Math.floor(Math.random() * 255) + 1; // 1到255
+            tempG = Math.floor(Math.random() * 255) + 1; // 1到255
+            tempB = Math.floor(Math.random() * 255) + 1; // 1到255
+            tempA = Math.random() + 0.01; // 0.01到1之间
+            tempSpeedX = Math.random() * 3 + 0.5; // 0.5到3之间
+            tempSpeedY = Math.random() * 3 + 0.5; // 0.5到3之间
+            addcircle(new circle(tempX, tempY, tempRad,
+                    tempR, tempG, tempB, tempA,
+                    tempSpeedX, tempSpeedY));
+        }
+    }());
+
+</script>
+</body>
+</html>

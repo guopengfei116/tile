@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <span>123</span>
+    </div>
+    <script>
+        var div = document.getElementsByTagName('div')[0];
+        function addEvent( ele, type, fn ) {
+            if( ele.addEventListener ) {
+                ele.addEventListener( type, fn );
+            }else {
+                ele.attachEvent( 'on' + type, fn );
+            }
+        }
+
+        // IE8，this没问题，指向div，e的值为undefined(window.event获取)
+        div.onclick = function( e ) {
+            console.log( this, e );
+        };
+
+        // IE8，this存在问题，指向window，e的值没问题
+        addEvent( div, 'click', function( e ) {
+            console.log( this, e );
+        });
+    </script>
+</body>
+</html>

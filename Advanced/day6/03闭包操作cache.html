@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        function createCache() {
+            var data = [], max = 3;
+
+            function cache(key ,val) {
+                if (data.length >= 3) {
+                    var temp = data.shift;
+                    delete cache[temp];
+                }
+
+                data.push(key);
+                cache[key] = value;
+            }
+        }
+    </script>
+</body>
+</html>

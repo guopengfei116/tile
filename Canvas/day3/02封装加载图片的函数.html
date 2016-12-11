@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        // 传入一个图片资源地址，返回一个加载好的图片资源
+        function loadImg( src ) {
+            var img = new Image();
+            img.src = src;
+
+            /*
+             * 要保证返回给调用者的是加载完毕后的img，
+             * 必须要监听onload事件。
+             * */
+            img.onload = function() {
+                return img;
+            };
+        }
+
+        // 这样loadImg方法的返回值为默认的undefined，
+        // 所以无法靠返回值得到加载完毕的img
+        console.log(loadImg('./img/ladyLiberty.jpg'));
+
+        /*---------------------------解决方案：回调-------------------------------*/
+
+        // 传入一个图片资源地址，返回一个加载好的图片资源
+        function loadImg2( src, fn ) {
+            var img = new Image();
+            img.src = src;
+
+            /*
+             * 要保证返回给调用者的是加载完毕后的img，
+             * 必须要监听onload事件。
+             * 当onload事件触发时，
+             * 通过回调的形式把加载好img传给方法调用者。
+             * */
+            img.onload = function() {
+                fn( img );
+            };
+        }
+
+        loadImg2('./img/ladyLiberty.jpg', function( loadedImg ) {
+            // 传入的回调会在img加载完毕后被调用，
+            // 同时会把加载好的img传入该回调。
+
+            // 测试，如果img有宽高，那么证明img已经加载完毕
+            console.log(loadedImg.width);
+        });
+    </script>
+</body>
+</html>

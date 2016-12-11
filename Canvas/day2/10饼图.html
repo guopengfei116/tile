@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        // 角度转换为弧度
+        function angleToRadian( angle ) {
+            return Math.PI / 180 * angle;
+        }
+
+        /*
+        * constructor { PipeChart } 饼图构造函数
+        * param { ctx: Context } 绘图上下文
+        * param { data: Array } 绘制饼图所需的数据
+        * param { x: number } 圆心x坐标
+        * param { y: number } 圆心y坐标
+        * param { r: number } 饼图半径
+        * */
+        function PipeChart( ctx, data, x, y, r ) {
+
+            this.ctx = ctx;
+            this.data = data;
+            this.x = x;
+            this.y = y;
+            this.r = r;
+
+            this.colors = 'honeydew,hotpink,indianred,deeppink,ivory,skyblue,lavender,lavenderblush'.split(',');
+
+            this.processData();
+        }
+
+        // 置换原型
+        PipeChart.prototype = {
+
+            constructor: PipeChart,
+
+            // 绘制饼图
+            draw: function() {
+                this.drawPipe();
+            },
+
+            // 根据数据转换成对应的角度
+            processData: function() {
+                /*
+                * 实现思路：
+                * 1、求单位数据所占用的角度 ==> 360 / 数据总和
+                * 2、使用单位数据所占用角度 * 每一份数据值得到每一份数据所占用的角度
+                * 3、把计算好的角度使用一个数据存储起来，供其他方法使用
+                * */
+                var self = this;
+
+                // 求数据总和
+                var num = 0;
+                this.data.forEach( function( val ) {
+                    num += val;
+                });
+
+                // 求单位数据所占用的角度
+                var unitAngle = 360 / num;
+
+                // 用来存储数据所占用饼图的角度
+                this.processArr = [];
+
+                this.data.forEach( function( val ) {
+                    // 这里的this不是饼图实例，所以使用self
+                    self.processArr.push( unitAngle * val );
+                });
+            },
+
+            // 绘制饼中的扇
+            drawPipe: function() {
+
+                // 扇形默认起点和结束点
+                var startAngle = 0;
+                var endAngle = 0;
+
+                /*
+                * 实现思路：
+                * 1、遍历所有计算好的角度
+                * 2、beginPath、moveTo到饼图圆心
+                * 3、画对应扇形的弧
+                * 3.1、弧的起点位置 = 上一个弧的结束点
+                * 3.2、弧的结束点位置 = 上一个弧的结束点 + 自己的角度
+                * 4、closePath
+                * 5、修改填充色
+                * 6、fill
+                * */
+
+                // 遍历所有计算好的角度，绘制成不同颜色的扇形
+                for( var i = 0, len = this.processArr.length; i < len; i++ ) {
+
+                    // 当前扇形弧的起点位置 = 上一个扇形弧的结束点
+                    // 当前扇形弧的结束点位置 = 上一个扇形弧的结束点 + 自己扇形所占用的角度
+                    startAngle = endAngle;
+                    endAngle = endAngle + this.processArr[i];
+
+                    this.ctx.beginPath();
+                    this.ctx.moveTo( this.x, this.y );
+                    this.ctx.arc( this.x, this.y, this.r, angleToRadian( startAngle ), angleToRadian( endAngle ) );
+                    this.ctx.closePath();
+                    this.ctx.fillStyle = this.colors[ i ];
+                    this.ctx.fill();
+                }
+            }
+        };
+
+
+        var pipeChart = new PipeChart(ctx, [ 100, 10, 300, 300, 500, 200 ], 200, 200, 80);
+        pipeChart.draw();
+    </script>
+</body>
+</html>

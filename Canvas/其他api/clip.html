@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas id="cvs" width="500px"; height="500px"; style="border:1px solid black;"></canvas>
+    <script>
+        // 得到canvas标记的DOM对象
+        var cvs = document.getElementById('cvs');
+        var ctx = cvs.getContext('2d');
+
+        // 保存状态
+        ctx.fillStyle="green";
+        ctx.save();
+
+        // 剪切矩形区域
+        //ctx.rect(0, 0, 200, 200);
+        ctx.arc(100, 100, 100, 0, Math.PI*2);
+        ctx.stroke();
+        ctx.clip();
+
+        // 保存状态
+        ctx.save();
+
+        // 在裁剪的区域绘制矩形，超出的部分被隐藏了
+        ctx.fillStyle="orangeRed";
+        ctx.fillRect(100, 0, 200, 50);
+
+        // 回滚状态
+        ctx.restore();
+
+        // 在回滚之后绘制矩形，
+        // 超出的部分被隐藏了，
+        // 说明裁剪状态可以被保存
+        ctx.fillRect(100, 60, 200, 50);
+
+        // 再回滚状态
+        ctx.restore();
+
+        // 在回滚之后绘制矩形，
+        // 超出的部分可以显示了
+        ctx.fillRect(100, 120, 200, 50);
+    </script>
+</body>
+</html>

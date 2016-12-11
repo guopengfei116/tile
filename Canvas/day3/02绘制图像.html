@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas style="border:1px solid red" width="500" height="500"></canvas>
+<script>
+    var cvs = document.querySelector('canvas');
+    var ctx = cvs.getContext('2d');
+
+    var img = new Image();
+    img.src = './125.jpg';
+
+    /*
+    * 绘制图像，使用方式一，3参数：
+    * ctx.drawImage( 要绘制的图像资源，图像绘制到画布的x轴坐标，图像绘制到画布的y轴坐标 );
+    * */
+
+    // 要使用img，必须保证img图片下载完毕，
+    // 这里可以通过监听img的onload获知img图片加载完毕了。
+    /*img.onload = function() {
+        ctx.drawImage( img, 10, 10 );
+    };*/
+
+    /*
+     * 绘制图像，使用方式二，5参数：
+     * ctx.drawImage( 要绘制的图像资源，x轴坐标，y轴坐标, 指定图像绘制的宽度，指定图像绘制的高度 );
+     * */
+
+    /*img.onload = function() {
+        ctx.drawImage( img, 10, 10, 300, 300 );
+    };*/
+
+    /*
+     * 绘制图像，使用方式三，9参数：
+     * ctx.drawImage( 要绘制的图像资源，
+     * 裁剪的起点x轴坐标，裁剪的起点y轴坐标，裁剪多宽，裁剪多高，
+     * x轴坐标，y轴坐标, 指定图像绘制的宽度，指定图像绘制的高度 );
+     * */
+
+    img.onload = function() {
+        ctx.drawImage( img,
+                500, 400, 400, 400,
+                10, 10, 100, 100 );
+    };
+
+</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        // 为了全局变量污染，把代码写到自调函数中
+        (function ( w ) {
+
+            // 为了用户使用方便，提供一个工厂函数
+            function jQuery( selector ) {
+                return new init( selector );
+            }
+
+            // 原型简写&原型默认拥有的属性与方法
+            jQuery.fn = jQuery.prototype = {
+                constructor: jQuery,
+                jQ1: 111,
+                jQ2: 222
+            };
+
+            // 构造函数
+            var init = jQuery.prototype.init = function () {
+
+            };
+
+            // 为了第三方扩展(即jQ插件)
+            init.prototype = jQuery.prototype;
+
+            // 对外暴漏
+            w.jQuery = w.$ = jQuery;
+
+        }( window ));
+
+        // 得到的是init的实例
+        console.log($());
+        console.log($('abc'));
+        console.log($().jQ1);
+
+    </script>
+</body>
+</html>

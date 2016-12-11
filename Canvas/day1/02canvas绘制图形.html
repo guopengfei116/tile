@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border:1px solid red"></canvas>
+    <script>
+        /*
+        * canvas要展示的绘制效果是通过js来绘制的。
+        *
+        * 那么如何通过JS来绘制图形呢：
+        * 1、需要获取一个绘图环境。
+        *
+        * 如何获取绘图环境：
+        * 1、通过canvasDOM元素提供的一个方法,getContext。
+        * */
+
+        /*
+        * 获取绘图环境的方法：
+        * canvas.getContext( '2d' || 'webgl' )
+        * 传入2d代表获取一个2d绘图环境，传入3d代表获取一个3d绘图环境。
+        * */
+
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        /*
+        * 接下来可以绘图图形了：
+        * 1、先移动钢笔到指定的位置(图形的起始位置)
+        * 2、画图形的路径
+        * 3、描边
+        * */
+
+        // 1、先移动钢笔到指定的位置
+        ctx.moveTo( 0, 0 );
+
+        // 2、画图形的路径( 绘制矩形 )
+        /*
+        * 计算矩形四点的坐标：
+        * 1、左上角点：0，0
+        * 2、右上角点：100, 0
+        * 3、右下角点：100,100
+        * 4、左下角点：0,100
+        * */
+        ctx.lineTo(100, 0);
+        ctx.lineTo(100, 100);
+        ctx.lineTo(0, 100);
+        ctx.lineTo(0, 0);
+
+        // 3、描边
+        ctx.stroke();
+    </script>
+</body>
+</html>

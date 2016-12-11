@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../整体/core.js"></script>
+</head>
+<body>
+    <div>
+        <span>123</span>
+    </div>
+    <script>
+        $.extend({
+
+            /*
+             * function { addEvent } 绑定事件
+             * param { ele: DOM } 绑定事件的dom对象
+             * param { type: string } 事件类型
+             * param { fn: Function } 事件处理函数
+             * */
+            addEvent: function( ele, type, fn ) {
+
+                // ele不是DOM，type不是字符串，fn不是函数，打包带走
+                if( !jQuery.isDOM( ele ) || !jQuery.isString( type ) || !jQuery.isFunction( fn ) ) {
+                    return;
+                }
+
+                // 兼容绑定事件
+                if( ele.addEventListener ) {
+                    ele.addEventListener( type, fn );
+                }else {
+
+                    // IE8事件处理函数执行时内部this指向window，需要手动调整为对应元素
+                    ele.attachEvent( 'on' + type, function( e ) {
+                        fn.call( ele, e );
+                    });
+                }
+            },
+
+            /*
+             * function { addEvent } 解除事件
+             * param { ele: DOM } 解除事件的dom对象
+             * param { type: string } 事件类型
+             * param { fn: Function } 事件处理函数
+             * */
+            removeEvent: function( ele, type, fn ) {
+
+                // ele不是DOM，type不是字符串，fn不是函数，打包带走
+                if( !jQuery.isDOM( ele ) || !jQuery.isString( type ) || !jQuery.isFunction( fn ) ) {
+                    return;
+                }
+
+                // 兼容移除事件
+                if( ele.removeEventListener ) {
+                    ele.removeEventListener( type, fn );
+                }else {
+                    ele.detachEvent( 'on' + type, fn );
+                }
+            }
+        });
+    </script>
+    <script>
+        var div = document.querySelector('div');
+        var span = document.querySelector('span');
+        $.addEvent( span, 'click', function( e ) {
+            // 优先返回底层的元素，IE8需要使用srcElement获取，得到span
+            var target = e.target || e.srcElement;
+            console.log( target === span );
+            console.log( this === span );
+        });
+
+        $.addEvent( div, 'click', function( e ) {
+            // 优先返回底层的元素，IE8需要使用srcElement获取，得到span
+            var target = e.target || e.srcElement;
+            console.log( target === span );
+            console.log( this === div );
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>instanceof考题</title>
+</head>
+<body>
+    <script>
+        // copy函数
+        function extend(obj1, obj2) {
+            for(var key in obj2) {
+                obj1[key] = obj2[key];
+            }
+        }
+
+        // 考题1系列
+        console.log('------------------1-----------------');
+        function Person() {}
+        // 给原生原型添加一个属性
+        Person.prototype.eat = '吃';
+        var zs = new Person();
+        console.log(zs instanceof Person);  //
+        console.log(zs instanceof Function); //
+        console.log(zs instanceof Object); //
+
+        // zs ==>
+
+        // 考题2系列
+        // 覆写原生原型对象
+        console.log('------------------2-----------------');
+        Person.prototype = {
+            run: '跑'
+        };
+        var xgl = new Person();
+        console.log(zs instanceof Person);  //
+        console.log(xgl instanceof Person); //
+
+        // xgl ==>
+
+        // 考题3系列
+        console.log('------------------3-----------------');
+        function Student() {}
+        var zj = new Student();
+        extend(Student.prototype, Person.prototype);
+
+        // zj ==>
+
+        console.log(zj instanceof Student); //
+        console.log(zj instanceof Person); //
+        console.log(zs instanceof Student); //
+        console.log(zs instanceof Person); //
+        console.log(xgl instanceof Student);  //
+        console.log(xgl instanceof Person);  //
+
+        var sl = new Student();
+        console.log(sl instanceof Student); //
+        console.log(sl instanceof Person); //
+
+        // sl ==>
+
+        // 考题4系列
+        console.log('------------------4-----------------');
+        var ll = Object.create(Student.prototype);
+
+        // ll ==>
+
+        console.log(ll instanceof Student); //
+        console.log(ll instanceof Person); //
+
+        // 考题5系列
+        console.log('------------------5-----------------');
+        Student.prototype = new Person();
+        var tj = new Student();
+
+        // tj ==>
+
+        console.log(ll instanceof Student);  //
+        console.log(ll instanceof Person); //
+        console.log(tj instanceof Student); //
+        console.log(tj instanceof Person); //
+
+        // 考题6系列
+        console.log('------------------6-----------------');
+
+        // new Date ==>
+
+        console.log(new Date instanceof Function);  //
+        console.log(new Date instanceof Object); //
+
+        // new Function ==>
+
+        console.log(new Function instanceof Function); //
+        console.log(new Function instanceof Object); //
+
+        // Number ==>
+
+        console.log(Number instanceof Function); //
+        console.log(Number instanceof Object);  //
+
+        // Function ==>
+
+        console.log(Function instanceof Function); //
+        console.log(Function instanceof Object); //
+
+        // Object ==>
+
+        console.log(Object instanceof Function);  //
+        console.log(Object instanceof Object); //
+    </script>
+</body>
+</html>

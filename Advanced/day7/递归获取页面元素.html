@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+    </ul>
+    <div>
+        <span>
+            <img/>
+        </span>
+        <span>
+            <img/>
+            <iframe></iframe>
+        </span>
+        <span>
+            <img/>
+        </span>
+    </div>
+    <section>
+        <article>
+            <h3>100</h3>
+            <ul>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+            </ul>
+        </article>
+    </section>
+    <script>
+         // 获取根节点和所有子节点的集合
+         var arr1 = [];
+         (function getChildren(node) {
+             arr1.push(node);
+             var chil = node.children;
+             for (var i = 0; i < chil.length; i++) {
+                getChildren(chil[i]);
+             }
+         })(document.body);
+         console.log(arr1);
+
+         // 获取所有子节点的集合，不包含根节点
+         var arr2 = [];
+         (function getChildren(node) {
+             var chil = node.children;
+             arr2.push.apply(arr2, chil);
+             for (var i = 0; i < chil.length; i++) {
+                 getChildren(chil[i]);
+             }
+         })(document.body);
+         console.log(arr2);
+
+         // 只获取没有子节点的元素
+         var arr3 = [];
+         (function getChildren(node) {
+             var chil = node.children;
+             if (!chil.length) {
+                 arr3.push(node);
+             }
+             for (var i = 0; i < chil.length; i++) {
+                 getChildren(chil[i]);
+             }
+         })(document.body);
+         console.log(arr3);
+    </script>
+</body>
+</html>

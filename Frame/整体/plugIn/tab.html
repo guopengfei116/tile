@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../core.js"></script>
+    <script src="../ajax/ajax.js"></script>
+    <script src="../animate/animate.js"></script>
+    <script src="../attr&css/attr&css.js"></script>
+    <script src="../dom/dom.js"></script>
+    <script src="../event/event.js"></script>
+    <style>
+        .tab {
+            overflow: hidden;
+            width: 400px;
+            background-color: #0a9dc7;
+        }
+        .title {
+            overflow: hidden;
+        }
+        .title li {
+            width: 100px;
+            height: 20px;
+            float: left;
+        }
+        .content li{
+            display: none;
+        }
+        .content .content_show{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="tab">
+        <ul class="title">
+            <li>按钮1</li>
+            <li>按钮2</li>
+            <li>按钮3</li>
+        </ul>
+        <ul class="content">
+            <li class="content_show">内容1sdfsdfsf</li>
+            <li>内容2dsfdf</li>
+            <li>内容3sdfsdfsd</li>
+        </ul>
+    </div>
+    <script>
+        jQuery.fn.extend({
+            tab: function(  ) {
+
+            }
+        });
+    </script>
+</body>
+</html>

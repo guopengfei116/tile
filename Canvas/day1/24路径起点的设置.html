@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        /*
+        * 设置路径起点：
+        * 1、正常情况下通过moveTo来设置
+        * 2、如果之前没有任何路径和路径的起点，那么第一个lineTo就相当于是moveTo
+        * */
+
+        ctx.lineTo( 10, 10 );  // 这个lineTo的作用变为了设置路径的起点
+        ctx.lineTo( 210, 10 );
+        ctx.stroke();
+    </script>
+</body>
+</html>

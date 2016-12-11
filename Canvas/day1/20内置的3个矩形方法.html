@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        /*
+        * 画矩形路径：
+        * ctx.rect( 起始x轴，起始y轴，宽，高 );
+        * */
+        ctx.rect( 10, 10, 100, 100 );
+
+        // 要让路径显示出来，必须stroke或者fill
+        ctx.fill();
+
+        /*
+         * 绘制描边矩形：
+         * 注意：该方法不会产生任何路径。
+         * ctx.strokeRect( 起始x轴，起始y轴，宽，高 );
+         * */
+
+        ctx.strokeRect( 150, 10, 100, 100 );
+
+
+        // 测试，发现第二个矩形没有被填充，说明第二个方法没有产生路径
+        ctx.fillStyle = 'blue';
+        ctx.fill();
+
+        /*
+         * 绘制填充矩形：
+         * 注意：该方法不会产生任何路径。
+         * ctx.fillRect( 起始x轴，起始y轴，宽，高 );
+         * */
+
+        ctx.fillRect( 280, 10, 100, 100 );
+
+        // 测试，发现第二个矩形和第三个矩形没有描边，说明这两个方法没有产生路径
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = 'red';
+        ctx.stroke();
+    </script>
+</body>
+</html>

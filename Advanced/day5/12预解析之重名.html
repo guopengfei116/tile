@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        // 在预解析时，如果遇到变量重名的情况，后面的声明被忽略。
+        var a = 1;
+        var a;
+        console.log(a);
+
+        // 在预解析时，如果遇到函数重名的情况，那么后面的函数会覆盖前面定义的函数
+        console.log(f());
+        function f() {
+            console.log(1);
+        }
+        console.log(f());
+        function f() {
+            console.log(11);
+        }
+        console.log(f());
+
+        // 在预解析时，如果遇到变量名和函数重名的情况，那么优先保留函数，因为函数比较重要。
+        console.log(type);
+        var type = 8;
+        function type () {
+            console.log(0);
+        }
+        console.log(type);
+
+    </script>
+</body>
+</html>

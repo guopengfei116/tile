@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        /*
+        * constructor { LineChart } 折线图构造函数
+        * param { ctx: Context } 绘图上下文
+        * param { paddingArr: Array } 折线图到画布四边的距离，存储顺序为上右下左
+        * param { arrowArr: Array } 折线图中箭头的宽和高
+        * param { data: Array } 存储了折线图中所需的数据
+        * */
+        function LineChart( ctx, paddingArr, arrowArr, data ) {
+            this.ctx = ctx;
+            this.paddingArr = paddingArr;
+
+            this.arrowArr = arrowArr;
+            this.arrowWidth = this.arrowArr[0];
+            this.arrowHeight = this.arrowArr[1];
+
+            this.data = data;
+
+            // 计算上顶点的坐标
+            this.vertexTop = {
+                x: this.paddingArr[ 3 ],
+                y: this.paddingArr[ 0 ]
+            };
+
+            // 计算原点的坐标
+            this.origin = {
+                x: this.paddingArr[ 3 ],
+                y: this.ctx.canvas.height - this.paddingArr[ 2 ]
+            };
+
+            // 计算右顶点的坐标
+            this.vertexRight = {
+                x: this.ctx.canvas.width - this.paddingArr[ 1 ],
+                y: this.ctx.canvas.height - this.paddingArr[ 2 ]
+            };
+
+            // 根据数据得到对应的坐标
+            this.processData();
+        }
+
+        // 置换原型
+        LineChart.prototype = {
+
+            constructor: LineChart,
+
+            // 绘制折线图
+            draw: function() {
+                this.drawCoordinate();
+                this.drawArrow();
+                this.drawPoint();
+                this.drawLine();
+            },
+
+            // 绘制坐标轴中的两条线
+            drawCoordinate: function() {
+                this.ctx.beginPath();
+                this.ctx.moveTo( this.vertexTop.x, this.vertexTop.y );
+                this.ctx.lineTo( this.origin.x, this.origin.y );
+                this.ctx.lineTo( this.vertexRight.x, this.vertexRight.y );
+                this.ctx.stroke();
+            },
+
+            // 绘制坐标轴中的两个箭头
+            drawArrow: function() {
+
+                // 先绘制上面箭头
+                this.ctx.beginPath();
+                this.ctx.moveTo( this.vertexTop.x, this.vertexTop.y );
+                this.ctx.lineTo( this.vertexTop.x - this.arrowWidth / 2, this.vertexTop.y + this.arrowHeight );
+                this.ctx.lineTo( this.vertexTop.x, this.vertexTop.y + this.arrowHeight / 2 );
+                this.ctx.lineTo( this.vertexTop.x + this.arrowWidth / 2, this.vertexTop.y + this.arrowHeight );
+                this.ctx.closePath();
+                this.ctx.stroke();
+
+                // 再绘制右面箭头
+                this.ctx.beginPath();
+                this.ctx.moveTo( this.vertexRight.x, this.vertexRight.y );
+                this.ctx.lineTo( this.vertexRight.x - this.arrowHeight, this.vertexRight.y - this.arrowWidth / 2 );
+                this.ctx.lineTo( this.vertexRight.x - this.arrowHeight / 2, this.vertexRight.y );
+                this.ctx.lineTo( this.vertexRight.x - this.arrowHeight, this.vertexRight.y + this.arrowWidth / 2 );
+                this.ctx.closePath();
+                this.ctx.stroke();
+            },
+
+            // 把传入进来的数据转化为对应画布的坐标
+            processData: function() {
+
+                // 用来存储转换后的坐标数据
+                this.processArr = [];
+
+                // 遍历所有的数据，依次转换为对应的坐标
+                for( var i = 0, len = this.data.length; i < len; i+=2 ) {
+                    /*
+                     * 数据转化为相当于画布的坐标：
+                     * canvasX = this.origin.x + x
+                     * canvasY = this.origin.y - y
+                     * */
+                    this.processArr.push( this.origin.x + this.data[ i ] );
+                    this.processArr.push( this.origin.y - this.data[ i + 1 ] );
+                }
+            },
+
+            // 根据数据绘制相应的点
+            drawPoint: function() {
+                var r = 4;
+
+                // 遍历所有的坐标，依次绘制点
+                for( var i = 0, len = this.processArr.length; i < len; i+=2 ) {
+                    this.ctx.beginPath();
+                    this.ctx.arc( this.processArr[ i ], this.processArr[ i + 1 ], r, 0, Math.PI*2 );
+                    this.ctx.fill();
+                }
+            },
+
+            // 根据数据绘制折线
+            drawLine: function() {
+                this.ctx.beginPath();
+                for( var i = 0, len = this.processArr.length; i < len; i+=2 ) {
+                    this.ctx.lineTo( this.processArr[ i ], this.processArr[ i + 1 ] );
+                }
+                this.ctx.stroke();
+            }
+        };
+
+        var lineChart = new LineChart( ctx, [ 20, 20, 20, 20 ], [ 10, 20 ], [ 10, 10, 30, 20, 50, 50, 60, 80, 100, 100 ] );
+        lineChart.draw();
+    </script>
+</body>
+</html>

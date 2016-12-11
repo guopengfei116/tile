@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        /*
+        * 设置虚线样式：
+        * ctx.setLineDash( [ 5, 5 ] )
+        * */
+
+        ctx.setLineDash( [ 4, 9, 1 ] );
+
+        ctx.moveTo(10, 10);
+        ctx.lineTo(210, 10);
+        ctx.stroke();
+
+        /*
+         * 获取虚线样式：
+         * ctx.getLineDash()
+         * */
+        console.log(ctx.getLineDash());
+    </script>
+</body>
+</html>

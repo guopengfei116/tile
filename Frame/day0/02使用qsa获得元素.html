@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>使用qsa获得元素.html</title>
+</head>
+<body>
+	<div id="dv">div1</div>
+	<div>
+		div2
+		<p class="c">p1</p>
+		<p>p2</p>
+		<p class="c">p3</p>
+		<p>p4</p></div>
+	<div>div3</div>
+	<div class="c">div4</div>
+	<p>p4</p>
+	<p>p5</p>
+	<p>p6</p>
+	<p>p7</p>
+
+</body>
+<script>
+	// 在 h5 中引入一个新的方法, 用来使用选择器来获得元素
+	// 语法
+	// document.querySelectorAll( '选择器字符串' );
+	// #		id
+	// .		class
+	// ()		标签
+/*
+	var node1 = document.querySelectorAll( '#dv' );
+	var node2 = document.querySelectorAll( 'p, div' );
+	var node3 = document.querySelectorAll( '.c' );
+
+	var node4 = document.querySelectorAll( '#p' );
+	var node5 = document.querySelectorAll( 'div .c' );
+*/
+	// 自己封装一个函数 select
+
+	function select( selector, results ) {
+		results = results || [];
+
+		var nodeList = document.querySelectorAll( selector );
+
+		results.push.apply( results, nodeList );
+
+		return results;
+	}
+
+
+	select( 'div .c:first-child' ).forEach(function ( v ) {
+		v.style.border = '1px solid red';
+	});
+</script>
+</html>

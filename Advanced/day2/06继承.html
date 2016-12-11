@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+        * 继承：
+        * 本不属于自己的东西(属性和方法),自己可以使用它，
+        * 那么就说我继承了这个东西的使用权。
+        *
+        * 在ES5之前，js的继承是对象与对象之间的继承。
+        * 其他主流面向对象编程语言，他们是类与类之间的继承。
+        *
+        * 原型就是js对面向对象中继承的支持。（原型就是来实现继承的）
+        * */
+
+        /*
+         什么是继承？继承：让一个对象拥有另一个对象的能力，就是继承。
+         继承的本质是为了代码复用。
+         不同的面向对象编程语言实现它的方式不同。
+
+         js实现继承的方式，不光使用了语言本身的特性，而且还融入了很多编程技巧或者思路。
+
+         想一想：我们前面学过的哪个知识点符合继承的概念。 原型。
+         原型是js语言本身提供给我们实现继承的一种方式。
+
+         */
+
+        function Person() {
+
+        }
+
+        Person.prototype.name = '人';
+        Person.prototype.age = '未知';
+        Person.prototype.run = function () {
+            console.log('我跑');
+        };
+
+        var zhangshuai = new Person();
+
+        //张帅继承了run方法，张帅继承自zhangshuai的隐式原型(zhangshuai.__proto__)。
+        zhangshuai.run();
+    </script>
+</body>
+</html>

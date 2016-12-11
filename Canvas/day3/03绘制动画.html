@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas style="border:1px solid red" width="500" height="500"></canvas>
+<script>
+    var cvs = document.querySelector('canvas');
+    var ctx = cvs.getContext('2d');
+
+    var img = new Image();
+    img.src = './imgs/士兵(1).png';
+
+    /*// 必须要等img加载完毕之后，才能使用它
+    img.onload = function() {
+
+        // 控制当前小人第几个动作
+        var i = 4;
+
+        // 裁剪的x轴，可以用来控制动作的切换
+        ctx.drawImage( img,
+            40 * i, 0, 40, 65,
+            10, 10, 40, 65);
+
+    };*/
+
+    /*-----------------------------让小人自动走起来---------------------------*/
+
+    /*// 必须要等img加载完毕之后，才能使用它
+    img.onload = function() {
+
+        // 控制当前小人第几个动作
+        var i = 0;
+
+        setInterval( function() {
+
+            // 先把上一个小人清除掉
+            ctx.clearRect( 0, 0, cvs.width, cvs.height );
+
+            // 裁剪的x轴，可以用来控制动作的切换
+            ctx.drawImage( img,
+                    40 * i, 0, 40, 65,
+                    10, 10, 40, 65);
+
+            i = ++i % 4;
+        }, 100);
+
+    };*/
+
+    /*-----------------------------让小人按照指定方向自动走起来---------------------------*/
+
+    // 必须要等img加载完毕之后，才能使用它
+    img.onload = function() {
+
+        // 控制当前小人第几个动作
+        var i = 0;
+        // 控制当前小人某个方向
+        var direction = 2;
+
+        setInterval( function() {
+
+            // 先把上一个小人清除掉
+            ctx.clearRect( 0, 0, cvs.width, cvs.height );
+
+            // 裁剪的x轴，可以用来控制动作的切换
+            // 裁剪的y轴，可以用来控制小人的方向
+            ctx.drawImage( img,
+                    50 * i, 65 * direction, 50, 65,
+                    10, 10, 50, 65);
+
+            i = ++i % 4;
+        }, 100);
+
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-3.1.0.js"></script>
+</head>
+<body>
+<div>
+    <span>span1</span>
+    <a>1111</a>
+</div>
+<div>
+    <a>2222</a>
+</div>
+<div>
+    <span>span2</span>
+</div>
+<script>
+    // 获取所有元素的子元素
+    console.log($('div').children());
+
+    // 获取所有元素的下一个子元素
+    console.log($('div').next());
+
+    // 获取div下一个子元素：
+    var div = document.querySelector('div');
+
+    // 第一次从div开始获取子节点，以后每次再从子节点的基础上再获取，
+    // 直到获取到元素节点为止。
+    var nextNode = div;
+    while ( nextNode = nextNode.nextSibling ) {
+        if( nextNode.nodeType === 1 ) {
+            console.log( nextNode );
+            break;
+        }
+    }
+</script>
+</body>
+</html>

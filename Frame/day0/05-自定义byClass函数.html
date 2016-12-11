@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>03-自定义byClass函数.html</title>
+</head>
+<body>
+	<div class="c"></div>
+	<div class="c1 c2 c"></div>
+	<div class="c1 c c2"></div>
+	<div class="c1 c2"></div>
+</body>
+<script>
+/*
+	function getByClass( className ) {
+		// 首先获取页面中的所有元素, 然后在筛选出 指定类名的
+		var list = document.getElementsByTagName( '*' );
+		var res = [];
+		for ( var i = 0; i < list.length; i++ ) {
+			if ( list[ i ].className == className ) {
+				res.push( list[ i ] );
+			}
+		} 
+		return res;
+	}
+*/
+	// 要保证 class 属性中一定有 c, 那么要么 c 在中间, 两端有空格. 例如: "c1 c c2"
+	// 要么, c 在两端, 一边有空格, 一边是引号. 例如: "c1 c" 或 "c c2"
+	// 首先判断 className 是否包含 c
+	// 然后再看 c 是否在两端. indexOf: 0, length - 1. 即判断 1 或 length-2 是否为空格
+	// 如果在 中间, 那么 就看两端是否为空格: i - 1 和 i + 1
+
+	// function contains ( str1, str2 ) {
+	// 	// str 1 是否包含 str2 满足前面的描述
+	// }
+
+
+/*
+	// 正则表达式
+	// c 在中间或两端
+	// /^c\s|\sc\s|\sc$/g
+	function contains( str1, str2 ) {
+		// return ( /^\sc\s|\sc\s|\sc$|^c$/g ).test( str1 );
+		// 利用字符串拼接得到正则表达式
+		var regexpStr = "^\\s" + str2 + "\\s|\\s" + str2 + "\\s|\\s" + str2 + "$";
+		return ( new RegExp( regexpStr, 'g' ) ).test( str1 );
+	}
+
+	// 改良 getByClass
+	function getByClass( className ) {
+		// 首先获取页面中的所有元素, 然后在筛选出 指定类名的
+		var list = document.getElementsByTagName( '*' );
+		var res = [];
+		for ( var i = 0; i < list.length; i++ ) {
+			if ( 	list[ i ].className == className || 
+					contains( list[ i ].className, className ) ) {
+				res.push( list[ i ] );
+			}
+		} 
+		return res;
+	}
+*/
+
+
+	// jq 作者的实现方法
+	function getByClass ( className ) {
+		var list = document.getElementsByTagName( '*' );
+		var res = [];
+		for ( var i = 0; i < list.length; i++ ) {
+			// 目的是在 list[ i ].className 中 看是否有 className
+			if ( ( " " + list[ i ].className + " " ).indexOf( " " + className + " " ) > -1 ) {
+				res.push( list[ i ] );
+			}
+		} 
+		return res;
+	}
+
+	// 
+	// c 		" c "				" c "			0
+	// c1 c2 c 	" c1 c2 c "			" c "			6
+	// c1 c c2  " c1 c c2 "			" c "			3
+	// c1 c2	" c1 c2 "			" c "
+
+	var list = getByClass( 'c' );
+</script>
+</html>

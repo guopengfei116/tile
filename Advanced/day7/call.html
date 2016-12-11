@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+         * call
+         * 语法：函数名.call(this指向, arg1, arg2, arg3...);
+         * 上面的做法，传参相等于：函数名(arg1, arg2, arg3...)
+         *
+         * // 注意，传给call的第一个参数，
+         * // 用来设置函数调用时的this指向，并不会作为参数传给函数
+         * */
+
+        // 模拟call
+        Function.prototype.myCall = function (obj) {
+            var str = 'obj.__callFn__(', i, len;
+
+            // obj.__callFn__(arg1, arg2, arg3...)
+            // 把除第一个参数传递给函数。
+            for (i = 1, len = arguments.length; i < len; i++) {
+                str += arguments[i];
+                if (i !== len - 1) {
+                    str += ',';
+                }
+            }
+            str += ')';
+
+            // 把函数存到对象自身上
+            obj.__callFn__ = this;
+
+            // 动态执行函数调用，并把结果返回
+            return eval(str);
+        };
+
+        /*---------------------------*/
+
+        // 借用数组的push方法给伪数组添加值
+        var o = {};
+        [].push.myCall(o, 1, 2, 3);
+        console.log(o);
+
+        /*--------------------------*/
+
+        // 借用数组的pop方法，删除伪数组中最后一个值
+        var arr = [].pop.myCall(o);
+        console.log(o);
+
+        /*--------------------------*/
+
+        // 借用数组的slise方法，通过伪数组获取一个真数组
+        var arr = [].slice.myCall(o);
+        console.log(arr);
+
+        /*-------------------------*/
+
+        // 通过HTMLCollection集合对象，获取存放节点的数组对象
+        function tag(tag, list) {
+            var list = list || [];
+            return list.push.apply(list, document.getElementsByTagName(tag));
+        }
+        var list = tag('div');
+        list = tag('span', list);
+
+        /*--------------------------*/
+    </script>
+</body>
+</html>

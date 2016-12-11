@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        /*
+        * 画弧路径：
+        * ctx.arc( 圆心x轴坐标，圆心y轴坐标，半径，弧的起始位置，弧的结束位置，是否逆时针画(可选) )
+        * */
+
+        // 角度转换为弧度
+        function angleToRadian( angle ) {
+            return Math.PI / 180 * angle;
+        }
+
+        // 顺时针从0度到90度画弧
+        ctx.arc( 100, 100, 50, angleToRadian(0), angleToRadian(90) );
+        ctx.stroke();
+
+        // 逆时针从0度到90度画弧
+        ctx.beginPath();
+        ctx.arc( 300, 100, 50, angleToRadian(0), angleToRadian(90), true );
+        ctx.stroke();
+    </script>
+</body>
+</html>

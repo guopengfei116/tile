@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas id="cvs" width="600" height="600"></canvas>
+    <script>
+        var cvs = document.getElementById('cvs');
+        var ctx = cvs.getContext('2d');
+
+        // 画布最开始是没有路径起点的，
+        // 需要通过moveTo或者lineTo或其他画路径函数设定，
+        // 所以这条路径相当于设定路径起点，并不会画路径。
+        //ctx.beginPath();
+        /*ctx.lineTo(50, 50);
+        ctx.stroke();*/
+
+        // 渲染函数并不会设置路径起点，
+        // 所以这条路径也相当于设定路径起点，并不会画路径。
+        ctx.strokeRect(10, 10, 50, 50);
+        ctx.lineTo(50, 50); // 设置路径起点
+        ctx.stroke();
+
+        // 路径函数会设置路径起点，
+        // 所以相当于设定了路径起点，这2条线路径就会画出来。
+        // closePath会把路径结束点和路径开始点连接。
+        ctx.arc(30, 30, 10, 0, Math.PI*2);
+        ctx.lineTo(100, 30);
+        ctx.lineTo(100, 80);
+        //ctx.closePath(); // 结束点100，80连接到开始点50，50
+        //ctx.stroke();
+        //ctx.fill();
+
+        // moveTo相当于重新设定了路径的起点坐标，
+        // 所以closePath在闭合路径时会按照新的起点坐标闭合。
+        ctx.moveTo(100, 100);
+        ctx.lineTo(200, 100);
+        ctx.lineTo(200, 200);
+        //ctx.closePath();
+        //ctx.stroke();
+
+        /*
+        * 上面的图形也被填充了，发现只要不beginPath，
+        * 那么canvas就会保留上面图形的路径起点和结束点，
+        * 即会保留所有的路径起点和结束点。
+        * */
+        ctx.fill();
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+        ctx.font = '900 2rem 微软雅黑';
+
+       /*
+       * 画扇形的步骤：
+       * 1、moveTo到圆心
+       * 2、画扇形对应的弧
+       * 3、closePath
+       * 4、fill或者stroke
+       * */
+
+        /*-------------------------------------*/
+
+        // 以200，200为圆心绘制一个扇，
+        // 充分利用了arc会自动从路径结束点到弧起点连线的特征
+        ctx.moveTo( 200, 200 );
+        ctx.arc( 200, 200, 50, 0, Math.PI/4 );
+
+        // 填充的时候，canvas会自动closePath，所以不用咱们受closePath了。
+        //ctx.fill();
+
+        // 描边的时候，就得手动closePath了。
+        ctx.closePath();
+        ctx.stroke();
+    </script>
+</body>
+</html>

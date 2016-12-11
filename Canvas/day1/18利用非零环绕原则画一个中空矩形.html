@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas style="border: 1px solid red" width="500" height="500"></canvas>
+    <script>
+        var cvs = document.querySelector('canvas');
+        var ctx = cvs.getContext('2d');
+
+        // 顺时针画巨大矩形路径
+        ctx.moveTo( 10, 10 );
+        ctx.lineTo( 250, 10 );
+        ctx.lineTo( 250, 250 );
+        ctx.lineTo( 10, 250 );
+        ctx.closePath();
+
+        /*-------------------------------------------------*/
+
+        // 逆时针画迷你矩形路径
+        ctx.moveTo( 100, 100 );
+        ctx.lineTo( 100, 150 );
+        ctx.lineTo( 150, 150 );
+        ctx.lineTo( 150, 100 );
+        ctx.closePath();
+
+        // 填充
+        ctx.fill();
+
+    </script>
+</body>
+</html>
