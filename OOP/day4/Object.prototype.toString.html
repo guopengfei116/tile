@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+        * toString
+        * 作用：把转换为这样的字符串'[object 类名]'。
+        * 语法：对象.toString();
+        * 返回值：string
+        * */
+
+/*
+        // obj是Object类型的对象
+        var obj = {};
+        console.log(obj.toString());  // '[object Object]'
+
+
+        /!*
+        * 为了防止arr.toString调用的是Array.prototype.toString,
+        * 所以我给arr手动添加了一个自己的toString方法为Object.prototype.toString
+        * *!/
+        var arr = [];
+        arr.toString = Object.prototype.toString;
+        console.log(arr.toString());  // '[object Array]'
+
+        var date = new Date();
+        date.toString = Object.prototype.toString;
+        console.log(date.toString());  // '[object Date]'
+
+        Math.toString = Object.prototype.toString;
+        console.log(Math.toString());  // '[object Math]'
+
+        // 结论，Object.prototype.toString可以用来判断对象的子类型，
+        // 但是只能判断浏览器内置的对象类型
+        function Person() {}
+        var xiaohong = new Person();
+        console.log(xiaohong.toString()); // '[object Object]'
+*/
+
+
+        // 获取对象的具体类型
+        function getObjType(obj) {
+            obj.toString = Object.prototype.toString;
+            var typeStr = obj.toString();
+            switch (typeStr) {
+                case '[object Math]':
+                    return 'Math';
+                    break;
+                case '[object Object]':
+                    return 'Object';
+                    break;
+                case '[object Function]':
+                    return 'Function';
+                    break;
+                case '[object Array]':
+                    return 'Array';
+                    break;
+                case '[object Date]':
+                    return 'Date';
+                    break;
+                case '[object Number]':
+                    return 'Number';
+                    break;
+                case '[object String]':
+                    return 'String';
+                    break;
+                case '[object Boolean]':
+                    return 'Boolean';
+                    break;
+                case '[object Error]':
+                    return 'Error';
+                    break;
+                case '[object RegExp]':
+                    return 'RegExp';
+                    break;
+            }
+        }
+
+        console.log(getObjType(function(){}));
+        console.log(getObjType({}));
+        console.log(getObjType([]));
+        console.log(getObjType(/abc/));
+        console.log(getObjType(new Date()));
+        console.log(getObjType(new String()));
+        console.log(getObjType(new Number()));
+        console.log(getObjType(new Boolean()));
+        console.log(getObjType(new Error()));
+        console.log(getObjType(Math));
+
+        // 补充
+        console.log(Object.prototype.toString.call(null));  // '[object Null]'
+        console.log(Object.prototype.toString.call(undefined));  // '[object Undefined]'
+    </script>
+</body>
+</html>

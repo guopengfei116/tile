@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+        * instanceof 是谁的实例
+        * 用来判断一个对象是不是一个构造函数的实例。
+        *
+        * instanceof 运算符的运算规则：
+        * 判断左边对象的原型链中，有没有右边构造函数的原型对象。
+        * */
+
+        function Person() {
+
+        }
+        var shangli = new Person();
+
+        // 为true
+        console.log(shangli instanceof Person);
+        // shangli ==> Person.prototype ==> Object.prototype ==> null
+
+        // 为true ==> 人是哺乳动物的实例，也是生物的实例
+        console.log(shangli instanceof Object);
+        // shangli ==> Person.prototype ==> Object.prototype ==> null
+
+        // 为flase ==> 人不是猫科动物的实例，不是植物的实例
+        console.log(shangli instanceof Function);
+        // shangli ==> Person.prototype ==> Object.prototype ==> null
+
+        var xiongguoliang = new Person();
+        Person.prototype = {};
+
+        // 为false
+        console.log(xiongguoliang instanceof Person);
+        // 在xiongguoliang的原型链中，没有Person.prototype(新的{})，所以为false。
+        // xiongguoliang ==> Person.prototype ==> Object.prototype ==> null
+    </script>
+</body>
+</html>

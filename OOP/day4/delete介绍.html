@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+        * delete
+        * 作用:删除对象的属性
+        * 返回值：boolean
+        * */
+
+
+        // 这种方式声明的变量不可以被delete掉
+        var a = 1;
+        console.log(delete a);
+
+        // 这种方式声明的变量可以被delete掉
+        b = 2;
+        delete b;
+
+        // 对象obj
+        var obj = {
+            val : 1,
+            b : 2,
+            c : 3
+        };
+
+        // 删除掉obj的b属性
+        console.log(delete obj.b);
+        console.log(obj);
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #p {
+            width: 200px;
+            height: 10px;
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+    <p id="p"></p>
+    <script>
+        // 练习1  写出extend函数，过滤掉继承的属性
+
+        // 练习2  写一个判断数据类型的函数
+        // 要求可以判断出对象的具体类型，以及基本数据类型
+
+        // 面试题
+        var $p = {
+            click: function (fn) {
+                var nP = document.getElementById('p');
+                nP.onclick = function () {
+                    console.log(this); // ??
+                    fn.call($p);
+                };
+            }
+        };
+
+        function clickFn() {
+            console.log(this); // ??
+        }
+        $p.click(clickFn);
+    </script>
+</body>
+</html>

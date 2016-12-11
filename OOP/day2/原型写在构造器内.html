@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+        * 把原型赋值放到构造函数当中，可以增加原型和构造函数的紧密性，
+        * 但是原型赋值的代码在每次新创建对象的时候重复执行，
+        * 可以通过判断构造函数的原型上是否已经存在要添加的属性或者方法，
+        * 就可以减少原型赋值时代码的重复执行。
+        * */
+        function Person(name, age, gander) {
+            this.name = name;
+            this.age = age;
+            this.gander = gander;
+
+           /* Person.prototype = {
+                run : function () {
+                    console.log('跑起来');
+                },
+                say :function () {
+                    console.log('说话');
+                },
+                constructor : Person
+            };*/
+
+            // 如果没有某个要赋值的属性或方法，那么就对原型进行整体赋值
+            if (!Person.prototype.run) {
+                Person.prototype.run = function () {
+                    console.log('跑起来');
+                };
+                Person.prototype.say = function () {
+                    console.log('说话');
+                };
+                Person.prototype.constructor = Person;
+            }
+        }
+
+        var zhangsan = new Person('zs', 18, '男');
+        zhangsan.run();
+        zhangsan.say();
+
+        var lisi = new Person('ls', 20, '男');
+        lisi.run();
+
+         // 创建zhangsan的4个步骤
+         // 1、创建了一个新对象
+         // 2、把新对象的__proto__赋值为 Person.prototype (obj.__proto__ = Person.prototype);
+         // 3、执行Person构造函数
+         // 4、返回这个新对象给zhangsan变量
+        Object.create()
+
+    </script>
+</body>
+</html>

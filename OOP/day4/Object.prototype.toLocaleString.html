@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /*
+        * toLocaleString
+        *
+        * local 本地，string 字符串
+        * 作用：把一个对象转换为对应类型的字符串
+        * 语法：对象.toLocaleString
+        * 返回值：转换后的字符串
+        * */
+
+        var arr = [1,2,3,4];
+        console.log(arr.toString());
+
+        // toLocaleString 会调用 对应的数据类型的toString，
+        // 为了防止arr.toLocaleString调用的是Array.prototype.toLocaleString,
+        // 所以先把Object.prototype.toLocaleString添加到arr上。
+        arr.toLocaleString = Object.prototype.toLocaleString;
+
+        // 因为arr是数组类型，所以最终会调用Array.prototype.toString
+        // 相当于arr.toString()
+        console.log(arr.toLocaleString());
+
+        /*-------------------------------------------------------------*/
+
+        var date = new Date();
+        console.log(date.toString());
+
+        // 调用的是Date.prototype.toLocaleString 上定义的这个方法
+        console.log(date.toLocaleString());
+
+        // toLocaleString 会调用 对应的数据类型的toString，
+        // 为了防止date.toLocaleString调用的是Date.prototype.toLocaleString,
+        // 所以先把Object.prototype.toLocaleString添加到date上。
+        date.toLocaleString = Object.prototype.toLocaleString;
+
+        // 因为date是日期类型，所以最终会调用Date.prototype.toString
+        // 相当于date.toString()
+        console.log(date.toLocaleString());
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>crash</title>
+    <style>
+        input[type='button'] {
+            border: 1px solid red;
+        }
+        #div1 {
+            position: absolute;
+            width:100px;
+            height: 100px;
+            background-color: blue;;
+        }
+    </style>
+</head>
+<body>
+    <input id="input1" type="button" value="开始">
+    <div id="div1"></div>
+    <script>
+        var oInput = document.getElementById('input1');
+        var oDiv = document.getElementById('div1');
+        var timer, speed = 0, speedUp = 3;
+
+        oInput.addEventListener('click', function (e) {
+            startMove();
+        });
+        
+        function startMove() {
+            clearInterval(timer);
+            timer = setInterval(function () {
+                speed += speedUp;
+                var oDivTop = oDiv.offsetTop + speed;
+
+                if(document.documentElement.clientHeight - oDiv.offsetHeight < oDivTop ) {
+                    oDivTop = document.documentElement.clientHeight - oDiv.offsetHeight;
+                    speed *= -1;
+                    speed *= 0.8;  // 需要加10次speed才会为0，但是减慢速度后，加了10次回不到0的位置了
+
+                    // 减慢速度后，最终speed变成小于speedUp的值，那么每次speed+speedUp后值都大与0，
+                    // 造成每次都满足if判断的条件，每次取反还小于speedUp值，一直往返重复。
+                }
+
+                oDiv.style.top = oDivTop + 'px';
+            }, 30);
+        }
+    </script>
+</body>
+</html>
