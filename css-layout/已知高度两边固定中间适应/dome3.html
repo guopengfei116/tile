@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>flexbox解决方案</title>
+</head>
+<body>
+    <!-- 
+        思路3：flex布局模式，左右盒子固定宽，中间盒子flex自适应。
+        1. 使用一个父盒子，使用flex布局模式，
+        2. 内嵌三个子盒子，左右两个盒子设置width固定宽度，
+        3. 中间的盒子设置flex:1自适应父盒子剩余宽度
+    -->
+    <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            margin-top: 50px;
+            min-height: 300px;
+        }
+        .container > div:first-child {
+            width: 60px;
+            background-color: aqua;
+        }
+        .container > div:last-child {
+            width: 60px;
+            background: pink;
+        }
+        .container > div:nth-child(2) {
+            flex: 1;
+            background-color: yellow;
+        }
+    </style>
+    <article class="container">
+        <div>左边</div>
+        <div>中间</div>
+        <div>右边</div>
+    </article>
+</body>
+</html>

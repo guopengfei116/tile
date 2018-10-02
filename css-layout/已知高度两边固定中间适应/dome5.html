@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>grid布局解决方案</title>
+</head>
+<body>
+    <!-- 
+        思路5：grid布局模式，template-columns设置左右盒子固定宽，中间盒子1fr自适应剩余空间。
+        1. 使用一个父盒子，使用grid布局模式，
+        2. 内嵌三个子盒子，分别设为table-cell，
+        3. 左右两个盒子设置width固定宽度，
+        4. 中间的盒子不设置width就会自适应父盒子剩余宽度
+    -->
+    <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        /* 使用栅格布局的元素，大小优先使用width与height，没有则按照内容宽高占位 */
+        .container {
+            display: grid;
+            grid-template-columns: 60px 1fr 60px;
+            grid-template-rows: 300px;
+            margin-top: 50px;
+            min-height: 300px;
+        }
+        .container > div {
+            height: 100%;
+        }
+        .container > div:first-child {
+            background-color: aqua;
+        }
+        .container > div:last-child {
+            background: pink;
+        }
+        .container > div:nth-child(2) {
+            background-color: yellow;
+        }
+    </style>
+    <article class="container">
+        <div>左边</div>
+        <div>中间</div>
+        <div>右边</div>
+    </article>
+</body>
+</html>

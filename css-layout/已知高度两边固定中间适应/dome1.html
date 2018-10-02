@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>浮动解决方案</title>
+</head>
+<body>
+    <!--
+        思路1：左右盒子浮动，中间盒子标准文档流宽度自适应(并加padding)
+        1. 使用一个父盒子，加左右padding，
+        2. 然后内嵌三个子盒子，前两个盒子分别左右浮动与父盒子两端，一定是前两个，否则会被正常文档流兄弟元素挤下去
+        3. 最后一个盒子采取标准文档流，自动适配父盒子宽度，然后添加padding抵消左右浮动元素遮盖的部分
+    -->
+    <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 50px;
+            min-height: 300px;
+            height: 300px;
+        }
+        .container > div {
+            height: 100%;
+        }
+        /* 第一个div为左边盒子 */
+        .container > div:first-child {
+            float: left;
+            width: 60px;
+            background-color: aqua;
+        }
+        /* 第二个div为右边盒子 */
+        .container > div:nth-child(2) {
+            float: right;
+            width: 60px;
+            background: pink;
+        }
+        /* 最后一个div为中间盒子，之所有放到最后，是为了防止影响浮动元素布局，防止把它们挤下去 */
+        .container > div:last-child {
+            padding: 0 60px;
+            background-color: yellow;
+        }
+    </style>
+    <article class="container">
+        <div>左边</div>
+        <div>右边</div>
+        <div>中间</div>
+    </article>
+</body>
+</html>

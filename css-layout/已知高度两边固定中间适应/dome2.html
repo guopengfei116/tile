@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>定位解决方案</title>
+</head>
+<body>
+    <!-- 
+        思路2：左右盒子定位，中间盒子标准文档流宽度自适应(并加padding)，或者根据左右盒子的宽定位
+        1. 使用一个父盒子，相对定位，
+        2. 内嵌三个子盒子，左右两个盒子分别绝对定位与父盒子左右两边
+        3. 中间的盒子可以采用标准文档流与绝对定位两种方式
+            3.1 使用标准文档流会自动适配父盒子宽度，然后添加padding抵消左右浮动元素遮盖的部分
+            3.2 使用绝对定位时，设置left与right抵消左边盒子宽度即可实现自适应
+    -->
+    <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            position: relative;
+            margin-top: 50px;
+            min-height: 300px;
+        }
+        .container > div {
+            height: 100%;
+        }
+        .container > div:first-child {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 60px;
+            background-color: aqua;
+        }
+        .container > div:last-child {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 60px;
+            background: pink;
+        }
+        /* 中间盒子采用标准文档流 */
+        .container > div.standard:nth-child(2) {
+            padding: 0 60px;
+            background-color: yellow;
+        }
+        /* 中间盒子采用绝对定位 */
+        .container > div.position:nth-child(2) {
+            position: absolute;
+            left: 60px;
+            right: 60px;
+            background-color: yellow;
+        }
+    </style>
+    <article class="container">
+        <div>左边</div>
+        <!-- <div class="standard">中间</div> -->
+        <div class="position">中间</div>
+        <div>右边</div>
+    </article>
+</body>
+</html>
