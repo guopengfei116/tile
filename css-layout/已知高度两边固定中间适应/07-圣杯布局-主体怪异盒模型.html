@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>圣杯布局解决方案</title>
+</head>
+<body>
+    <!--
+        优点：主体内容优先加载
+        缺点：中间的盒子宽度必须要大于两边，左右盒子可能会受到中间盒子背景的影响
+        思路：三者都设置左浮动，中间盒子使用怪异盒模型配合padding给左右盒子留位置，左右盒子通过负margin实现定位，
+        1. 使用一个父盒子
+        2. 内嵌三个子盒子，全部左浮动
+        3. 设置中间盒子的宽度为100%，并修改为border-box盒子模型，然后添加padding给左右盒子预留位置
+        4. 设置左盒子margin-left:-100%，相对定位left:-自己宽度
+        5. 设置右盒子margin-left:-自己宽度
+    -->
+    <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 50px;
+            min-height: 300px;
+        }
+        .container > div {
+            float: left;
+            height: 300px;
+        }
+        /* 第一个盒子为中间 */
+        .container > div:first-child {
+            box-sizing: border-box;
+            padding: 0 60px;
+            width: 100%;
+            background-color: aqua;
+        }
+        /* 第二个盒子为左边 */
+        .container > div:nth-child(2) {
+            margin-left: -100%;
+            width: 60px;
+            background-color: yellow;
+        }
+        /* 第三个盒子为右边 */
+        .container > div:last-child {
+            margin-left: -60px;
+            width: 60px;
+            background: pink;
+        }
+    </style>
+    <article class="container">
+        <div>中间</div>
+        <div>左边</div>
+        <div>右边</div>
+    </article>
+</body>
+</html>

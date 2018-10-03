@@ -4,24 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>flexbox解决方案</title>
+    <title>table布局解决方案</title>
 </head>
 <body>
     <!-- 
-        思路3：flex布局模式，左右盒子固定宽，中间盒子flex自适应。
-        1. 使用一个父盒子，使用flex布局模式，
-        2. 内嵌三个子盒子，左右两个盒子设置width固定宽度，
-        3. 中间的盒子设置flex:1自适应父盒子剩余宽度
+        思路：table布局模式，父盒子宽设100%，左右子盒子固定宽，中间子盒子宽度自适应。
+        1. 使用一个父盒子，使用table布局模式，
+        2. 内嵌三个子盒子，分别设为table-cell，
+        3. 左右两个盒子设置width固定宽度，
+        3. 中间的盒子不设置width就会自适应父盒子剩余宽度
     -->
     <style>
         html * {
             margin: 0;
             padding: 0;
         }
+        /* table不再是块级元素，不会占满整行，它类似行内块元素，宽度和高度都由内容撑开，可设置其宽度为100%。 */
         .container {
-            display: flex;
+            display: table;
             margin-top: 50px;
+            width: 100%;
             min-height: 300px;
+        }
+        .container > div {
+            display: table-cell;
+            height: 100%;
         }
         .container > div:first-child {
             width: 60px;
@@ -32,7 +39,6 @@
             background: pink;
         }
         .container > div:nth-child(2) {
-            flex: 1;
             background-color: yellow;
         }
     </style>
