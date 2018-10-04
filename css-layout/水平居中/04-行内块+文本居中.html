@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>通过inline-block实现</title>
+</head>
+<body>
+    <!--
+        优点：兼容性高，简单
+        缺点：只有行内块可用，需要父盒子配合(可能影响其它子元素)，或者嵌套一个盒子解决
+        思路：盒子改为行内块，然后父盒子通过text-align使其居中
+     -->
+    <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        .container .center {
+            text-align: center;
+        }
+        .container .center .center-content {
+            display: inline-block;
+            width: 300px;
+            height: 300px;
+            background-color: aqua;
+        }
+    </style>
+    <article class="container">
+        <div class="center">
+            <div class="center-content">居中</div>
+        </div>
+    </article>
+</body>
+</html>

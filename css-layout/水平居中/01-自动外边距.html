@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>通过auto自动外边距实现</title>
+</head>
+<body>
+    <!--
+        优点：兼容性高，简单
+        缺点：只有块级元素可用
+        思路：利用左右margin-auto属性自动居中
+     -->
+    <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        .container .center {
+            margin: 0 auto;
+            width: 300px;
+            height: 300px;
+            background-color: aqua;
+        }
+    </style>
+    <article class="container">
+        <div class="center">居中</div>
+    </article>
+</body>
+</html>

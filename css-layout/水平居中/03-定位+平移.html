@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>通过position配合translate实现</title>
+</head>
+<body>
+    <!--
+        优点：简单方便，块与行内块都可用
+        缺点：需要兼容CSS3
+        思路：盒子定位(相对、绝对、固定都可以，最好相对)left:50%，然后translateX:-50%
+     -->
+    <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        .container .center {
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+            background-color: aqua;
+        }
+    </style>
+    <article class="container">
+        <span class="center">居中</span>
+    </article>
+</body>
+</html>
