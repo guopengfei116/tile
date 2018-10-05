@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>通过inline-block实现</title>
+    <title>通过flex布局实现</title>
 </head>
 <body>
     <!--
-        优点：兼容性高，简单
-        缺点：只有行内块可用
-        思路：盒子改为行内块，然后父盒子通过text-align使其居中
+        优点：可灵活修改位置
+        缺点：兼容性中等
+        思路：父盒子使用flex布局，并设水平主轴方向居中
      -->
     <style>
         html * {
@@ -18,10 +18,10 @@
             padding: 0;
         }
         .container {
-            text-align: center;
+            display: flex;
+            justify-content: center;
         }
         .container .center {
-            display: inline-block;
             width: 300px;
             height: 300px;
             background-color: aqua;
