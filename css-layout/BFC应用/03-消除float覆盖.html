@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BFC消除float覆盖</title>
+</head>
+<body>
+    <!--
+        原理：
+            BFC的区域不会与float-box重叠。
+            根据这样的规则，如果有一个浮动元素覆盖住了某个普通文档流的元素，
+            只要让这个被覆盖元素产生BFC，那么就会消除与浮动元素的重叠。
+     -->
+     <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        .float {
+            float: left;
+            width: 100px;
+            height: 100px;
+            background-color: violet;
+        }
+        .content {
+            overflow: hidden;
+            height: 200px;
+            background-color: skyblue;
+        }
+     </style>
+     <article>
+        <div class="float">浮动元素</div>
+        <div class="content">产生BFC的元素</div>
+     </article>
+</body>
+</html>

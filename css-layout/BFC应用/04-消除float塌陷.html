@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BFC消除float塌陷</title>
+</head>
+<body>
+    <!--
+        原理：
+            BFC计算高度时，浮动元素也参与计算。
+            根据这样的规则，如果一个parent-box，内部因为浮动布局导致高度塌陷，
+            那么只要让它产生BFC，那么就会解决此类问题。
+     -->
+     <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        .float-parent {
+            overflow: hidden;
+            background-color: greenyellow;
+        }
+        .float {
+            float: left;
+            width: 100px;
+            height: 100px;
+            background-color: violet;
+        }
+     </style>
+     <article>
+        <div class="float-parent">
+            <div class="float">浮动子盒子</div>
+        </div>
+     </article>
+</body>
+</html>
+ 

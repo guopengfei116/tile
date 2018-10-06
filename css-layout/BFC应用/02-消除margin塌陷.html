@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BFC消除margin塌陷</title>
+</head>
+<body>
+    <!--
+        问题：
+            当parent-box没有padding、border，child-box有margin时，
+            margin就会超出父盒子，从而出现margin塌陷。
+        原理：
+            BFC内的每个元素的左外边距与包含块的左边界相接触(从右向左的排版则相反)。
+            根据这样的规则，只要我们就让parent-box产生BFC，那么child-box的margin
+            就会包含在parent-box内，从而解决margin塌陷问题。
+     -->
+    <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            color:blueviolet;
+        }
+        /* 生成BFC，消除与第一个li元素产生的margin重叠 */
+        ul {
+            overflow: hidden;
+            background-color: #ccc;
+        }
+        ul > li {
+            margin-top: 20px;
+            background-color: violet;
+        }
+    </style>
+    <article>
+        <h1>消除margin塌陷</h1>
+        <ul>
+            <li>拥有margin-top的子元素</li>
+            <li>拥有margin-top的子元素</li>
+        </ul>
+    </article>
+</body>
+</html>
