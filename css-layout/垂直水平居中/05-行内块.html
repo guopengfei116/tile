@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>行内块</title>
+</head>
+<body>
+    <!--
+        优点：兼容性高，无需明确盒子的宽
+        缺点：必须明确盒子高，否则会受到父盒子行高影响
+        思路：父盒子设置行高与自身高度一致，并设置文本居中，
+        然后子盒子设为inline-block，就会受到父盒子的居中属性进行布局。
+     -->
+    <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            height: 400px;
+            line-height: 400px;
+            text-align: center;
+            background-color:pink;
+        }
+        .container .center {
+            display: inline-block;
+            width: 200px;
+            height: 200px;
+            line-height: 200px;
+            background-color: aqua;
+        }
+    </style>
+    <article class="container">
+        <div class="center">居中</div>
+    </article>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>table布局实现</title>
+</head>
+<body>
+    <!--
+        优点：兼容性高
+        缺点：父盒子需要明确宽，因为改变了元素类型，不再独占一行
+        思路：父盒子使用table-cell布局，并设置文本居中，基线居中，
+        然后子盒子设为inline-block，就会受到父盒子的居中属性进行布局。
+        之所有使用table-cell，是因为在cell中的块级子元素会受到基线影响，
+        如果设为inline-block那么无效。
+     -->
+     <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: table-cell;
+            width: 400px;
+            height: 400px;
+            text-align: center;
+            vertical-align: middle;
+            background-color:pink;
+        }
+        .container .center {
+            display: inline-block;
+            width: 200px;
+            height: 200px;
+            background-color: aqua;
+        }
+    </style>
+    <article class="container">
+        <div class="center">居中</div>
+    </article>
+</body>
+</html>
