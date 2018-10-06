@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>定位+平移</title>
+</head>
+<body>
+    <!--
+        优点：无需知道盒子宽高
+        缺点：兼容性
+        思路：盒子相对定位，left、right设为50%，
+        然后通过translate偏移自身宽高各一半。
+     -->
+    <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            height: 400px;
+            background-color:pink;
+        }
+        .container .center {
+            position: relative;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background-color: aqua;
+        }
+    </style>
+    <article class="container">
+        <div class="center">居中</div>
+    </article>
+</body>
+</html>

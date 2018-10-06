@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>绝对定位+外边距偏移</title>
+</head>
+<body>
+    <!--
+        优点：兼容性高
+        缺点：需要明确盒子的宽高
+        思路：子盒子相对父盒子绝对定位，left、right设为50%，
+        然后通过margin再偏移自身宽高的一半。
+     -->
+    <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            position: relative;
+            height: 400px;
+            background-color:pink;
+        }
+        .container .center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -100px;
+            margin-top: -100px;
+            width: 200px;
+            height: 200px;
+            background-color: aqua;
+        }
+    </style>
+    <article class="container">
+        <div class="center">居中</div>
+    </article>
+</body>
+</html>

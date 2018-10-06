@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>四边定位+自动外边距</title>
+</head>
+<body>
+    <!--
+        优点：兼容性高，无需明确盒子的宽高
+        缺点：最低兼容IE8
+        思路：子盒子相对父盒子绝对定位，并且四边距离都设为0，
+        然后设置四边margin-auto，盒子便会居中显示。
+     -->
+    <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            position: relative;
+            height: 400px;
+            background-color:pink;
+        }
+        .container .center {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            width: 200px;
+            height: 200px;
+            background-color: aqua;
+        }
+    </style>
+    <article class="container">
+        <div class="center">居中</div>
+    </article>
+</body>
+</html>
