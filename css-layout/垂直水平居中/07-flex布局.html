@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>flex布局</title>
+</head>
+<body>
+    <!--
+        优点：简单，无需明确盒子的宽
+        缺点：兼容性
+        思路：父盒子设为flex布局，然后设置主轴与辅轴分别居中对齐
+     -->
+     <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
+            background-color:pink;
+        }
+        .container .center {
+            background-color: aqua;
+        }
+    </style>
+    <article class="container">
+        <div class="center">居中</div>
+    </article>
+</body>
+</html>

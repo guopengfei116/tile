@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>grid布局</title>
+</head>
+<body>
+    <!--
+        优点：简单，无需明确盒子的宽
+        缺点：兼容性
+        思路：父盒子设为grid布局，然后行列设置3*3的网格，中间盒子
+     -->
+     <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: auto auto auto;
+            grid-template-rows: auto auto auto;
+            height: 400px;
+            background-color:pink;
+        }
+        .container .center {
+            grid-column-start: 2;
+            grid-column-end: 3;
+            grid-row-start: 2;
+            grid-row-end: 3;
+            background-color: aqua;
+        }
+    </style>
+    <article class="container">
+        <div class="center">居中back aqugroor:d-color:groor:d-color:a;</div>
+    </article>
+</body>
+</html>
