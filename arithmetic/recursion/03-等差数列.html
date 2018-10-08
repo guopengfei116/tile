@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>等差数列</title>
+</head>
+<body>
+    <script>
+    /*
+    * 等差数列推导：
+    * 设：start = 2, d = 3;
+    * as(0) = 2
+    * as(1) = as(0) + d = 5
+    * as(2) = as(1) + d = 8
+    * as(3) = as(2) + d = 11
+    * as(4) = as(3) + d = 14
+    * as(n) = as(n-1) + d
+    * */
+    function arithmeticSequence(start, d, n) {
+        if(n === 0) {
+            return start;
+        }
+        return arithmeticSequence(start, d, n - 1) + d;
+    }
+    console.log('====================================');
+    console.log(arithmeticSequence(2, 3, 0));
+    console.log(arithmeticSequence(2, 3, 1));
+    console.log(arithmeticSequence(2, 3, 5));
+
+    // 尾递归优化
+    function arithmeticSequenceOptimize(start, d, n, result = start) {
+        if(n === 0) {
+            return result;
+        }
+        return arithmeticSequenceOptimize(start, d, n - 1, result + d);
+    }
+    console.log('====================================');
+    console.log(arithmeticSequenceOptimize(2, 3, 0));
+    console.log(arithmeticSequenceOptimize(2, 3, 1));
+    console.log(arithmeticSequenceOptimize(2, 3, 5));
+    </script>
+</body>
+</html>

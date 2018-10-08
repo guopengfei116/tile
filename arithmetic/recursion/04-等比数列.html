@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>等差数列</title>
+</head>
+<body>
+    <script>
+    /*
+    * 等比数列推导：
+    * 设：start = 1, q = 2;
+    * gs(0) = 1
+    * gs(1) = gs(0) * q = 2
+    * gs(2) = gs(1) * q = 4
+    * gs(3) = gs(2) * q = 8
+    * gs(4) = gs(3) * q = 16
+    * gs(n) = gs(n-1) * q
+    * */
+    function geometricSequence(start, q, n) {
+        if(n === 0) {
+            return start;
+        }
+        return geometricSequence(start, q, n - 1) * q;
+    }
+    console.log('====================================');
+    console.log(geometricSequence(1, 2, 0));
+    console.log(geometricSequence(1, 2, 1));
+    console.log(geometricSequence(1, 2, 5));
+
+    // 尾递归优化
+    function geometricSequenceOptimize(start, q, n, result = start) {
+        if(n === 0) {
+            return result;
+        }
+        return geometricSequenceOptimize(start, q, n - 1, result * q);
+    }
+    console.log('====================================');
+    console.log(geometricSequenceOptimize(1, 2, 0));
+    console.log(geometricSequenceOptimize(1, 2, 1));
+    console.log(geometricSequenceOptimize(1, 2, 5));
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>求幂</title>
+</head>
+<body>
+    <script>
+    /*
+    * 求幂推导：
+    * m^0 = 1
+    * m^1 = (m^0) * m = m
+    * m^2 = (m^1) * m = m*m
+    * m^3 = (m^2) * m = m*m*m
+    * m^4 = (m^3) * m = m*m*m*m
+    * m^n = (m^(n-1)) * m
+    * */
+    function power(m, n) {
+        if(n === 0) {
+            return 1;
+        }
+        return power(m, n - 1) * m;
+    }
+    console.log('====================================');
+    console.log(power(10, 0));
+    console.log(power(10, 1));
+    console.log(power(10, 5));
+
+    // 尾递归优化
+    function powerOptimize(m, n, result = 1) {
+        if(n === 0) {
+            return result;
+        }
+        return powerOptimize(m, n - 1, result * m);
+    }
+    console.log('====================================');
+    console.log(powerOptimize(10, 0));
+    console.log(powerOptimize(10, 1));
+    console.log(powerOptimize(10, 5));
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>阶乘</title>
+</head>
+<body>
+    <script>
+        /*
+        * 阶乘推导：
+        * 0! = 1
+        * 1! = 0! * 1 = 1
+        * 2! = 1! * 2 = 2
+        * 3! = 2! * 3 = 6
+        * 4! = 3! * 4 = 24
+        * n! = (n-1)! * n
+        * */
+        function factorial(n) {
+            if(n === 1 || n === 0) {
+                return 1;
+            }
+            return factorial(n - 1) * n;
+        }
+        console.log('====================================');
+        console.log(factorial(0));
+        console.log(factorial(1));
+        console.log(factorial(5));
+
+        // 尾递归优化
+        function factorialOptimize(n, result = 1) {
+            if(n === 0) {
+                return result;
+            }
+            return factorialOptimize(n - 1, result * n);
+        }
+        console.log('====================================');
+        console.log(factorialOptimize(0));
+        console.log(factorialOptimize(1));
+        console.log(factorialOptimize(5));
+    </script>
+</body>
+</html>
