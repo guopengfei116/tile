@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>等比数列</title>
+</head>
+<body>
+    <script>
+    /*
+    * 公差递增数列推导：
+    * 设：start = 1, publicD = 1、2、3...;
+    * ts(0) = 1
+    * ts(1) = as(0) + 1 = 2
+    * ts(2) = as(1) + 2 = 4
+    * ts(3) = as(2) + 3 = 7 
+    * */
+    function toleranceSequence(start, n) {
+        if(n === 0) {
+            return 1;
+        }
+        return toleranceSequence(start, n - 1) + n;
+    }
+    console.log('====================================');
+    console.log(toleranceSequence(1, 0));
+    console.log(toleranceSequence(1, 1));
+    console.log(toleranceSequence(1, 5));
+
+    // 尾递归优化
+    function toleranceSequenceOptimize(start, n, result = start) {
+        if(n === 0) {
+            return result;
+        }
+        return toleranceSequenceOptimize(start, n - 1, result + n);
+    }
+    console.log('====================================');
+    console.log(toleranceSequenceOptimize(1, 0));
+    console.log(toleranceSequenceOptimize(1, 1));
+    console.log(toleranceSequenceOptimize(1, 5));
+    </script>
+</body>
+</html>

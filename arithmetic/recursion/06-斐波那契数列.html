@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>斐波那契数列</title>
+</head>
+<body>
+    <script>
+    /*
+    * 斐波那契数列推导：
+    * fib(0) = 1
+    * fib(1) = 1
+    * fib(2) = fib(1) + fib(0) = 2
+    * fib(3) = fib(2) + fib(1) = 3
+    * fib(4) = fib(3) + fib(2) = 5
+    * fib(n) = fib(n-1) + fib(n-2)
+    * */
+    function fibonacci(n) {
+        if(n === 1 || n === 0) {
+            return 1;
+        }
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+    console.log('====================================');
+    console.log(fibonacci(0));
+    console.log(fibonacci(1));
+    console.log(fibonacci(15));
+
+    // 尾递归优化
+    function fibonacciOptimize(n, result = 1, preValue = 0) {
+        if(n === 0) {
+            return result;
+        }
+        return fibonacciOptimize(n - 1, result + preValue, result);
+    }
+    console.log('====================================');
+    console.log(fibonacciOptimize(0));
+    console.log(fibonacciOptimize(1));
+    console.log(fibonacciOptimize(15));
+
+    // 缓存优化
+    var fibonacciCacheOptimize = (function() {
+        var cache = [1, 1];
+
+        return function fibonacci(n) {
+            return cache[n] || (cache[n] = fibonacci(n - 1) + fibonacci(n - 2));
+        }
+    }());
+    console.log('====================================');
+    console.log(fibonacciCacheOptimize(0));
+    console.log(fibonacciCacheOptimize(1));
+    console.log(fibonacciCacheOptimize(15));
+    </script>
+</body>
+</html>
