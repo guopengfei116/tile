@@ -40,6 +40,15 @@
     console.log(fibonacciOptimize(1));
     console.log(fibonacciOptimize(15));
 
+    function fibonacciOptimize2(n, result, preValue) {
+        result = result || 1;
+        preValue = preValue || 0;
+        if (n <= 1) {
+            return result;
+        }
+        return fibonacci_fail(n - 1, result + preValue, result);
+    }
+
     // 缓存优化
     var fibonacciCacheOptimize = (function() {
         var cache = [1, 1];

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DOM树广度优先遍历</title>
+</head>
+<body>
+    <article>
+        <h1>title</h1>
+        <section>
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+        </section>
+        <section>
+            <span>4</span>
+            <span>5</span>
+        </section>
+    </article>
+
+    <script>
+        /*
+        * DOM树广度优先遍历：
+        * 关键点：先保存所有子节点，然后再递归它们，最终root => son1 + son2 => son1-child => son2-child
+        * 1. 编写一个递归获取子节点的方法，零界条件为是否含有子元素
+        * 2. 进行非空校验
+        * 3. 如果没有子节点，终止递归，返回仅含有自身的数组
+        * 4. 有子节点，先存于数组，再递归获取它们的子节点
+        * 5. 返回最终的结果
+        * */
+        function getChild(root) {
+            let arr = [];
+            if(root == null) return arr;
+
+            // 零界条件
+            if(!root.children || !root.children.length) {
+                return arr;
+            }
+
+            // 保存所有子节点，再递归所有子节点
+            arr.push.apply(arr, root.children);
+            for (let i = 0; i < root.children.length; i++) {
+                arr.push.apply(arr, getChild(root.children[i]));
+            }
+
+            return arr;
+        }
+        console.log('====================================');
+        console.log(getChild(document.documentElement));
+        console.log(getChild(document.body));
+        console.log(getChild(document.querySelector("section:last-child")));
+        
+        // 广度优先，查找所有没有子元素的节点
+        function getEmptyChild(root) {
+            var arr = [];
+            if(root == null) return arr;
+
+            // 保存所有空子节点，再递归所有子节点
+            arr.push.apply(arr, [].filter.call(root.children, v => !v.children || !v.children.length));
+            for (let i = 0, len = root.children.length; i < len; i++) {
+                arr.push.apply(arr, getEmptyChild(root.children[i]));
+            }
+
+            return arr;
+        }
+        console.log('====================================');
+        console.log(getEmptyChild(document.documentElement));
+        console.log(getEmptyChild(document.body));
+        console.log(getEmptyChild(document.querySelector("section:last-child")));
+    </script>
+</body>
+</html>
