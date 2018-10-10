@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <dl>
+            <dt>{{ name }}</dt>
+            <dd>{{ age }}</dd>
+        </dl>
+        <input v-model="name" type="text">
+        <button v-on:click="clickHandler">长大</button>
+    </div>
+
+    <script src="05-watcher.js"></script>
+    <script src="04-compile.js"></script>
+    <script src="03-dep.js"></script>
+    <script src="02-observer.js"></script>
+    <script src="01-vue.js"></script>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                name: "vue",
+                age: "4"
+            },
+            methods: {
+                clickHandler() {
+                    this.age++;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
