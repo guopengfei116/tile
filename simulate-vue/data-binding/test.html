@@ -39,6 +39,26 @@
                 clickHandler() {
                     this.age++;
                 }
+            },
+            beforeCreate: function() {
+                console.log("创建前");
+                console.log(this.age);
+                console.log(this.$el);
+            },
+            created: function() {
+                console.log("创建后");
+                console.log(this.age);
+                console.log(this.$el);
+            },
+            beforeMount: function() {
+                console.log("mount前");
+                console.log(this.age);
+                console.log(this.$el);
+            },
+            mounted: function() {
+                console.log("mount后");
+                console.log(this.age);
+                console.log(this.$el);
             }
         });
     </script>
