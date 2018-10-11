@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>setTimeout递归堆栈问题</title>
+</head>
+<body>
+    <script>
+        /*
+        * 异步loop是否会发生栈溢出：
+        * 经chrome测试，同步函数递归时，执行了15730次后便抛出了栈溢出异常，
+        * 采用setTimeout的异步递归调执行了10次也没有出现栈溢出的情况，
+        * 所以答案是不会发生，可能是因为栈溢出只会对当次js执行队列中的函数有堆栈限制，
+        * 如果该函数的递归执行出现在下一次执行队列中，会重置堆栈上限。
+        **/
+
+        // 异步递归，0毫秒递归一次，实际只比下面的16.7毫秒快了3倍
+        let a = 0;
+        function loop() {
+            a++;
+            setTimeout(loop, 0);
+        }
+
+        // 异步递归，16.7毫秒递归一次
+        let b = 0;
+        function loop2() {
+            b++;
+            setTimeout(loop2, 1000 / 60);
+        }
+
+        // 同步递归
+        let c = 0;
+        function loop3() {
+            c++;
+            loop3();
+        }
+
+        loop();
+        loop2(); 
+        loop3();
+    </script>
+</body>
+</html>
