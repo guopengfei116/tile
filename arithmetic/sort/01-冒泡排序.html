@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>冒泡排序</title>
+</head>
+<body>
+    <script>
+        /*
+        * 冒泡排序
+        * 复杂度: 大O表示法 = O(n^2); 精确表示 = n*(n-1)/2
+        * 1. 从左向右依次比较两个相邻元素(从右向左也可以)
+        * 2. 如果左边大于右边，则调换位置(升序排序)
+        * 3. 一轮结束后，继续下一轮比较，但是上一轮得出的值不再参与比较
+        * 外层循环控制比较轮数(n-1)，循环条件使用(i=0,i<arr.length-1) || (i=1,i<arr.length)
+        * 内层循环控制比较次数(n-递增i)，循环条件使用(j=0,j<arr.length-1-i) || (j=0,j<arr.length-i)
+        **/
+        function bubbleSort(arr) {
+            bubbleSort.swaps = 0;
+            bubbleSort.comparisons = 0;
+            let i, j, tmp;
+
+            for(i = 0; i < arr.length - 1; i++) {
+                for(j = 0; j < arr.length - 1 - i; j++) {
+                    bubbleSort.comparisons++;
+
+                    if(arr[j] > arr[j+1]) {
+                        bubbleSort.swaps++;
+                        tmp = arr[j];
+                        arr[j] = arr[j+1];
+                        arr[j+1] = tmp;
+                    }
+                }
+            }
+
+            return arr;
+        }
+        console.log('========================================================');
+        console.log(bubbleSort([1, 2, 3, 4, 5, 6, 7, 8, 9]), `交换：${bubbleSort.swaps}`, `比较：${bubbleSort.comparisons}`);
+        console.log(bubbleSort([9, 8, 7, 6, 5, 4, 3, 2, 1]), `交换：${bubbleSort.swaps}`, `比较：${bubbleSort.comparisons}`);
+        console.log(bubbleSort([3, 5, 2, 9, 1, 4, 8, 7, 6]), `交换：${bubbleSort.swaps}`, `比较：${bubbleSort.comparisons}`);
+    
+        // 更巧妙i与j使用
+        function bubbleSort2(arr) {
+            bubbleSort2.swaps = 0;
+            bubbleSort2.comparisons = 0;
+            let i, j, tmp;
+
+            for(i = 1; i < arr.length; i++) {
+                for(j = 0; j < arr.length - i; j++) {
+                    bubbleSort2.comparisons++;
+
+                    if(arr[j] > arr[j+1]) {
+                        bubbleSort2.swaps++;
+                        tmp = arr[j];
+                        arr[j] = arr[j+1];
+                        arr[j+1] = tmp;
+                    }
+                }
+            }
+            return arr;
+        }
+        console.log('========================================================');
+        console.log(bubbleSort2([1, 2, 3, 4, 5, 6, 7, 8, 9]), `交换：${bubbleSort2.swaps}`, `比较：${bubbleSort2.comparisons}`);
+        console.log(bubbleSort2([9, 8, 7, 6, 5, 4, 3, 2, 1]), `交换：${bubbleSort2.swaps}`, `比较：${bubbleSort2.comparisons}`);
+        console.log(bubbleSort2([3, 5, 2, 9, 1, 4, 8, 7, 6]), `交换：${bubbleSort2.swaps}`, `比较：${bubbleSort2.comparisons}`);
+    </script>
+
+    <script>
+        /*
+        * 从右向左冒泡，升序排列，降序只需修改if判断的运算符即可
+        * 1. 从左向右冒泡，j从开始0开始，到结尾位置-1结束[j<(len-1)-(0,1,2...)]，每次j++
+        * 2. 从右向左冒泡，j从结尾len-1开始，到开始位置+1结束[j>(0,1,2...)]，每次j--
+        **/
+        function bubbleSortR2L(arr) {
+            bubbleSortR2L.swaps = 0;
+            bubbleSortR2L.comparisons = 0;
+            let i, j, tmp, len = arr.length;
+
+            for(i = 0; i < len - 1; i++) {
+                for(j = len - 1; j > i; j--) {
+                    bubbleSortR2L.comparisons++;
+
+                    if(arr[j] < arr[j-1]) {
+                        bubbleSortR2L.swaps++;
+                        tmp = arr[j];
+                        arr[j] = arr[j-1];
+                        arr[j-1] = tmp;
+                    }
+                }
+            }
+
+            return arr;
+        }
+        console.log('========================================================');
+        console.log(bubbleSortR2L([1, 2, 3, 4, 5, 6, 7, 8, 9]), `交换：${bubbleSortR2L.swaps}`, `比较：${bubbleSortR2L.comparisons}`);
+        console.log(bubbleSortR2L([9, 8, 7, 6, 5, 4, 3, 2, 1]), `交换：${bubbleSortR2L.swaps}`, `比较：${bubbleSortR2L.comparisons}`);
+        console.log(bubbleSortR2L([3, 5, 2, 9, 1, 4, 8, 7, 6]), `交换：${bubbleSortR2L.swaps}`, `比较：${bubbleSortR2L.comparisons}`);
+    
+        // 更巧妙i与j使用
+        function bubbleSortR2L2(arr) {
+            bubbleSortR2L2.swaps = 0;
+            bubbleSortR2L2.comparisons = 0;
+            let i, j, tmp, len = arr.length;
+
+            for(i = 1; i < len; i++) {
+                for(j = len - 1; j >= i; j--) {
+                    bubbleSortR2L2.comparisons++;
+
+                    if(arr[j] < arr[j-1]) {
+                        bubbleSortR2L2.swaps++;
+                        tmp = arr[j];
+                        arr[j] = arr[j-1];
+                        arr[j-1] = tmp;
+                    }
+                }
+            }
+
+            return arr;
+        }
+        console.log('========================================================');
+        console.log(bubbleSortR2L2([1, 2, 3, 4, 5, 6, 7, 8, 9]), `交换：${bubbleSortR2L2.swaps}`, `比较：${bubbleSortR2L2.comparisons}`);
+        console.log(bubbleSortR2L2([9, 8, 7, 6, 5, 4, 3, 2, 1]), `交换：${bubbleSortR2L2.swaps}`, `比较：${bubbleSortR2L2.comparisons}`);
+        console.log(bubbleSortR2L2([3, 5, 2, 9, 1, 4, 8, 7, 6]), `交换：${bubbleSortR2L2.swaps}`, `比较：${bubbleSortR2L2.comparisons}`);
+    </script>
+
+    <script>
+    /*
+    * 冒泡排序优化
+    * 优化后大O复杂度: 最优 = O(n); 最差 = O(n^2)
+    * 1. 定义一个默认为ture的flag变量，用于控制外层循环
+    * 2. 如果在某轮两两比较时，没有发生任何交换，那么证明全部已经是有序的了
+    * 3. 这时候把flag改为false，提前结束剩余的循环
+    **/
+    function bubbleSortOptimize(arr) {
+        bubbleSortOptimize.swaps = 0;
+        bubbleSortOptimize.comparisons = 0;
+        let i, j, tmp, len = arr.length, flag = true;
+
+        for(let i = 1; i < arr.length && flag; i++) {
+
+            flag = false;
+            for(let j = 0; j < arr.length - i; j++) {
+                bubbleSortOptimize.comparisons++;
+                
+                if(arr[j] > arr[j+1]) {
+                    flag = true;
+                    bubbleSortOptimize.swaps++
+                    tmp = arr[j];
+                    arr[j] = arr[j+1]
+                    arr[j+1] = tmp;
+                }
+            }
+        }
+
+        return arr;
+    }
+    console.log('========================================================');
+    console.log(bubbleSortOptimize([1, 2, 3, 4, 5, 6, 7, 8, 9]), `交换：${bubbleSortOptimize.swaps}`, `比较：${bubbleSortOptimize.comparisons}`);
+    console.log(bubbleSortOptimize([9, 8, 7, 6, 5, 4, 3, 2, 1]), `交换：${bubbleSortOptimize.swaps}`, `比较：${bubbleSortOptimize.comparisons}`);
+    console.log(bubbleSortOptimize([3, 5, 2, 9, 1, 4, 8, 7, 6]), `交换：${bubbleSortOptimize.swaps}`, `比较：${bubbleSortOptimize.comparisons}`);
+    </script>
+</body>
+</html>
