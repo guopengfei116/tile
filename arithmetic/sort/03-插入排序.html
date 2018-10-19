@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>插入排序</title>
+</head>
+<body>
+    <script>
+        /*
+        * 选择排序，交换多，比较少
+        * 时间复杂度: 大O表示法 = O(n^2); 精确表示 = n*(n-1)/2
+        * 1. 遍历数组，从第二个数(后面的数)开始遍历，并用变量缓存这个数
+        * 2. 然后依次与它前面相比(n-1, n-2, 0)，如果小于前面的数，则把前面的数向后移位
+        * 3. 一直等到不小于前面的数，即找到了该数应该所处的位置，赋值即可
+        * 4. 第一轮比较结束后，前面2个数就是有序的；二轮比较结束后，前面3个数有序；n-1轮结束后，全部有序
+        * 外层循环控制比较轮数(i = 1,   i < len)
+        * 内层循环控制比较次数(j = i-1, j >= 0)
+        **/
+        function insertSort(arr) {
+            insertSort.swaps = 0;
+            insertSort.comparisons = 0;
+            let i, j, tmp;
+
+            for(i = 1; i < arr.length; i++) {
+                tmp = arr[i]; // 因为前面的元素可能会向后移位，所以要缓存这个值
+
+                // 使用比较条件控制循环，可减少比较次数，因为比较为false，那么与它前面有序的数比较也会是false
+                for(j = i - 1; (j >= 0 && insertSort.comparisons++, tmp < arr[j]); j--) {
+                    insertSort.swaps++;
+                    arr[j+1] = arr[j];
+                }
+                arr[j+1] = tmp;
+            }
+
+            return arr;
+        }
+
+        console.log('========================================================');
+        console.log(insertSort([1, 2, 3, 4, 5, 6, 7, 8, 9]), `交换：${insertSort.swaps}`, `比较：${insertSort.comparisons}`);
+        console.log(insertSort([9, 8, 7, 6, 5, 4, 3, 2, 1]), `交换：${insertSort.swaps}`, `比较：${insertSort.comparisons}`);
+        console.log(insertSort([3, 5, 2, 9, 1, 4, 8, 7, 6]), `交换：${insertSort.swaps}`, `比较：${insertSort.comparisons}`);
+    </script>
+</body>
+</html>
