@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>对象深拷贝</title>
+</head>
+<body>
+    <script>
+        function clone(target, obj) {
+            if(arguments.length === 1) {
+                obj = target;
+                target = {};
+            }
+
+            // 零界条件：普通数据类型，还是返回普通数据类型
+            if(typeof obj == null || typeof obj !== "object") {
+                return obj;
+            }
+
+            if(Array.isArray(obj)) {
+                target = Array.isArray(target)? target: [];
+                for(let i = 0; i < obj.length; i++) {
+                    target[i] = clone(obj[i]);
+                }
+            } else if(typeof obj === "object" && obj != null) {
+                for(const k in obj) {
+                    if (obj.hasOwnProperty(k)) {
+                        target[k] = clone(obj[k]);
+                    }
+                }
+            }
+            
+            return target;
+        }
+
+        let obj = { a: { a1: 1, a2: 2 }, b: [ "a", "b" ] };
+        let newObj = clone(obj);
+        console.log(newObj, newObj === obj, newObj.a === obj.a, newObj.b === obj.b);
+    </script>
+</body>
+</html>
