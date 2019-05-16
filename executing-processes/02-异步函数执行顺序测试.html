@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>异步函数执行测试</title>
+</head>
+<body>
+  <script>
+    let resolve;
+    const promise = new Promise((yes, no) => {
+      resolve = yes;
+    });
+
+    async function fn() {
+      await Promise.resolve();
+      resolve();
+      console.log('async function completed');
+    }
+
+    promise.then(() => console.log('promise preceding then1'));
+    promise
+      .then(() => console.log('promise preceding then2'))
+      .then(() => console.log('promise preceding then2 serial2'));
+
+    Promise.resolve().then(() => console.log('lalalal'));
+    setTimeout(() => {
+      fn().then(() => {
+        console.log('async function then');
+      });
+    }, 0)
+
+    promise.then(() => console.log('promise posterior then1'));
+    promise
+      .then(() => console.log('promise posterior then2'))
+      .then(() => console.log('promise posterior then2 serial2'));
+  </script>
+</body>
+</html>
